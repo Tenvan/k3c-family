@@ -3,6 +3,7 @@
 //! Wails im JSON-Array.
 
 mod services;
+mod tasks;
 pub mod uiapi;
 
 use std::sync::Arc;
@@ -44,7 +45,20 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("ServicesStartAll", services::start_all),
     ("ServicesStopAll", services::stop_all),
     ("ServiceLogLevels", services::log_levels),
+    ("Sources", tasks::sources),
+    ("ConsoleTail", tasks::console_tail),
+    ("Tasks", tasks::catalog),
+    ("TasksReload", tasks::reload),
+    ("TaskStart", tasks::start),
+    ("TaskStop", tasks::stop),
+    ("TaskRuns", tasks::runs),
 ];
+
+/// Das eine Argument einer Methode mit einem Namen.
+fn name(args: &[Value]) -> Result<String, RpcError> {
+    let (name,) = uikit::args::<(String,)>(args.to_vec())?;
+    Ok(name)
+}
 
 fn encode(value: impl Serialize) -> Result<Value, RpcError> {
     serde_json::to_value(value).map_err(|e| RpcError(e.to_string()))

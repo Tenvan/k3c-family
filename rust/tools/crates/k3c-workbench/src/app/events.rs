@@ -19,6 +19,10 @@ pub const NOTIFY: &str = "ui:notify";
 pub const PLANNING: &str = "planning:changed";
 /// Zustand eines Dienstes.
 pub const SERVICE_STATE: &str = "service:state";
+/// Zustand eines Task-Laufs.
+pub const TASK_STATE: &str = "task:state";
+/// Zustand einer Quelle der Logs-Seite.
+pub const SOURCE_STATE: &str = "source:state";
 /// Neue Konsolenzeilen, gebündelt als Liste.
 pub const CONSOLE_LINE: &str = "console:line";
 

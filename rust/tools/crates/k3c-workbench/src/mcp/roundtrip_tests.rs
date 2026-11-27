@@ -4,6 +4,7 @@ use serde_json::json;
 
 use super::test_client::Client;
 use super::test_helpers::started;
+use super::tools::CATALOG;
 use super::{Config, INSTRUCTIONS, Server};
 
 /// Server nur mit den echten Tools.
@@ -27,7 +28,9 @@ async fn alle_tools_mit_beschreibung_und_annotations() {
     let mut catalog: Vec<String> = server.stats().await.tools.into_iter().map(|t| t.name).collect();
     catalog.sort();
     assert_eq!(listed, catalog);
-    assert_eq!(listed, ["notify_ui", "workbench_status"]);
+    let mut registered: Vec<&str> = CATALOG.to_vec();
+    registered.sort_unstable();
+    assert_eq!(listed, registered);
     assert_eq!(client.init["serverInfo"]["name"], json!("k3c-workbench"));
     assert_eq!(client.init["instructions"], json!(INSTRUCTIONS));
     server.stop().await.unwrap();

@@ -5,13 +5,8 @@ use std::sync::Arc;
 use k3c_kit::uikit;
 use serde_json::Value;
 
-use super::{RpcError, encode, no_args};
+use super::{RpcError, encode, name, no_args};
 use crate::app::App;
-
-fn name(args: &[Value]) -> Result<String, RpcError> {
-    let (name,) = uikit::args::<(String,)>(args.to_vec())?;
-    Ok(name)
-}
 
 pub(super) fn view(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
     no_args(args)?;

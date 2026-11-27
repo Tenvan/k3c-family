@@ -208,7 +208,7 @@ impl Controller {
                 () = &mut deadline => {
                     return Err(format!("nach {} nicht gesund", go_duration(self.opts.start_timeout)));
                 }
-                () = ctx.cancelled() => return Err("start abgebrochen: context canceled".to_owned()),
+                () = ctx.cancelled() => return Err(format!("start abgebrochen: {}", ctx.reason())),
                 _ = tick.tick() => {
                     if self.check(&svc).await.is_ok() {
                         return Ok(());

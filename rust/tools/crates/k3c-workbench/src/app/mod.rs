@@ -5,9 +5,11 @@ mod console_batch;
 pub mod events;
 pub mod headless;
 mod info;
+mod logs;
 mod mcp_page;
 pub mod open_url;
 mod services;
+mod tasks;
 pub mod window;
 
 #[cfg(test)]
@@ -31,8 +33,11 @@ use crate::{mcp, ports};
 use console_batch::LineBatcher;
 use events::{CONSOLE_LINE, Emit, Events};
 pub use info::{Info, McpState};
+pub use logs::Source;
 pub use mcp_page::{McpOverview, McpUsageView, UsageRules};
 pub use services::ServicesView;
+pub use tasks::TaskCatalog;
+use tasks::TaskCenter;
 
 /// Version der App (Info, MCP).
 pub const VERSION: &str = "0.1.0";
@@ -48,6 +53,7 @@ struct Running {
     /// Laufzeit des MCP-Servers; die blockierenden Methoden der Oberfläche rufen ihn darin.
     runtime: Handle,
     services: services::Services,
+    tasks: Arc<TaskCenter>,
     /// Bricht beim Beenden wartende Starts und den Monitor ab (Go `svcCtx`).
     cancel: Cancel,
 }
@@ -148,7 +154,15 @@ impl App {
         let tracker = self.open_tracker(&logger);
         let cancel = Cancel::default();
         let services = services::open(&self.root, Arc::clone(&store), &logger, &self.events, &cancel).await;
-        let server = Arc::new(mcp::Server::new(self.server_config(&logger, &tracker)));
+        let ctl = services.as_ref().ok().map(Arc::clone);
+        let tasks = Arc::new(TaskCenter::open(&self.root, &store, &self.events, &logger, ctl));
+        let config = mcp::Config {
+            console: Some(Arc::clone(&store)),
+            services: Some(services.clone()),
+            tasks: Some(Arc::clone(&tasks) as Arc<dyn mcp::TaskHost>),
+            ..self.server_config(&logger, &tracker)
+        };
+        let server = Arc::new(mcp::Server::new(config));
         let started = server.start().await;
         match &started {
             Ok(()) => logger.info(
@@ -168,6 +182,7 @@ impl App {
             server,
             runtime: Handle::current(),
             services,
+            tasks,
             cancel,
         });
         self.set_mcp(started.err());
@@ -199,6 +214,7 @@ impl App {
                 log.info(&message, &[("ns", json!("mcp")), ("level", json!(n.level))]);
                 notify.emit_value(events::NOTIFY, n);
             })),
+            ..mcp::Config::default()
         }
     }
 
@@ -214,8 +230,8 @@ impl App {
         drop(self.ready.1.wait_while(guard, |ready| !*ready));
     }
 
-    /// Bricht laufende Befehle ab, stoppt die eigenen Dienste (rückwärts; übernommene laufen weiter), dann Server,
-    /// Statistik und Log (Fenster und Betrieb ohne Fenster).
+    /// Bricht laufende Befehle ab, stoppt Tasks und eigene Dienste (rückwärts; übernommene laufen weiter) samt denen
+    /// der Worktrees, dann Server, Statistik und Log (Fenster und Betrieb ohne Fenster).
     pub async fn shutdown(&self) {
         let taken = lock(&self.running).take();
         let Some(running) = taken else {
@@ -224,9 +240,15 @@ impl App {
         let logger = running.log.logger();
         logger.info("🛑 k3c-workbench beendet", &[("ns", json!("main"))]);
         running.cancel.cancel();
+        // Ein halb gelaufener Testlauf darf die Anwendung nicht überleben, unabhängig von den Diensten.
+        if let Err(e) = running.tasks.stop_all().await {
+            let message = format!("⏳ Tasks nicht vollständig beendet: {e}");
+            logger.warn(&message, &[("ns", json!("tasks"))]);
+        }
         if let Ok(ctl) = &running.services {
             ctl.stop_all().await;
         }
+        running.server.stop_worktree_services().await;
         if let Err(e) = running.server.stop().await {
             logger.warn(
                 "❌ server nicht sauber beendet",

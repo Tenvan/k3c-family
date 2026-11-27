@@ -11,14 +11,14 @@ use serde::Serialize;
 use serde_json::json;
 use tokio::runtime::Handle;
 
-use super::events::{Events, SERVICE_STATE};
-use super::{App, lock};
+use super::events::{Events, SERVICE_STATE, SOURCE_STATE};
+use super::{App, lock, logs};
 use crate::services::{self, Cancel, Controller, LevelCounts, Options, Outcome, Status};
 
 /// So oft misst der Monitor.
 const MONITOR_EVERY: Duration = Duration::from_secs(2);
 /// Meldung, wenn eine Methode nach dem Beenden kommt.
-const STOPPED: &str = "backend beendet";
+pub(super) const STOPPED: &str = "backend beendet";
 
 /// Die Dienste-Seite beim Laden. `error` ist gesetzt, wenn `services.json` nicht geladen wurde.
 #[derive(Clone, Debug, Serialize)]
@@ -46,7 +46,10 @@ pub(super) async fn open(root: &Path, store: Arc<Store>, log: &Logger, events: &
         root: root.to_path_buf(),
         console: store,
         log: log.clone(),
-        on_change: Arc::new(move |st| events.emit_value(SERVICE_STATE, st)),
+        on_change: Arc::new(move |st| {
+            events.emit_value(SERVICE_STATE, st);
+            events.emit_value(SOURCE_STATE, &logs::service_source(st));
+        }),
         ..Options::default()
     };
     let ctl = Controller::new(services::shift(&list, 0), options);

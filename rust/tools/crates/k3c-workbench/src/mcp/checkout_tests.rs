@@ -154,7 +154,10 @@ async fn checkout_nur_bei_schreibenden_tools() {
         is_error && text.contains("gültige Parameter: id"),
         "plan_get mit checkout: {text}"
     );
-    let (text, is_error) = client.call_text("task_start", json!({"checkout": "wt-a"})).await;
+    // Der Server hat keine Tasks-Seite; wichtig ist, dass `checkout` angenommen wird.
+    let arguments = json!({"task": "check", "checkout": "wt-a"});
+    let (text, is_error) = client.call_text("task_start", arguments).await;
     assert!(is_error && !text.contains("additional"), "task_start: {text}");
+    assert!(text.contains("Checkout: Worktree wt-a"), "task_start: {text}");
     server.stop().await.unwrap();
 }

@@ -10,6 +10,7 @@ use rmcp::handler::server::router::tool::ToolRouter;
 use rmcp::handler::server::wrapper::Parameters;
 use rmcp::{tool, tool_router};
 
+use super::Env;
 use super::notify::{self, Notice, NotifyHook};
 use super::status;
 
@@ -20,10 +21,29 @@ pub(super) struct Workbench {
     pub(super) server: Arc<OnceLock<Weak<KitServer<Workbench>>>>,
     pub(super) usage: Option<Arc<Tracker>>,
     pub(super) on_notify: Option<NotifyHook>,
+    pub(super) env: Arc<Env>,
 }
 
 /// Reihenfolge der Tools in den Zählern wie in Go `register`.
-pub(super) const CATALOG: &[&str] = &["workbench_status", "notify_ui"];
+pub(super) const CATALOG: &[&str] = &[
+    "workbench_status",
+    "notify_ui",
+    "console_tail",
+    "svc_status",
+    "svc_health",
+    "svc_start",
+    "svc_stop",
+    "svc_restart",
+    "svc_start_all",
+    "svc_stop_all",
+    "ports_status",
+    "get_urls",
+    "task_list",
+    "task_start",
+    "task_stop",
+    "task_status",
+    "task_output",
+];
 
 #[tool_router]
 impl Workbench {
@@ -50,4 +70,8 @@ impl Workbench {
 /// Alle Tools der Workbench.
 pub(super) fn router() -> ToolRouter<Workbench> {
     Workbench::tool_router()
+        + Workbench::console_router()
+        + Workbench::service_router()
+        + Workbench::port_router()
+        + Workbench::task_router()
 }

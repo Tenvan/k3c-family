@@ -42,7 +42,8 @@ fn look_path(name: &Path, path: &OsStr, extensions: &str) -> PathBuf {
     name.to_path_buf()
 }
 
-fn executable(name: &str, root: &Path) -> PathBuf {
+/// Pfad eines Programms: relative Pfade unter `root`, Namen über `PATH` (auch für Tasks).
+pub(crate) fn executable(name: &str, root: &Path) -> PathBuf {
     let program = program(name, root);
     if !cfg!(windows) {
         return program;
@@ -109,13 +110,15 @@ pub fn proc_starter(svc: &Service, root: &Path, out: OutFn) -> Result<Spawned, S
     let mut args = vec![executable(first, root).into_os_string()];
     args.extend(svc.command.iter().skip(1).map(Into::into));
     let mut cmd = Cmd::new(&args);
-    cmd.command_mut()
-        .current_dir(root.join(&svc.cwd))
-        .envs(&svc.env)
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped());
+    cmd.command_mut().current_dir(root.join(&svc.cwd)).envs(&svc.env);
+    spawn(cmd, &out)
+}
+
+/// Startet `cmd` mit zeilenweiser Ausgabe an `out`. Braucht eine tokio-Laufzeit.
+pub(crate) fn spawn(mut cmd: Cmd, out: &OutFn) -> Result<Spawned, String> {
+    cmd.command_mut().stdout(Stdio::piped()).stderr(Stdio::piped());
     let mut proc = cmd.start().map_err(|e| e.to_string())?;
-    let (stdout, stderr) = (line_writer(&out, "stdout"), line_writer(&out, "stderr"));
+    let (stdout, stderr) = (line_writer(out, "stdout"), line_writer(out, "stderr"));
     let readers = [
         pump(proc.child_mut().stdout.take(), stdout.clone()),
         pump(proc.child_mut().stderr.take(), stderr.clone()),

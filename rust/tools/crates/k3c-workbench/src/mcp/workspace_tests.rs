@@ -1,5 +1,6 @@
 //! Port von `workspace_test.go` (`TestFindRoot`, `TestWorkspaceAusHeader`, `TestSchreibendesToolNenntCheckout` mit der
-//! Attrappe `plan_section`). Die Worktree-Tests mit Diensten und Konsole kommen mit RU69.3.
+//! Attrappe `plan_section`). Die Worktree-Tests mit Diensten und Konsole stehen in `worktree_tests.rs` und
+//! `console_tests.rs`.
 
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
@@ -15,7 +16,7 @@ use super::test_helpers::{WRITTEN, started, write};
 use crate::testutil::tmp_dir;
 
 /// Repo-Wurzel mit einem Worktree wt1, wie `git worktree add` sie schreibt, und ein fremdes Repo daneben.
-fn repo_with_worktree(base: &Path) -> (PathBuf, PathBuf, PathBuf) {
+pub(super) fn repo_with_worktree(base: &Path) -> (PathBuf, PathBuf, PathBuf) {
     let main = base.join("k3c");
     let foreign = base.join("anders");
     let wt = main.join(".claude").join("worktrees").join("wt1");

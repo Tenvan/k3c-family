@@ -4,6 +4,7 @@ use std::future::Future;
 use std::path::{Path, PathBuf};
 use std::pin::Pin;
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::Duration;
 
 use chrono::{DateTime, Local};
@@ -53,17 +54,32 @@ pub type Clock = Arc<dyn Fn() -> DateTime<Local> + Send + Sync>;
 
 /// Abbruchsignal wie ein Go-Context.
 #[derive(Clone, Debug)]
-pub struct Cancel(Arc<watch::Sender<bool>>);
+pub struct Cancel(Arc<watch::Sender<bool>>, Arc<AtomicBool>);
 
 impl Default for Cancel {
     fn default() -> Cancel {
-        Cancel(Arc::new(watch::Sender::new(false)))
+        Cancel(Arc::new(watch::Sender::new(false)), Arc::default())
     }
 }
 
 impl Cancel {
     pub fn cancel(&self) {
         self.0.send_replace(true);
+    }
+
+    /// Abbruch, weil eine Frist abgelaufen ist (Go `context.WithTimeout`).
+    pub fn expire(&self) {
+        self.1.store(true, Ordering::SeqCst);
+        self.cancel();
+    }
+
+    /// Text wie Go `ctx.Err()` nach dem Abbruch.
+    pub fn reason(&self) -> &'static str {
+        if self.1.load(Ordering::SeqCst) {
+            "context deadline exceeded"
+        } else {
+            "context canceled"
+        }
     }
 
     pub fn is_cancelled(&self) -> bool {

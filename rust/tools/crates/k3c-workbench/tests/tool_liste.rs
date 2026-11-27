@@ -14,8 +14,6 @@ mod test_client;
 /// Tools, die erst spätere Sessions von RU69 bringen; am Ende leer.
 const AUSSTEHEND: &[&str] = &[
     "check_run",
-    "console_tail",
-    "get_urls",
     "gh_status",
     "git_commit",
     "logs_context",
@@ -42,19 +40,6 @@ const AUSSTEHEND: &[&str] = &[
     "playtest_get",
     "playtest_list",
     "playtest_tickets_create",
-    "ports_status",
-    "svc_health",
-    "svc_restart",
-    "svc_start",
-    "svc_start_all",
-    "svc_status",
-    "svc_stop",
-    "svc_stop_all",
-    "task_list",
-    "task_output",
-    "task_start",
-    "task_status",
-    "task_stop",
     "workbench_resources",
 ];
 
@@ -134,7 +119,7 @@ async fn tools_wie_go() {
     let go = snapshot();
     let rust = rust_tools().await;
     assert_eq!(go.len(), 45, "Schnappschuss: {:?}", go.keys());
-    assert_eq!(AUSSTEHEND.len(), 43);
+    assert_eq!(AUSSTEHEND.len(), 28);
     for (name, tool) in &rust {
         assert_eq!(Some(tool), go.get(name), "{name} weicht von der Go-Fassung ab");
     }

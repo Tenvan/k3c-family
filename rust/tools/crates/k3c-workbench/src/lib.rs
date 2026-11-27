@@ -7,6 +7,8 @@ pub mod platform;
 pub mod ports;
 pub mod rpc;
 pub mod services;
+pub mod taskcat;
+pub mod taskrun;
 
 #[cfg(test)]
 mod nowindow_tests;

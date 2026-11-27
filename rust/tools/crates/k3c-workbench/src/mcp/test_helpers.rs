@@ -66,11 +66,6 @@ impl Workbench {
     }
 
     #[tool(description = "Test")]
-    async fn task_start(&self) -> Result<String, String> {
-        Err("kein Task".to_owned())
-    }
-
-    #[tool(description = "Test")]
     async fn check_run(&self, Parameters(input): Parameters<TargetIn>) -> Result<String, String> {
         Err(format!("unbekanntes Ziel {:?}", input.target))
     }

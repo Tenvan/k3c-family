@@ -46,7 +46,7 @@ impl Serialize for State {
 }
 
 /// Zeit wie Go `time.Time` als JSON; keine Zeit ist die Null-Zeit von Go.
-fn go_time<S: Serializer>(t: &Option<DateTime<Local>>, s: S) -> Result<S::Ok, S::Error> {
+pub(crate) fn go_time<S: Serializer>(t: &Option<DateTime<Local>>, s: S) -> Result<S::Ok, S::Error> {
     match t {
         Some(t) => s.serialize_str(&time_nanos(t)),
         None => s.serialize_str("0001-01-01T00:00:00Z"),

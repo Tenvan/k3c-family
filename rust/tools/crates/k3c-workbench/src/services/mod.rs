@@ -40,5 +40,7 @@ pub use controller::{Controller, Failure, Outcome};
 pub use filewatch::Watch;
 pub use levels::LevelCounts;
 pub use options::{Cancel, Checker, Exit, KillPid, Listener, Options, OutFn, Sampler, Spawned, Starter, WaitError};
+pub(crate) use runtime::{executable, spawn};
+pub(crate) use status::go_time;
 pub use status::{State, Status};
-pub use system::Metrics;
+pub use system::{Metrics, port_listener};

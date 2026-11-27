@@ -9,8 +9,6 @@ use k3c_kit::mcp::Workspace;
 use super::tools::Workbench;
 use crate::ports;
 
-/// Dienste kommen mit RU69.2; bis dahin der Text, den Go ohne Dienste zeigt.
-const SERVICES: &str = "Dienste: keine Dienste konfiguriert";
 /// Prüfläufe kommen mit RU69.4.
 const RUNS: &str = "Läufe: noch keine";
 
@@ -41,14 +39,14 @@ pub(super) async fn workbench_status(app: &Workbench, ws: &Workspace) -> Result<
             session.outliers
         ));
     }
-    lines.push(SERVICES.to_owned());
+    lines.push(app.service_summary(ws).await);
     lines.push(format!("Log-Quellen: {}", log_sources(&ws.root).join(", ")));
     lines.push(RUNS.to_owned());
     Ok(lines.join("\n"))
 }
 
 /// Alle `logs/*.jsonl` unter `root` und das eigene Log, sortiert (Go `logSources`).
-fn log_sources(root: &Path) -> Vec<String> {
+pub(crate) fn log_sources(root: &Path) -> Vec<String> {
     let mut seen = BTreeSet::from([ports::LOG_NAME.to_owned()]);
     for entry in std::fs::read_dir(root.join("logs")).into_iter().flatten().flatten() {
         let name = entry.file_name().to_string_lossy().into_owned();
@@ -60,7 +58,7 @@ fn log_sources(root: &Path) -> Vec<String> {
 }
 
 /// Laufzeit grob: „< 1 min“, „13 min“, „2 h 13 min“, „3 T 4 h“.
-fn format_uptime(d: TimeDelta) -> String {
+pub(super) fn format_uptime(d: TimeDelta) -> String {
     let minutes = d.num_minutes();
     match minutes {
         ..1 => "< 1 min".to_owned(),
@@ -71,7 +69,7 @@ fn format_uptime(d: TimeDelta) -> String {
 }
 
 /// Dauer deutsch: „468 ms“, „12,4 s“, „2 min 5 s“, „1 h 2 min“.
-fn format_ms(ms: f64) -> String {
+pub(super) fn format_ms(ms: f64) -> String {
     if ms < 1000.0 {
         format!("{ms:.0} ms")
     } else if ms < 60_000.0 {

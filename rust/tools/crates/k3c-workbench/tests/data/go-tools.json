@@ -1087,7 +1087,7 @@
           "type": "string"
         },
         "task": {
-          "description": "Name aus task_list, z. B. go:golden",
+          "description": "Name aus task_list, z. B. rust:game:exe",
           "type": "string"
         }
       },

@@ -9,7 +9,6 @@ use k3c_workbench::rpc::METHODS;
 
 /// Methoden, die erst spätere Sessions von RU69 bringen; am Ende leer.
 const AUSSTEHEND_UI: &[&str] = &[
-    "ConsoleTail",
     "GitAction",
     "GitCheckMerged",
     "GitDeleteBranches",
@@ -49,12 +48,6 @@ const AUSSTEHEND_UI: &[&str] = &[
     "PlaytestTranscribeStatus",
     "PlaytestVisionInfo",
     "Resources",
-    "Sources",
-    "TaskRuns",
-    "TaskStart",
-    "TaskStop",
-    "Tasks",
-    "TasksReload",
     "TicketCreate",
     "TicketRecent",
     "WorktreeCheck",
