@@ -4,6 +4,9 @@
 mod check;
 mod checkout_policy;
 mod console;
+mod logs;
+mod logstats;
+mod logtext;
 mod notify;
 mod ports;
 mod services;
@@ -17,6 +20,10 @@ mod worktree_services;
 mod checkout_tests;
 #[cfg(test)]
 mod console_tests;
+#[cfg(test)]
+mod logs_tests;
+#[cfg(test)]
+mod logstats_tests;
 #[cfg(test)]
 mod roundtrip_tests;
 #[cfg(test)]
@@ -47,6 +54,7 @@ use rmcp::handler::server::router::tool::ToolRouter;
 
 use crate::services::Controller;
 pub use check::{CheckHook, CheckState};
+pub(crate) use logs::log_path;
 pub use notify::{Notice, NotifyHook};
 pub(crate) use status::log_sources;
 pub use tasks::TaskHost;
@@ -107,6 +115,8 @@ impl Default for Config {
 
 /// Was die Tools außer dem Server selbst brauchen.
 struct Env {
+    /// Repo-Wurzel; dort liegt das eigene Log.
+    root: PathBuf,
     log: Logger,
     console: Arc<Store>,
     services: Option<Result<Arc<Controller>, String>>,
@@ -124,6 +134,7 @@ impl Env {
             .unwrap_or_else(|| Arc::new(Store::new(DEFAULT_CAPACITY, None)));
         let checks = check::Checks::new(cfg.log.clone(), Arc::clone(&console), cfg.on_check.clone());
         Env {
+            root: cfg.root.clone(),
             log: cfg.log.clone(),
             console,
             services: cfg.services.clone(),

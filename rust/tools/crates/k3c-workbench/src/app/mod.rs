@@ -6,6 +6,7 @@ pub mod events;
 pub mod headless;
 mod info;
 mod logs;
+pub mod logview;
 mod mcp_page;
 pub mod open_url;
 mod services;

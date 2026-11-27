@@ -15,12 +15,6 @@ mod test_client;
 const AUSSTEHEND: &[&str] = &[
     "gh_status",
     "git_commit",
-    "logs_context",
-    "logs_errors",
-    "logs_query",
-    "logs_services",
-    "logs_since",
-    "logs_stats",
     "plan_check",
     "plan_create",
     "plan_delete",
@@ -118,7 +112,7 @@ async fn tools_wie_go() {
     let go = snapshot();
     let rust = rust_tools().await;
     assert_eq!(go.len(), 45, "Schnappschuss: {:?}", go.keys());
-    assert_eq!(AUSSTEHEND.len(), 27);
+    assert_eq!(AUSSTEHEND.len(), 21);
     for (name, tool) in &rust {
         assert_eq!(Some(tool), go.get(name), "{name} weicht von der Go-Fassung ab");
     }

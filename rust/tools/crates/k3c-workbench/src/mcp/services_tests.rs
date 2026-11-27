@@ -1,5 +1,5 @@
-//! Port von `tools_services_test.go` und `services_console_test.go` (ohne den Teil `logs_services`, RU69.5). Alle Nähte
-//! des Controllers sind gestellt: kein Test startet, prüft oder beendet einen echten Prozess.
+//! Port von `tools_services_test.go` und `services_console_test.go`. Alle Nähte des Controllers sind gestellt: kein
+//! Test startet, prüft oder beendet einen echten Prozess.
 
 use std::path::Path;
 use std::sync::Arc;
@@ -320,7 +320,8 @@ async fn wait_seconds_bricht_ab() {
     server.stop().await.unwrap();
 }
 
-/// `TestDienstAusgabeInLogsSources`: die Ausgabe eines Dienstes liegt als Quelle in der Konsole.
+/// `TestDienstAusgabeInLogsSources`: die Ausgabe eines Dienstes liegt als Quelle in der Konsole. Die Wurzel der Fixture
+/// ist leer, relativ zum Crate-Ordner gibt es kein `logs/`.
 #[tokio::test(flavor = "multi_thread")]
 async fn dienst_ausgabe_in_der_konsole() {
     let mut f = fixture(&stubs(true)).await;
@@ -331,5 +332,7 @@ async fn dienst_ausgabe_in_der_konsole() {
         text,
         "Vite · letzte 2 Zeilen (bis Nr. 2)\nVite: Zeile 1\n! Vite: Port-Problem"
     );
+    let (text, _) = f.call("logs_services", json!({})).await;
+    assert!(text.contains("Konsole Vite · 2 Zeilen"), "{text}");
     f.end().await;
 }

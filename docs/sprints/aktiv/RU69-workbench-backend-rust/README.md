@@ -68,7 +68,7 @@ keine (Leitfaden, 🧑 2026-11-26).
 | RU69.2 | `RU69.2-dienste.md` | Umsetzung | autonom | fertig |
 | RU69.3 | `RU69.3-dienste-mcp-tasks.md` | Umsetzung | autonom | fertig |
 | RU69.4 | `RU69.4-check-run.md` | Umsetzung | autonom | fertig |
-| RU69.5 | `RU69.5-logs.md` | Umsetzung | autonom | in Arbeit |
+| RU69.5 | `RU69.5-logs.md` | Umsetzung | autonom | fertig |
 | RU69.6 | `RU69.6-git.md` | Umsetzung | autonom | offen |
 | RU69.7 | `RU69.7-github-git-commit.md` | Umsetzung | autonom | offen |
 | RU69.8 | `RU69.8-planung-modell-lesen.md` | Umsetzung | autonom | offen |

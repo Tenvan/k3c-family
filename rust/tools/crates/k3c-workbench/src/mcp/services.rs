@@ -72,7 +72,7 @@ fn wait_signal(seconds: i64) -> Result<Cancel, String> {
 }
 
 /// Größe deutsch: „512 B“, „1,5 KB“, „480,0 MB“.
-fn format_bytes(n: u64) -> String {
+pub(super) fn format_bytes(n: u64) -> String {
     if n < 1024 {
         return format!("{n} B");
     }

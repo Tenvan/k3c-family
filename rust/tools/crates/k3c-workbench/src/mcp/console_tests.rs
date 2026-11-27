@@ -103,11 +103,13 @@ async fn quellen_cursor_farben_und_fehler() {
     server.stop().await.unwrap();
 }
 
-/// Konsolen-Teil von `TestWorktreeTrenntKonsoleUndDateien` (`logs_services` kommt mit RU69.5).
+/// `TestWorktreeTrenntKonsoleUndDateien`.
 #[tokio::test(flavor = "multi_thread")]
 async fn worktree_trennt_konsole() {
     let tmp = tmp_dir();
     let (main, wt, _) = repo_with_worktree(tmp.path());
+    std::fs::create_dir_all(wt.join("logs")).unwrap();
+    std::fs::write(wt.join("logs").join("nur-im-worktree.jsonl"), "").unwrap();
     let store = Arc::new(Store::new(0, None));
     store.add("check:wt1/task:test", "stdout", "aus dem Worktree");
     store.add("check:task:test", "stdout", "aus der Wurzel");
@@ -120,5 +122,18 @@ async fn worktree_trennt_konsole() {
     assert!(text.contains("aus dem Worktree"), "{text}");
     let (text, _) = from(&server, &main).await.call_text("console_tail", arguments).await;
     assert!(text.contains("aus der Wurzel"), "{text}");
+    let (text, _) = from(&server, &wt).await.call_text("logs_services", json!({})).await;
+    assert!(text.contains("nur-im-worktree"), "{text}");
+    assert_eq!(text.matches("Konsole check:task:test ·").count(), 1, "{text}");
+    let (text, _) = from(&server, &main).await.call_text("logs_services", json!({})).await;
+    assert!(!text.contains("nur-im-worktree") && !text.contains("wt1/"), "{text}");
+    // Das eigene Log liegt immer in der Repo-Wurzel, auch für Aufrufe aus dem Worktree (Go `logPath`).
+    std::fs::create_dir_all(main.join("logs")).unwrap();
+    let own = r#"{"time":"2026-09-30T09:00:00Z","level":"INFO","ns":"main","msg":"aus der Wurzel"}"#;
+    let file = format!("{}.jsonl", crate::ports::LOG_NAME);
+    std::fs::write(main.join("logs").join(file), own).unwrap();
+    let arguments = json!({"service": crate::ports::LOG_NAME});
+    let (text, is_error) = from(&server, &wt).await.call_text("logs_query", arguments).await;
+    assert!(!is_error && text.contains("aus der Wurzel"), "{text}");
     server.stop().await.unwrap();
 }

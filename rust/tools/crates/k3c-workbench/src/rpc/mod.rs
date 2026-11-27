@@ -2,6 +2,7 @@
 //! Sie bedient den Tauri-Command `rpc` und die Oberflächen-API ([`uiapi`]). Die Argumente stehen positionsgleich wie in
 //! Wails im JSON-Array.
 
+mod logs;
 mod services;
 mod tasks;
 pub mod uiapi;
@@ -52,6 +53,8 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("TaskStart", tasks::start),
     ("TaskStop", tasks::stop),
     ("TaskRuns", tasks::runs),
+    ("LogsQuery", logs::query),
+    ("LogsErrors", logs::errors),
 ];
 
 /// Das eine Argument einer Methode mit einem Namen.

@@ -30,6 +30,12 @@ pub(super) const CATALOG: &[&str] = &[
     "notify_ui",
     "check_run",
     "console_tail",
+    "logs_services",
+    "logs_stats",
+    "logs_errors",
+    "logs_query",
+    "logs_context",
+    "logs_since",
     "svc_status",
     "svc_health",
     "svc_start",
@@ -73,6 +79,8 @@ pub(super) fn router() -> ToolRouter<Workbench> {
     Workbench::tool_router()
         + Workbench::check_router()
         + Workbench::console_router()
+        + Workbench::logs_router()
+        + Workbench::logstats_router()
         + Workbench::service_router()
         + Workbench::port_router()
         + Workbench::task_router()

@@ -18,8 +18,6 @@ const AUSSTEHEND_UI: &[&str] = &[
     "GitPRCreate",
     "GitPRs",
     "GitStamp",
-    "LogsErrors",
-    "LogsQuery",
     "PlanningData",
     "PlanningDoc",
     "PlanningDocs",

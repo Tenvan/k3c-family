@@ -1,5 +1,5 @@
 //! Quellenleiste und Konsole (Port von `Sources` und `ConsoleTail` aus `app_logs.go`); die Log-Abfragen der Seite Logs
-//! folgen mit RU69.5.
+//! stehen in `logview.rs`.
 
 use std::collections::BTreeSet;
 use std::path::Path;
