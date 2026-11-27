@@ -65,7 +65,7 @@ keine (Leitfaden, 🧑 2026-11-26).
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU69.1 | `RU69.1-geruest-tauri-mcp-adapter.md` | Umsetzung | autonom | fertig |
-| RU69.2 | `RU69.2-dienste.md` | Umsetzung | autonom | offen |
+| RU69.2 | `RU69.2-dienste.md` | Umsetzung | autonom | in Arbeit |
 | RU69.3 | `RU69.3-dienste-mcp-tasks.md` | Umsetzung | autonom | offen |
 | RU69.4 | `RU69.4-check-run.md` | Umsetzung | autonom | offen |
 | RU69.5 | `RU69.5-logs.md` | Umsetzung | autonom | offen |
