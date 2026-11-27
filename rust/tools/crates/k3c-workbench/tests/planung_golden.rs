@@ -11,19 +11,8 @@ use k3c_workbench::planning::{self, Filter};
 use serde::Deserialize;
 use serde_json::Value;
 
-/// Werkzeuge, die der Port schon kann; RU69.11 ergänzt.
-const AKTIV: &[&str] = &[
-    "plan_get",
-    "plan_list",
-    "plan_set",
-    "plan_section",
-    "plan_sections",
-    "plan_create",
-    "plan_delete",
-    "plan_index",
-];
+/// Alle Fälle laufen; ein neuer Fall braucht ein Werkzeug aus [`fuehre_aus`] und erhöht diese Zahl.
 const FAELLE_GESAMT: usize = 174;
-const FAELLE_AKTIV: usize = 125;
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -226,7 +215,24 @@ fn fuehre_aus(root: &Path, aufruf: &Aufruf) -> Result<String, String> {
             // dry ist wie im Tool standardmäßig an.
             planning::rebuild_index(root, a.dry.unwrap_or(true))
         }
-        other => Err(format!("aufruf.json: unbekanntes werkzeug {other:?}")),
+        "plan_next" => {
+            let a: planning::NextFilter = serde_json::from_value(args()).map_err(falsch)?;
+            planning::next(root, &a)
+        }
+        "plan_waves" => {
+            let a: planning::WavesFilter = serde_json::from_value(args()).map_err(falsch)?;
+            planning::waves(root, &a)
+        }
+        "plan_queue" => {
+            let a: planning::QueueFilter = serde_json::from_value(args()).map_err(falsch)?;
+            planning::queue(root, &a)
+        }
+        "plan_check" => {
+            let a: planning::CheckIn = serde_json::from_value(args()).map_err(falsch)?;
+            planning::check(root, &a)
+        }
+        // Kein `Err`: sonst gälte ein Golden mit erwartetem Fehlertext als bestanden.
+        other => panic!("aufruf.json: unbekanntes werkzeug {other:?}"),
     }
 }
 
@@ -264,37 +270,34 @@ fn pruefe(fall: &str, aufruf: &Aufruf) -> Option<String> {
 }
 
 #[test]
-fn golden_der_aktiven_werkzeuge() {
-    let aktiv: Vec<_> = faelle()
-        .into_iter()
-        .filter(|(_, a)| AKTIV.contains(&a.werkzeug.as_str()))
-        .collect();
-    assert_eq!(aktiv.len(), FAELLE_AKTIV, "Zahl der Fälle von {AKTIV:?}");
-    let fehler: Vec<String> = aktiv.iter().filter_map(|(fall, a)| pruefe(fall, a)).collect();
+fn golden_aller_faelle() {
+    let alle = faelle();
+    assert_eq!(alle.len(), FAELLE_GESAMT);
+    let fehler: Vec<String> = alle.iter().filter_map(|(fall, a)| pruefe(fall, a)).collect();
+    // Direkt auf stderr: die Ausgabe erscheint auch ohne `--nocapture`.
+    writeln!(
+        std::io::stderr(),
+        "planung_golden: {} Fälle, {} ausgeführt, 0 übersprungen, {} abweichend",
+        alle.len(),
+        alle.len(),
+        fehler.len()
+    )
+    .expect("stderr");
     assert!(
         fehler.is_empty(),
         "{} von {} Fällen weichen ab:\n{}",
         fehler.len(),
-        aktiv.len(),
+        alle.len(),
         fehler.join("\n")
     );
 }
 
 #[test]
-fn golden_zaehlt_uebersprungene_faelle() {
-    let alle = faelle();
-    let uebersprungen = alle
-        .iter()
-        .filter(|(_, a)| !AKTIV.contains(&a.werkzeug.as_str()))
-        .count();
-    // Direkt auf stderr: die Ausgabe erscheint auch ohne `--nocapture`.
-    writeln!(
-        std::io::stderr(),
-        "planung_golden: {} Fälle, {} ausgeführt, {uebersprungen} übersprungen",
-        alle.len(),
-        alle.len() - uebersprungen
-    )
-    .expect("stderr");
-    assert_eq!(alle.len(), FAELLE_GESAMT);
-    assert_eq!(uebersprungen, FAELLE_GESAMT - FAELLE_AKTIV);
+#[should_panic(expected = "unbekanntes werkzeug")]
+fn unbekanntes_werkzeug_laesst_den_lauf_scheitern() {
+    let aufruf = Aufruf {
+        werkzeug: "plan_unbekannt".to_owned(),
+        args: Value::Null,
+    };
+    let _ = fuehre_aus(&golden_dir(), &aufruf);
 }

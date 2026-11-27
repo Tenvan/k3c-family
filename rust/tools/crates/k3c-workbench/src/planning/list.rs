@@ -54,12 +54,12 @@ pub fn list(root: &Path, f: &Filter) -> Result<String, String> {
 }
 
 /// Leerer Filter oder gleich ohne Rücksicht auf Groß/klein.
-fn matches(want: &str, have: &str) -> bool {
+pub(super) fn matches(want: &str, have: &str) -> bool {
     want.is_empty() || want.to_lowercase() == have.to_lowercase()
 }
 
 /// „–“ oder „ungeplant“ als Sprint-Filter meint Tickets ohne Sprint, wie der Schnellfilter der Planungsseite.
-fn unplanned(want: &str) -> bool {
+pub(super) fn unplanned(want: &str) -> bool {
     want == "–" || want == "-" || want.to_lowercase() == "ungeplant"
 }
 

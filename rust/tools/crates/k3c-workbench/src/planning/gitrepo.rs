@@ -4,6 +4,7 @@
 
 use std::ffi::OsStr;
 use std::path::Path;
+use std::process::ExitStatus;
 use std::time::Duration;
 
 use k3c_kit::proc::Cmd;
@@ -34,9 +35,22 @@ pub fn git_found() -> bool {
     std::env::split_paths(&paths).any(|dir| names.iter().any(|name| dir.join(name).is_file()))
 }
 
-/// stdout von `git -C <root> <args>`. Läuft in einem eigenen Thread mit eigener Laufzeit: die Planung arbeitet synchron,
-/// auch wenn der Aufrufer schon in tokio läuft.
+/// Ende, stdout und stderr eines git-Aufrufs.
+type GitOutput = (ExitStatus, Vec<u8>, Vec<u8>);
+
+/// stdout von `git -C <root> <args>`.
 pub fn git_out(root: &Path, args: &[&str], timeout: Duration) -> Result<String, String> {
+    let (status, out, _) = git_raw(root, args, timeout)?;
+    if status.success() {
+        Ok(String::from_utf8_lossy(&out).into_owned())
+    } else {
+        Err(format!("exit status {}", status.code().unwrap_or(-1)))
+    }
+}
+
+/// `git -C <root> <args>` mit Bytes und stderr. Läuft in einem eigenen Thread mit eigener Laufzeit: die Planung arbeitet
+/// synchron, auch wenn der Aufrufer schon in tokio läuft.
+pub(super) fn git_raw(root: &Path, args: &[&str], timeout: Duration) -> Result<GitOutput, String> {
     let mut line: Vec<&OsStr> = vec!["git".as_ref(), "-C".as_ref(), root.as_os_str()];
     line.extend(args.iter().map(AsRef::<OsStr>::as_ref));
     #[allow(unused_mut)] // Nur Tests schotten die Umgebung ab.
@@ -51,7 +65,7 @@ pub fn git_out(root: &Path, args: &[&str], timeout: Duration) -> Result<String, 
     })
 }
 
-fn run(line: &[&OsStr], env: &[(String, Option<String>)], timeout: Duration) -> Result<String, String> {
+fn run(line: &[&OsStr], env: &[(String, Option<String>)], timeout: Duration) -> Result<GitOutput, String> {
     let runtime = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()
@@ -64,14 +78,9 @@ fn run(line: &[&OsStr], env: &[(String, Option<String>)], timeout: Duration) -> 
                 None => cmd.command_mut().env_remove(name),
             };
         }
-        let (status, out, _) = tokio::time::timeout(timeout, capture::output(cmd, None))
+        tokio::time::timeout(timeout, capture::output(cmd, None))
             .await
             .map_err(|_| "context deadline exceeded".to_owned())?
-            .map_err(|e| e.to_string())?;
-        if status.success() {
-            Ok(String::from_utf8_lossy(&out).into_owned())
-        } else {
-            Err(format!("exit status {}", status.code().unwrap_or(-1)))
-        }
+            .map_err(|e| e.to_string())
     })
 }

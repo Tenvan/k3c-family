@@ -10,7 +10,7 @@ use regex::Regex;
 use super::planning::{Data, Sprint, fields, take};
 use super::projects::Project;
 
-static SESSION_REF: LazyLock<Option<Regex>> =
+pub(super) static SESSION_REF: LazyLock<Option<Regex>> =
     LazyLock::new(|| Regex::new(r"(?-u:\b)[A-Z]+[0-9]+\.[0-9]+(?-u:\b)").ok());
 
 /// Umgebung, Domäne und die Session-IDs aus „Abhängig von“ einer Session-Datei.
@@ -60,7 +60,7 @@ pub fn rank(data: &mut Data) {
 }
 
 /// Projekte ohne Rang (ABN, ruhend, erledigt) stehen hinter denen mit Rang.
-const NO_RANK: i64 = 1 << 20;
+pub(super) const NO_RANK: i64 = 1 << 20;
 
 /// Sortierschlüssel eines Sprints: zuerst die aus einer Projekt-Tabelle nach (Rang, Tabellenplatz), dann die ohne
 /// Projekt (untereinander gleich, sie behalten ihre Reihenfolge).
