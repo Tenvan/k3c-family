@@ -1,7 +1,7 @@
 //! Projekte (B-357): docs/projekte/<KÜRZEL>-slug.md nach vorlagen/projekt.md. Nur aktive Projekte haben einen Rang,
 //! lückenlos ab 1; ABN (Abnahmen am Gerät) läuft ohne Rang neben der Rangfolge.
 //!
-//! Stand RU69.8: Lesen. Anlegen, Ändern und Löschen folgen in RU69.9 und RU69.10.
+//! Stand RU69.9: Lesen und Ändern. Anlegen und Löschen folgen in RU69.10.
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -10,10 +10,14 @@ use std::sync::LazyLock;
 use regex::Regex;
 use serde::Serialize;
 
-use super::edit::head_end;
+use super::edit::{head_end, head_fields, set_field, set_fields};
 use super::planning::{fields, header, take};
-use super::store::{ChangeSet, docs_path, entries, read_text};
-use super::tables::{cells, find_table, heading, split_lines};
+use super::projects_tables::{reorder_sprints, sync_overview};
+use super::store::{ChangeSet, Ref, docs_path, entries, quoted, read_text};
+use super::tables::{cells, find_table, first_of, heading, split_lines};
+
+/// Projekt der Abnahmen am Gerät: aktiv, aber ohne Rang (arbeitsweise.md › Projekte und Rang).
+pub const UNRANKED: &str = "ABN";
 
 /// Kopf einer Projekt-Datei und die Sprints ihrer Tabelle in Reihenfolge.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
@@ -129,4 +133,101 @@ pub fn projects_in(c: &mut ChangeSet) -> Result<Vec<Project>, String> {
 
 pub fn find_project<'a>(projects: &'a [Project], id: &str) -> Option<&'a Project> {
     projects.iter().find(|p| p.id == id)
+}
+
+/// Vergibt die Ränge der aktiven Projekte lückenlos neu; `id` rückt auf Platz `pos` (1 … n), `pos` 0 lässt ein schon
+/// aktives Projekt an seinem Platz und hängt ein neu aktives hinten an. Danach folgt die Übersicht.
+pub fn rerank(c: &mut ChangeSet, id: &str, pos: i64) -> Result<(), String> {
+    let projects = projects_in(c)?;
+    let ranked = rank_order(&projects, id, pos)?;
+    let want: BTreeMap<&str, String> = ranked
+        .iter()
+        .enumerate()
+        .map(|(i, p)| (p.id.as_str(), (i + 1).to_string()))
+        .collect();
+    for p in &projects {
+        let rang = first_of(&[want.get(p.id.as_str()).map_or("", String::as_str), "–"]);
+        if p.rang == rang {
+            continue;
+        }
+        let rel = format!("projekte/{}", p.file);
+        let text = c.read(&rel)?;
+        c.write(&rel, set_field(&text, "Rang", rang));
+    }
+    sync_overview(c)
+}
+
+/// Neue Reihenfolge der aktiven Projekte mit Rang (ohne ABN); `projects` ist nach Rang sortiert, neu aktive (Rang –)
+/// stehen hinten.
+fn rank_order<'a>(projects: &'a [Project], id: &str, pos: i64) -> Result<Vec<&'a Project>, String> {
+    let mut ranked: Vec<&Project> = projects
+        .iter()
+        .filter(|p| p.status == "aktiv" && p.id != UNRANKED && p.id != id)
+        .collect();
+    let Some(p) = find_project(projects, id).filter(|p| p.status == "aktiv" && p.id != UNRANKED) else {
+        return Ok(ranked);
+    };
+    let count = ranked.len();
+    // Ein Rang unter 1 in der Datei (Go bricht dort ab) zählt als Platz 1.
+    let mut at = match p.rang.parse::<i64>() {
+        Ok(old) => usize::try_from(old.saturating_sub(1).max(0)).map_or(count, |at| at.min(count)),
+        Err(_) => count,
+    };
+    if pos > 0 {
+        let wanted = usize::try_from(pos - 1).unwrap_or(usize::MAX);
+        if wanted > count {
+            return Err(format!("der Rang {pos} liegt außerhalb 1 … {}", count + 1));
+        }
+        at = wanted;
+    }
+    ranked.insert(at, p);
+    Ok(ranked)
+}
+
+/// Ändert ein Projekt: Status und Ziel-Tickets wie die Vorlage, Rang über [`rerank`], Sprints als neue Reihenfolge der
+/// Sprint-Tabelle.
+pub fn set_project(c: &mut ChangeSet, r: &Ref, values: &BTreeMap<String, String>) -> Result<(), String> {
+    let mut text = c.read(&r.rel)?;
+    let pos = rank_value(&r.id, values)?;
+    let mut rest = values.clone();
+    rest.retain(|k, _| k != "Rang" && k != "Sprints");
+    text = set_fields(&c.root, "projekt", &text, &rest)?;
+    if let Some(order) = values.get("Sprints") {
+        text = reorder_sprints(&text, &r.id, order)?;
+    }
+    if pos > 0 && head_fields(&text).get("Status").is_none_or(|s| s != "aktiv") {
+        return Err("nur aktive Projekte haben einen Rang".to_owned());
+    }
+    c.write(&r.rel, text);
+    c.notes.push(format!(
+        "{} geändert: docs/{} (Ränge und Übersicht nachgezogen)",
+        r.id, r.rel
+    ));
+    rerank(c, &r.id, pos)
+}
+
+/// Gewünschter Rang: eine Zahl ab 1, nie für ABN; 0 = nicht gesetzt.
+fn rank_value(id: &str, values: &BTreeMap<String, String>) -> Result<i64, String> {
+    let Some(value) = values.get("Rang") else {
+        return Ok(0);
+    };
+    if id == UNRANKED {
+        return Err(format!("{UNRANKED} läuft ohne Rang neben der Rangfolge"));
+    }
+    value
+        .parse::<i64>()
+        .ok()
+        .filter(|n| *n >= 1)
+        .ok_or_else(|| format!("der Rang {} ist keine Zahl ab 1", quoted(value)))
+}
+
+/// Der Wert des Felds `Projekt` ist `–` oder ein bestehendes Kürzel.
+pub fn check_project_ref(c: &mut ChangeSet, value: &str) -> Result<(), String> {
+    if value == "–" {
+        return Ok(());
+    }
+    if find_project(&projects_in(c)?, value).is_none() {
+        return Err(format!("unbekanntes Projekt {}", quoted(value)));
+    }
+    Ok(())
 }

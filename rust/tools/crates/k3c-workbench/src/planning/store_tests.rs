@@ -1,8 +1,41 @@
 //! Schreib-Unterbau (`ChangeSet`, `write_atomic`): Zeilenenden, Reihenfolge, Zurücknehmen. Go prüft ihn über die
 //! schreibenden Werkzeuge (RU69.9, RU69.10).
 
+use super::edit::set;
+use super::fixtures::{self, doc, values};
 use super::store::{ChangeSet, write_atomic};
 use super::testsupport::{read, temp_repo, write};
+
+/// Gleichzeitige Aufrufe laufen nacheinander (Go `writeMu`): keine Änderung überschreibt eine andere.
+#[test]
+fn gleichzeitige_aenderungen_gehen_nicht_verloren() {
+    let tmp = fixtures::rel_repo();
+    let root = tmp.path();
+    let changes = [
+        ("Prio", "hoch"),
+        ("Umgebung", "live"),
+        ("Typ", "Frage"),
+        ("Domäne", "SIM"),
+        ("Revision", "7"),
+        ("Sprint", "X1"),
+    ];
+    for _ in 0..5 {
+        std::thread::scope(|scope| {
+            for change in changes {
+                scope.spawn(move || set(root, "B-002", &values(&[change])).expect("set"));
+            }
+        });
+        let text = doc(root, "backlog/B-002-t.md");
+        for (name, value) in changes {
+            assert!(text.contains(&format!("- **{name}:** {value}\n")), "{name}:\n{text}");
+        }
+        write(
+            root,
+            "docs/backlog/B-002-t.md",
+            &text.replace("- **Prio:** hoch", "- **Prio:** mittel"),
+        );
+    }
+}
 
 #[test]
 fn zeilenenden_bleiben() {

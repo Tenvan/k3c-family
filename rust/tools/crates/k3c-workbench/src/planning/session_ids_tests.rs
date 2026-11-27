@@ -1,9 +1,25 @@
-//! Go `session_ids_test.go`, Lese-Teil (B-372/AC-04): Session-IDs mit Buchstaben wie K3.2a. Anlegen und Ändern folgen
-//! mit RU69.9 und RU69.10.
+//! Go `session_ids_test.go` (B-372/AC-04): Session-IDs mit Buchstaben wie K3.2a lesen und ändern. Anlegen: RU69.10.
 
 use super::create::get;
+use super::edit::set;
+use super::fixtures::{doc, repo, session, sprint, values};
 use super::planning::parse_sprint;
 use super::testsupport::{temp_repo, write};
+
+#[test]
+fn session_id_mit_buchstabe_aendern() {
+    let tmp = repo();
+    let root = tmp.path();
+    sprint(root, "K3", "–");
+    session(root, "K3.2a", "SRV", true);
+    set(root, "K3.2a", &values(&[("Agent", "Mensch")])).expect("Set");
+    let sprint = parse_sprint(&doc(root, "sprints/geplant/K3-s/README.md"), "K3-s", "geplant");
+    assert_eq!(sprint.sessions.len(), 1, "{sprint:?}");
+    assert_eq!(
+        (sprint.sessions[0].nr.as_str(), sprint.sessions[0].agent.as_str()),
+        ("K3.2a", "Mensch")
+    );
+}
 
 #[test]
 fn session_id_mit_buchstabe() {

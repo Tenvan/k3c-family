@@ -1,9 +1,57 @@
-//! Domäne aus den Sessions. Go `domains_test.go` prüft sie über `Create`, `Set` und `Delete` (RU69.9, RU69.10); hier
-//! nur die Funktion selbst mit gestellter Fahrplan-Pflege.
+//! Domäne aus den Sessions: die Funktion selbst mit gestellter Fahrplan-Pflege und die Wege von Go `domains_test.go`
+//! über `set`. Die Schritte mit `Create` und `Delete` folgen in RU69.10.
 
 use super::domains::sync_sprint_domain;
+use super::edit::set;
+use super::fixtures::{self, doc, repo, session, snapshot, sprint, values};
 use super::store::ChangeSet;
 use super::testsupport::{temp_repo, write};
+
+fn sprint_with_sessions(id: &str, domains: &[&str]) -> tempfile::TempDir {
+    let tmp = repo();
+    let root = tmp.path();
+    sprint(root, id, "–");
+    for (n, domain) in domains.iter().enumerate() {
+        session(root, &format!("{id}.{}", n + 1), domain, true);
+    }
+    tmp
+}
+
+#[test]
+fn sprint_domaene_folgt_set() {
+    let tmp = sprint_with_sessions("X5", &["SIM", "SRV", "SIM"]);
+    let root = tmp.path();
+    set(root, "X5.1", &values(&[("Domäne", "CLI")])).expect("Set");
+    let readme = doc(root, "sprints/geplant/X5-s/README.md");
+    assert!(readme.starts_with("# X5 · CLI, SRV, SIM · "), "{readme}");
+    assert!(readme.contains("- **Domäne:** CLI, SRV, SIM\n"), "{readme}");
+    let roadmap = doc(root, "sprints/README.md");
+    assert!(roadmap.contains("| X5 | CLI, SRV, SIM | Sprint X5 |"), "{roadmap}");
+}
+
+#[test]
+fn session_domaene_und_verworfen() {
+    let tmp = sprint_with_sessions("X6", &["SRV"]);
+    let root = tmp.path();
+    let before = fixtures::snapshot(root);
+    for (id, value) in [("X6.1", "XYZ"), ("X6", "SIM")] {
+        set(root, id, &values(&[("Domäne", value)])).expect_err(id);
+        assert!(snapshot(root) == before, "{id}: Dateien geändert");
+    }
+    let readme = "docs/sprints/geplant/X6-s/README.md";
+    let original = super::testsupport::read(root, readme);
+    write(root, readme, &original.replacen("# X6 ·", "X6 ·", 1));
+    let broken = snapshot(root);
+    set(root, "X6.1", &values(&[("Domäne", "SIM")])).expect_err("README ohne Überschrift");
+    assert!(snapshot(root) == broken, "Dateien geändert");
+    write(root, readme, &original);
+    set(root, "X6.1", &values(&[("Status", "verworfen")])).expect("verworfen");
+    let text = doc(root, "sprints/geplant/X6-s/README.md");
+    assert!(
+        text.contains("| X6.1 | `X6.1-s.md` | Umsetzung | autonom | verworfen |"),
+        "{text}"
+    );
+}
 
 const DIR: &str = "sprints/geplant/X5-s";
 

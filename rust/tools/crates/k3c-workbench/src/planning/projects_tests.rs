@@ -1,14 +1,127 @@
-//! Go `projects_test.go`, Lese-Teil von `TestProjektAnlegenLesenListen`, und der Lese-Teil von
-//! `domains_test.go › TestProjektSprintVorSprintOhneProjekt`. Anlegen, Rang und Ablehnungen: RU69.9 und RU69.10.
+//! Go `projects_test.go`: Lesen, Rang, Zuordnung und Ablehnungen über `set`, dazu der Lese-Teil von
+//! `domains_test.go › TestProjektSprintVorSprintOhneProjekt`. Anlegen und Löschen: RU69.10.
 
 use std::path::Path;
 
 use super::create::get;
+use super::edit::set;
+use super::fixtures::{self, doc, full_ticket, repo, snapshot, values};
 use super::list::{Filter, list};
 use super::planning::load;
 use super::projects::{load_projects, projects_in};
 use super::store::ChangeSet;
 use super::testsupport::{sprint, temp_repo, write};
+
+/// GRA (Rang 1) und SND (Rang 2); die übrigen mit dem genannten Rang.
+fn ranked_repo(ids: &[&str]) -> tempfile::TempDir {
+    let tmp = repo();
+    for (i, id) in ids.iter().enumerate() {
+        fixtures::project(tmp.path(), id, &(i + 1).to_string(), &[]);
+    }
+    tmp
+}
+
+fn ranks(root: &Path) -> String {
+    let projects = load_projects(root);
+    let rank = |id: &str| {
+        projects
+            .iter()
+            .find(|p| p.id == id)
+            .map_or("fehlt", |p| p.rang.as_str())
+    };
+    format!("{} {} {}", rank("GRA"), rank("SND"), rank("BAL"))
+}
+
+#[test]
+fn rang_bleibt_lueckenlos() {
+    let tmp = ranked_repo(&["GRA", "SND", "BAL"]);
+    let root = tmp.path();
+    for (id, name, value, want) in [
+        ("BAL", "Rang", "1", "2 3 1"),
+        ("GRA", "Rang", "3", "3 2 1"),
+        ("SND", "Status", "ruht", "2 – 1"),
+        ("BAL", "Status", "erledigt", "1 – –"),
+        ("SND", "Status", "aktiv", "1 2 –"),
+        ("SND", "Rang", "1", "2 1 –"),
+    ] {
+        set(root, id, &values(&[(name, value)])).expect("Set");
+        assert_eq!(ranks(root), want, "{id} {name}={value}");
+    }
+    let overview = doc(root, "projekte/README.md");
+    let done = "## Erledigt\n\n| Projekt | Datei |\n|---|---|\n| BAL · Titel BAL | [BAL-bal.md](BAL-bal.md) |";
+    assert!(overview.contains(done), "{overview}");
+    assert!(
+        !overview.contains("Noch keine Projekte") && !overview.contains("\n\n\n"),
+        "{overview}"
+    );
+}
+
+#[test]
+fn abn_laeuft_ohne_rang() {
+    let tmp = ranked_repo(&["GRA"]);
+    let root = tmp.path();
+    fixtures::project(root, "ABN", "–", &[]);
+    set(root, "ABN", &values(&[("Rang", "1")])).expect_err("ABN mit Rang");
+}
+
+#[test]
+fn sprint_zuordnung_zieht_die_tabellen_nach() {
+    let tmp = repo();
+    let root = tmp.path();
+    fixtures::project(root, "GRA", "1", &["X2"]);
+    fixtures::project(root, "SND", "2", &[]);
+    fixtures::sprint(root, "X1", "–");
+    fixtures::sprint(root, "X2", "GRA");
+    let gra = || load_projects(root).swap_remove(0).sprints;
+    set(root, "X1", &values(&[("Projekt", "GRA")])).expect("Projekt");
+    assert_eq!(gra(), ["X2", "X1"]);
+    set(root, "GRA", &values(&[("Sprints", "X1, X2")])).expect("Reihenfolge");
+    assert_eq!(gra(), ["X1", "X2"]);
+    let activate = [
+        ("Reife", "bereit"),
+        ("Spec", "freigegeben"),
+        ("Freigabe", "2026-10-08 Test"),
+        ("Status", "aktiv"),
+    ];
+    set(root, "X1", &values(&activate)).expect("aktivieren");
+    let text = doc(root, "projekte/GRA-gra.md");
+    assert!(
+        text.contains("| X1 | Sprint X1 | aktiv |\n| X2 | Sprint X2 | geplant |"),
+        "{text}"
+    );
+    set(root, "X2", &values(&[("Projekt", "SND")])).expect("umhängen");
+    assert_eq!(gra(), ["X1"]);
+}
+
+/// B-357 › Ausnahme- und Fehlerfälle, soweit über `set`.
+#[test]
+fn ablehnungen_aendern_nichts() {
+    let tmp = repo();
+    let root = tmp.path();
+    fixtures::project(root, "GRA", "1", &["X1"]);
+    fixtures::project(root, "SND", "2", &["X2"]);
+    fixtures::project(root, "BAL", "3", &[]);
+    set(root, "BAL", &values(&[("Status", "ruht")])).expect("ruht");
+    fixtures::sprint(root, "X1", "GRA");
+    fixtures::sprint(root, "X2", "SND");
+    full_ticket(root, "B-002", "t", "T");
+    let before = snapshot(root);
+    for (id, name, value, want) in [
+        ("X1", "Projekt", "XYZ", "unbekanntes Projekt \"XYZ\""),
+        ("B-002", "Projekt", "XYZ", "unbekanntes Projekt \"XYZ\""),
+        ("GRA", "Rang", "0", "keine Zahl ab 1"),
+        ("GRA", "Rang", "3", "außerhalb 1 … 2"),
+        ("GRA", "Rang", "eins", "keine Zahl ab 1"),
+        ("BAL", "Rang", "1", "nur aktive Projekte"),
+        ("GRA", "Sprints", "X1, X2", "steht nicht in der Tabelle"),
+        ("GRA", "Sprints", "X2", "steht nicht in der Tabelle"),
+        ("GRA", "Status", "fertig", "ungültig"),
+    ] {
+        let error = set(root, id, &values(&[(name, value)])).expect_err(value);
+        assert!(error.contains(want), "{id} {name}={value}: {error:?}");
+        assert!(snapshot(root) == before, "{id} {name}={value}: Dateien geändert");
+    }
+}
 
 fn project(root: &Path, id: &str, status: &str, rank: &str, sprints: &[&str]) {
     let rows: String = sprints.iter().map(|s| format!("| {s} | x |\n")).collect();

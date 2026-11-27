@@ -5,13 +5,28 @@ use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io::{self, Write as _};
 use std::path::{Path, PathBuf};
-use std::sync::LazyLock;
 use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::{LazyLock, Mutex, MutexGuard, PoisonError};
 
 use regex::Regex;
 
 use super::projects::is_project_id;
+use super::roadmap_refresh::refresh_roadmap;
 use super::store_remove::{Undo, remove_with_backup};
+
+/// Ein Schreibweg zur Zeit, auch bei parallelen MCP-Aufrufen (Go `writeMu`).
+static WRITE_LOCK: Mutex<()> = Mutex::new(());
+
+/// Sperrt die Schreibwege vom Auflösen bis nach dem Schreiben. Nicht verschachtelt aufrufen.
+pub fn lock_writes() -> MutexGuard<'static, ()> {
+    // Die Sperre schützt keine Daten: nach einem Absturz mit ihr darf es weitergehen.
+    WRITE_LOCK.lock().unwrap_or_else(PoisonError::into_inner)
+}
+
+/// Die Datei unter docs/ ist vorhanden (auch unlesbar).
+pub fn exists(root: &Path, rel: &str) -> bool {
+    docs_path(root, rel).exists()
+}
 
 // Ab B-1000 vierstellig (B-863).
 static TICKET_ID: LazyLock<Option<Regex>> = LazyLock::new(|| Regex::new(r"^B-[0-9]{3,}$").ok());
@@ -263,13 +278,19 @@ impl ChangeSet {
     }
 
     /// Führt Verschieben, Schreiben und Löschen aus. Scheitert ein Schritt, nimmt es die schon ausgeführten zurück
-    /// (B-862). RU69.9 ergänzt danach bei [`ChangeSet::touches_sprints`] das Nachziehen des Fahrplans (B-842).
+    /// (B-862). Danach folgt bei Sprint- oder Session-Änderungen der Fahrplan (B-842).
     pub fn apply(&self) -> Result<(), String> {
         let mut undo: Vec<Undo> = Vec::new();
-        match self.steps(&mut undo) {
-            Ok(()) => Ok(()),
-            Err(error) => Err(roll_back(undo, &error)),
+        if let Err(error) = self.steps(&mut undo) {
+            return Err(roll_back(undo, &error));
         }
+        // Nur bei Sprint- oder Session-Änderungen (B-865: reine Ticket-Änderungen lassen den Fahrplan unberührt). Ein
+        // Fehler meldet die schon geschriebene Änderung nicht als gescheitert (sonst legte ein zweiter Versuch ein
+        // Duplikat an); der nächste Sprint-Aufruf heilt den Fahrplan.
+        if self.touches_sprints() {
+            let _ = refresh_roadmap(&self.root);
+        }
+        Ok(())
     }
 
     fn steps(&self, undo: &mut Vec<Undo>) -> Result<(), String> {
@@ -303,7 +324,7 @@ impl ChangeSet {
         };
         let text = self.writes.get(rel).map_or("", String::as_str);
         let crlf = self.crlf.get(rel).copied().unwrap_or(false);
-        write_atomic(&path, text, crlf).map_err(|e| format!("{}: {e}", path.display()))?;
+        write_file(&path, text, crlf).map_err(|e| format!("{}: {e}", path.display()))?;
         undo.push(Box::new(move || match old {
             Some(bytes) => write_bytes_atomic(&path, &bytes), // Bytes wie gelesen, Zeilenenden inklusive
             None => fs::remove_file(&path),                   // die Datei war neu
@@ -324,6 +345,13 @@ fn roll_back(mut undo: Vec<Undo>, error: &str) -> String {
     } else {
         format!("{error} (Zurücknehmen unvollständig: {})", failed.join("\n"))
     }
+}
+
+/// Schreibt eine Datei des `ChangeSet`; Tests erzwingen hier einen Schreibfehler (B-862).
+fn write_file(path: &Path, text: &str, crlf: bool) -> io::Result<()> {
+    #[cfg(test)]
+    super::testhooks::before_write(path)?;
+    write_atomic(path, text, crlf)
 }
 
 static TEMP_NUMBER: AtomicU64 = AtomicU64::new(0);

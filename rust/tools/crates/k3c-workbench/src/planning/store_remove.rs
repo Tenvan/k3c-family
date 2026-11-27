@@ -43,6 +43,9 @@ fn restore_tree(snapshot: &Snapshot) -> io::Result<()> {
 }
 
 fn remove_all(path: &Path) -> io::Result<()> {
+    // Tests erzwingen hier einen halben Löschvorgang (B-867).
+    #[cfg(test)]
+    super::testhooks::before_remove(path)?;
     if fs::symlink_metadata(path)?.is_dir() {
         fs::remove_dir_all(path)
     } else {

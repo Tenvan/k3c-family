@@ -265,7 +265,7 @@ pub fn parse_ticket(text: &str) -> Ticket {
 }
 
 /// Liest die README eines Sprint-Ordners und die Session-Dateien aus der Spalte „Datei“ (nur Dateinamen im Ordner).
-fn load_sprint(dir: &Path, name: &str, status: &str) -> Option<Sprint> {
+pub(super) fn load_sprint(dir: &Path, name: &str, status: &str) -> Option<Sprint> {
     let readme = read_lossy(&dir.join("README.md")).ok()?;
     let mut sprint = parse_sprint(&readme, name, status);
     for session in &mut sprint.sessions {

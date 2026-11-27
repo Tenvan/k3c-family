@@ -11,10 +11,10 @@ use k3c_workbench::planning::{self, Filter};
 use serde::Deserialize;
 use serde_json::Value;
 
-/// Werkzeuge, die der Port schon kann; RU69.9 bis RU69.11 ergänzen.
-const AKTIV: &[&str] = &["plan_get", "plan_list"];
+/// Werkzeuge, die der Port schon kann; RU69.10 und RU69.11 ergänzen.
+const AKTIV: &[&str] = &["plan_get", "plan_list", "plan_set", "plan_section", "plan_sections"];
 const FAELLE_GESAMT: usize = 174;
-const FAELLE_AKTIV: usize = 19;
+const FAELLE_AKTIV: usize = 90;
 
 #[derive(Deserialize)]
 struct Aufruf {
@@ -27,6 +27,28 @@ struct Aufruf {
 #[serde(deny_unknown_fields)]
 struct Id {
     id: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Felder {
+    id: String,
+    fields: BTreeMap<String, String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Abschnitt {
+    id: String,
+    section: String,
+    text: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Abschnitte {
+    id: String,
+    sections: BTreeMap<String, String>,
 }
 
 fn repo() -> PathBuf {
@@ -163,6 +185,18 @@ fn fuehre_aus(root: &Path, aufruf: &Aufruf) -> Result<String, String> {
         "plan_list" => {
             let a: Filter = serde_json::from_value(args()).map_err(falsch)?;
             planning::list(root, &a)
+        }
+        "plan_set" => {
+            let a: Felder = serde_json::from_value(args()).map_err(falsch)?;
+            planning::set(root, &a.id, &a.fields)
+        }
+        "plan_section" => {
+            let a: Abschnitt = serde_json::from_value(args()).map_err(falsch)?;
+            planning::section(root, &a.id, &a.section, &a.text)
+        }
+        "plan_sections" => {
+            let a: Abschnitte = serde_json::from_value(args()).map_err(falsch)?;
+            planning::sections(root, &a.id, &a.sections)
         }
         other => Err(format!("aufruf.json: unbekanntes werkzeug {other:?}")),
     }

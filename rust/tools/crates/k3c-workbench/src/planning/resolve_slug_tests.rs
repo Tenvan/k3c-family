@@ -1,8 +1,23 @@
-//! Go `resolve_slug_test.go` ohne den `Set`-Teil (RU69.9): doppelt vergebene Nummern, `B-123-kurzname`.
+//! Go `resolve_slug_test.go`: doppelt vergebene Nummern, `B-123-kurzname`.
 
 use super::create::get;
+use super::edit::set;
+use super::fixtures::{doc, full_ticket, rel_repo, values};
 use super::store::resolve;
 use super::testsupport::{temp_repo, ticket};
+
+/// `set` mit Kurzname ändert nur die gewählte Datei.
+#[test]
+fn set_mit_kurzname_aendert_nur_die_gewaehlte_datei() {
+    let tmp = rel_repo();
+    let root = tmp.path();
+    for slug in ["aaa-erster", "bbb-zweiter"] {
+        full_ticket(root, "B-1287", slug, slug);
+    }
+    set(root, "B-1287-bbb-zweiter", &values(&[("Prio", "hoch")])).expect("Set");
+    assert!(doc(root, "backlog/B-1287-bbb-zweiter.md").contains("**Prio:** hoch"));
+    assert!(!doc(root, "backlog/B-1287-aaa-erster.md").contains("**Prio:** hoch"));
+}
 
 #[test]
 fn kurzname_trennt_doppelte_nummern() {
