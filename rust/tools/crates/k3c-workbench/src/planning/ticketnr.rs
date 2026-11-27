@@ -29,7 +29,7 @@ fn worktree_paths(root: &Path) -> Result<Vec<PathBuf>, String> {
 
 /// Derselbe Ordner. Zuerst der Textvergleich ohne Groß-/Kleinschreibung; sonst die aufgelösten Pfade: git nennt den
 /// Langpfad, ein Aufrufer kann einen 8.3-Kurzpfad oder einen Link übergeben (B-482).
-fn same_path(a: &Path, b: &Path) -> bool {
+pub(super) fn same_path(a: &Path, b: &Path) -> bool {
     let text = |p: &Path| {
         let clean: PathBuf = p.components().collect();
         clean.to_string_lossy().replace('\\', "/").to_lowercase()

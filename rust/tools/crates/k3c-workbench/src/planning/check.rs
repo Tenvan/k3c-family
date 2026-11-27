@@ -12,8 +12,8 @@ use super::waves_nodes::{WaveData, load_wave_data};
 use super::waves_spec::{PLAN_LINES, area_overlap, parse_plan_spec};
 
 /// Eingabe von [`check`].
-#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
-#[serde(default, deny_unknown_fields)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize, schemars::JsonSchema)]
+#[serde(deny_unknown_fields)]
 pub struct CheckIn {
     /// Ticket B-123 oder Sprint M8
     pub id: String,

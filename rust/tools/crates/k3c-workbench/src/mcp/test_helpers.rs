@@ -1,5 +1,5 @@
-//! Hilfen der Server-Tests: Attrappen für Tools, die erst spätere Sessions bringen (Checkout-Regeln, Zähler), und
-//! Checkouts im Temp-Ordner des Repos.
+//! Hilfen der Server-Tests: Attrappen für die Checkout-Regeln und Zähler (`plan_get` und `plan_section` ersetzen im
+//! Test-Server die echten Tools), und Checkouts im Temp-Ordner des Repos.
 
 use std::path::Path;
 
@@ -45,8 +45,8 @@ impl Workbench {
         panic!("kaputt")
     }
 
-    #[tool(description = "Test")]
-    async fn plan_section(
+    #[tool(name = "plan_section", description = "Test")]
+    async fn stub_plan_section(
         &self,
         Parameters(input): Parameters<SectionIn>,
         Extension(ws): Extension<Workspace>,
@@ -55,8 +55,8 @@ impl Workbench {
         Ok("ersetzt".to_owned())
     }
 
-    #[tool(description = "Test")]
-    async fn plan_get(&self, Parameters(input): Parameters<IdIn>) -> String {
+    #[tool(name = "plan_get", description = "Test")]
+    async fn stub_plan_get(&self, Parameters(input): Parameters<IdIn>) -> String {
         input.id
     }
 }

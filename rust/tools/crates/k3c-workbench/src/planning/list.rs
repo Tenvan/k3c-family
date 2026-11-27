@@ -13,7 +13,7 @@ use super::tables::first_of;
 use super::ticketid::ticket_cmp;
 
 /// Filter für [`list`]; leere Felder filtern nicht.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize, schemars::JsonSchema)]
 #[serde(default, deny_unknown_fields)]
 pub struct Filter {
     /// ticket, sprint, projekt oder leer für Sprints und Tickets
@@ -23,6 +23,10 @@ pub struct Filter {
     /// Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP
     pub domain: String,
     /// Sprint-ID: nur dieser Sprint und seine Tickets; – oder ungeplant: Tickets ohne Sprint
+    #[schemars(
+        description = "Sprint-ID: nur dieser Sprint und seine Tickets; – oder ungeplant: Tickets ohne Sprint (wie der \
+            Schnellfilter Ungeplant der Workbench)"
+    )]
     pub sprint: String,
     /// Projekt-Kürzel: nur dieses Projekt, seine Sprints und Tickets
     pub projekt: String,

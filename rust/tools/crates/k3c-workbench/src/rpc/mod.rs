@@ -4,6 +4,7 @@
 
 mod git;
 mod logs;
+mod planning;
 mod services;
 mod tasks;
 pub mod uiapi;
@@ -65,6 +66,16 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("GitPRCreate", git::pr_create),
     ("GitPRAction", git::pr_action),
     ("GitHubStatus", git::github_status),
+    ("PlanningData", planning::data),
+    ("PlanningList", planning::list),
+    ("PlanningItems", planning::items),
+    ("PlanningDocs", planning::docs),
+    ("PlanningDoc", planning::doc),
+    ("PlanningGet", planning::get),
+    ("PlanningSet", planning::set),
+    ("WorktreeCheck", planning::worktree_check),
+    ("TicketCreate", planning::ticket_create),
+    ("TicketRecent", planning::ticket_recent),
 ];
 
 /// Das eine Argument einer Methode mit einem Namen.

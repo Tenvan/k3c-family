@@ -9,6 +9,9 @@ const WRITE_TOOLS: &[&str] = &[
     "plan_section",
     "plan_sections",
     "plan_delete",
+    // Go trägt beide im `init` ihrer Datei ein.
+    "plan_digest",
+    "plan_index",
     "playtest_frame",
     "playtest_findings_set",
     "playtest_tickets_create",

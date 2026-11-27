@@ -23,13 +23,23 @@ use super::ticketnr::next_ticket;
 
 /// Ein neues Ticket, Sprint, Session (B-210) oder Projekt (B-357). `id` bei Sprint (M9), Session (M9.1) und Projekt
 /// (GRA); ein Ticket bekommt die nächste freie Nummer.
-#[derive(Debug, Clone, Default, Deserialize)]
-#[serde(default, deny_unknown_fields)]
+#[derive(Debug, Clone, Default, Deserialize, schemars::JsonSchema)]
+#[serde(deny_unknown_fields)]
 pub struct NewDoc {
+    /// ticket, sprint, session oder projekt
     pub kind: String,
+    /// Sprint M9, Session M9.1 oder Projekt-Kürzel GRA; beim Ticket leer (nächste freie Nummer)
+    #[serde(default)]
     pub id: String,
+    /// Kurzname für Datei oder Ordner: a-z, 0-9, -
     pub slug: String,
+    /// Titel, beim Ticket als Aussage
     pub title: String,
+    #[serde(default)]
+    #[schemars(
+        description = "Kopf-Felder; Ticket braucht Domäne, Typ, Prio, Projekt und Sprint (keine ungeplanten Tickets); \
+            Sprint und Session brauchen Domäne (die Sprint-Domäne folgt danach den Sessions)"
+    )]
     pub fields: BTreeMap<String, String>,
 }
 

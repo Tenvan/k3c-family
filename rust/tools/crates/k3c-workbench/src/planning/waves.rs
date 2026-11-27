@@ -22,7 +22,7 @@ const LANE_MAIN: &str = "haupt";
 const DEFAULT_WAVES: i64 = 1;
 
 /// Eingabe von [`waves`].
-#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize, schemars::JsonSchema)]
 #[serde(default, deny_unknown_fields)]
 pub struct WavesFilter {
     /// Zahl der gezeigten Wellen, ab Welle 1 (Standard 1)

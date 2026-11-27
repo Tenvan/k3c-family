@@ -50,7 +50,20 @@ pub(super) const CATALOG: &[&str] = &[
     "task_stop",
     "task_status",
     "task_output",
+    "plan_list",
+    "plan_get",
+    "plan_next",
+    "plan_create",
+    "plan_set",
+    "plan_section",
+    "plan_sections",
+    "plan_delete",
     "gh_status",
+    "plan_waves",
+    "plan_queue",
+    "plan_check",
+    "plan_digest",
+    "plan_index",
     "git_commit",
 ];
 
@@ -86,6 +99,10 @@ pub(super) fn router() -> ToolRouter<Workbench> {
         + Workbench::service_router()
         + Workbench::port_router()
         + Workbench::task_router()
+        + Workbench::planning_router()
         + Workbench::github_router()
+        + Workbench::planning_waves_router()
+        + Workbench::planning_digest_router()
+        + Workbench::planning_index_router()
         + Workbench::git_commit_router()
 }

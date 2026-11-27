@@ -22,7 +22,7 @@ use super::tables::{first_of, split_lines};
 use super::waves_spec::{PlanSpec, allowed_files, parse_plan_spec};
 
 /// Eingabe von [`next`]; leer = alle Domänen.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize, schemars::JsonSchema)]
 #[serde(default, deny_unknown_fields)]
 pub struct NextFilter {
     /// nur Sessions dieser Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP

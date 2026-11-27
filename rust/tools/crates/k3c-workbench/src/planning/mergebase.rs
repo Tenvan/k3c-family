@@ -1,5 +1,4 @@
-//! Die Planung eines Commits (Go `mergebase.go`). Stand RU69.11: `run_git` und `load_at` für das origin-Overlay;
-//! `mergeBase` für den Worktree-Abgleich folgt in RU69.12.
+//! Die Planung eines Commits (Go `mergebase.go`) für das origin-Overlay und den Worktree-Abgleich.
 
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -26,6 +25,12 @@ pub(super) fn run_git(root: &Path, args: &[&str]) -> Result<Vec<u8>, String> {
         status.code().unwrap_or(-1),
         String::from_utf8_lossy(&err).trim()
     ))
+}
+
+/// Der gemeinsame Vorfahr von HEAD der Wurzel und dem Stand `head` eines Worktrees.
+pub(super) fn merge_base(root: &Path, head: &str) -> Result<String, String> {
+    let out = run_git(root, &["merge-base", "HEAD", head])?;
+    Ok(String::from_utf8_lossy(&out).trim().to_owned())
 }
 
 /// Wegwerf-Ordner unter `<root>/.work/tmp` (Regel „Schreiben nur im Repo“); er verschwindet beim Fallenlassen.
@@ -70,7 +75,7 @@ pub(super) fn load_at(root: &Path, rev: &str) -> Result<Data, String> {
 
 /// `load` plus die archivierten Tickets: Ohne sie wirkt ein abgeschlossenes Ticket im Vergleich wie ein
 /// verschwundenes.
-fn load_with_archive(root: &Path) -> Result<Data, String> {
+pub(super) fn load_with_archive(root: &Path) -> Result<Data, String> {
     let mut data = load(root)?;
     data.tickets.extend(archived(root));
     Ok(data)

@@ -418,7 +418,7 @@
           "type": "string"
         },
         "id": {
-          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "description": "Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA",
           "type": "string"
         }
       },
@@ -469,7 +469,7 @@
     "inputSchema": {
       "properties": {
         "id": {
-          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "description": "Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA",
           "type": "string"
         }
       },
@@ -591,7 +591,7 @@
           "type": "string"
         },
         "id": {
-          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "description": "Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA",
           "type": "string"
         },
         "section": {
@@ -626,7 +626,7 @@
           "type": "string"
         },
         "id": {
-          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "description": "Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA",
           "type": "string"
         },
         "sections": {
@@ -660,7 +660,7 @@
           "type": "object"
         },
         "id": {
-          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "description": "Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA",
           "type": "string"
         }
       },

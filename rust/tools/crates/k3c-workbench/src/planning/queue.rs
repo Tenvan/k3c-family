@@ -17,7 +17,7 @@ use super::waves_nodes::{WaveData, load_wave_data, needs_human};
 use super::waves_spec::section_lines;
 
 /// Eingabe von [`queue`].
-#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Deserialize, schemars::JsonSchema)]
 #[serde(default, deny_unknown_fields)]
 pub struct QueueFilter {
     /// nur Abnahmen an diesem Gerät: PC oder unbekannt

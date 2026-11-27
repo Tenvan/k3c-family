@@ -12,14 +12,18 @@ mod logs;
 pub mod logview;
 mod mcp_page;
 pub mod open_url;
+mod planning;
 mod services;
 mod tasks;
+mod ticket;
 pub mod window;
 
 #[cfg(test)]
 mod app_tests;
 #[cfg(test)]
 mod git_tests;
+#[cfg(test)]
+mod planning_tests;
 #[cfg(test)]
 mod winicon_tests;
 
@@ -64,6 +68,8 @@ struct Running {
     tasks: Arc<TaskCenter>,
     /// Bricht beim Beenden wartende Starts und den Monitor ab (Go `svcCtx`).
     cancel: Cancel,
+    /// Wächter der Planungsdateien; er endet beim Fallenlassen.
+    planning: crate::planning::Watcher,
 }
 
 /// Backend der Workbench.
@@ -168,6 +174,7 @@ impl App {
         let logger = log.logger().clone();
         let tracker = self.open_tracker(&logger);
         let cancel = Cancel::default();
+        let planning = planning::watch(self, &self.events);
         let services = services::open(&self.root, Arc::clone(&store), &logger, &self.events, &cancel).await;
         let ctl = services.as_ref().ok().map(Arc::clone);
         let tasks = Arc::new(TaskCenter::open(&self.root, &store, &self.events, &logger, ctl));
@@ -199,6 +206,7 @@ impl App {
             services,
             tasks,
             cancel,
+            planning,
         });
         self.set_mcp(started.err());
         self.mark_ready();
@@ -259,6 +267,7 @@ impl App {
         let logger = running.log.logger();
         logger.info("🛑 k3c-workbench beendet", &[("ns", json!("main"))]);
         running.cancel.cancel();
+        drop(running.planning);
         // Ein halb gelaufener Testlauf darf die Anwendung nicht überleben, unabhängig von den Diensten.
         if let Err(e) = running.tasks.stop_all().await {
             let message = format!("⏳ Tasks nicht vollständig beendet: {e}");

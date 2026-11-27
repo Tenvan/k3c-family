@@ -2,9 +2,9 @@
 //! Sessions (docs/sprints/), Tickets (docs/backlog/), Projekte (docs/projekte/) und die Dokumente Plan, Fragenkatalog
 //! und Glossar. Die Dateien bleiben die Quelle; Format und Vorlagen stehen in docs/arbeitsweise.md.
 //!
-//! Stand RU69.11: Modell, Auflösen der IDs, `get`, `list`, `items`, Projekte, die Schreibwege `set`, `section`,
+//! Enthalten: Modell, Auflösen der IDs, `get`, `list`, `items`, Projekte, die Schreibwege `set`, `section`,
 //! `sections`, `create`, `delete` samt Index, Fahrplan und Projekt-Tabellen, der Neuaufbau der Index-Dateien, die
-//! Sprint-Zusammenfassungen, `next`, `waves`, `queue` und `check`.
+//! Sprint-Zusammenfassungen, `next`, `waves`, `queue`, `check`, der Wächter und der Worktree-Abgleich.
 
 pub mod check;
 pub mod create;
@@ -37,10 +37,13 @@ pub mod tables;
 pub mod ticketid;
 pub mod ticketnr;
 mod untar;
+pub mod watch;
 pub mod waves;
 mod waves_nodes;
 pub mod waves_spec;
 pub mod worktree;
+pub mod wtdiff;
+mod wtflight;
 
 pub use check::{CheckIn, check};
 pub use create::{NewDoc, create, delete, get};
@@ -53,7 +56,9 @@ pub use next::{NextFilter, next};
 pub use planning::{Data, Session, Sprint, Ticket, available, doc, load, parse_sprint, parse_ticket};
 pub use projects::{Project, parse_project};
 pub use queue::{QueueFilter, queue};
+pub use watch::{Changed, Watcher, watch_ids};
 pub use waves::{WavesFilter, waves};
+pub use wtdiff::{Change, WorktreeDiff, check_worktrees};
 
 #[cfg(test)]
 mod check_tests;
@@ -124,9 +129,15 @@ mod testsupport;
 #[cfg(test)]
 mod titel_tests;
 #[cfg(test)]
+mod watch_tests;
+#[cfg(test)]
 mod waves_tests;
 #[cfg(test)]
 mod write_tests;
+#[cfg(test)]
+mod wtdiff_tests;
+#[cfg(test)]
+mod wtflight_tests;
 #[cfg(test)]
 mod wz54_tests;
 #[cfg(test)]

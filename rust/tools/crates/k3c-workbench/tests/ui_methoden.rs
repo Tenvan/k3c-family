@@ -9,13 +9,6 @@ use k3c_workbench::rpc::METHODS;
 
 /// Methoden, die erst spätere Sessions von RU69 bringen; am Ende leer.
 const AUSSTEHEND_UI: &[&str] = &[
-    "PlanningData",
-    "PlanningDoc",
-    "PlanningDocs",
-    "PlanningGet",
-    "PlanningItems",
-    "PlanningList",
-    "PlanningSet",
     "PlaytestCheck",
     "PlaytestDelete",
     "PlaytestDescribe",
@@ -37,9 +30,6 @@ const AUSSTEHEND_UI: &[&str] = &[
     "PlaytestTranscribeStatus",
     "PlaytestVisionInfo",
     "Resources",
-    "TicketCreate",
-    "TicketRecent",
-    "WorktreeCheck",
 ];
 
 fn file(relative: &str) -> PathBuf {
