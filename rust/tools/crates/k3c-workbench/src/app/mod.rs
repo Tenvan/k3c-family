@@ -13,6 +13,7 @@ pub mod logview;
 mod mcp_page;
 pub mod open_url;
 mod planning;
+mod playtest;
 mod services;
 mod tasks;
 mod ticket;
@@ -84,6 +85,8 @@ pub struct App {
     running: Mutex<Option<Running>>,
     /// Seite Git (B-580).
     git: GitSeat,
+    /// Seite Spieltest (B-1218).
+    playtest: playtest::PlaytestSeat,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -108,6 +111,7 @@ impl App {
         };
         App {
             git,
+            playtest: playtest::PlaytestSeat::default(),
             root,
             port,
             usage_file,

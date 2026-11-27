@@ -73,7 +73,7 @@ where
 }
 
 /// Ergebnis wie Go `exec.ExitError`.
-fn exit_of(status: std::io::Result<ExitStatus>) -> Exit {
+pub(crate) fn exit_of(status: std::io::Result<ExitStatus>) -> Exit {
     match status {
         Ok(status) if status.success() => Ok(()),
         Ok(status) => {

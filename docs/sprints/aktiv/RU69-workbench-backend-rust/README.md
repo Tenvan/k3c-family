@@ -76,7 +76,7 @@ keine (Leitfaden, 🧑 2026-11-26).
 | RU69.10 | `RU69.10-planung-anlegen-loeschen-index.md` | Umsetzung | autonom | fertig |
 | RU69.11 | `RU69.11-planung-next-wellen-queue-check.md` | Umsetzung | autonom | fertig |
 | RU69.12 | `RU69.12-planung-mcp-seite-waechter.md` | Umsetzung | autonom | fertig |
-| RU69.13 | `RU69.13-spieltest-ablage-aufnahme.md` | Umsetzung | autonom | in Arbeit |
+| RU69.13 | `RU69.13-spieltest-ablage-aufnahme.md` | Umsetzung | autonom | fertig |
 | RU69.14 | `RU69.14-spieltest-auswertung-mcp.md` | Umsetzung | autonom | offen |
 | RU69.15 | `RU69.15-bildbeschreibung-medien-ressourcen.md` | Umsetzung | autonom | offen |
 | RU69.16 | `RU69.16-review.md` | Review | autonom | offen |

@@ -9,21 +9,13 @@ use k3c_workbench::rpc::METHODS;
 
 /// Methoden, die erst spätere Sessions von RU69 bringen; am Ende leer.
 const AUSSTEHEND_UI: &[&str] = &[
-    "PlaytestCheck",
-    "PlaytestDelete",
     "PlaytestDescribe",
     "PlaytestDescribeCancel",
     "PlaytestDescribeStatus",
-    "PlaytestDevices",
     "PlaytestFindingUpdate",
     "PlaytestFindings",
     "PlaytestFrameSkip",
-    "PlaytestList",
     "PlaytestModels",
-    "PlaytestPlan",
-    "PlaytestStart",
-    "PlaytestStatus",
-    "PlaytestStop",
     "PlaytestTimeline",
     "PlaytestTranscribe",
     "PlaytestTranscribeCancel",

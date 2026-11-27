@@ -10,6 +10,7 @@ pub mod logs;
 pub mod mcp;
 pub mod planning;
 pub mod platform;
+pub mod playtest;
 pub mod ports;
 pub mod rpc;
 pub mod services;

@@ -5,6 +5,7 @@
 mod git;
 mod logs;
 mod planning;
+mod playtest;
 mod services;
 mod tasks;
 pub mod uiapi;
@@ -76,6 +77,14 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("WorktreeCheck", planning::worktree_check),
     ("TicketCreate", planning::ticket_create),
     ("TicketRecent", planning::ticket_recent),
+    ("PlaytestList", playtest::list),
+    ("PlaytestPlan", playtest::plan),
+    ("PlaytestDelete", playtest::delete),
+    ("PlaytestDevices", playtest::devices),
+    ("PlaytestStart", playtest::start),
+    ("PlaytestStop", playtest::stop),
+    ("PlaytestStatus", playtest::status),
+    ("PlaytestCheck", playtest::check),
 ];
 
 /// Das eine Argument einer Methode mit einem Namen.
