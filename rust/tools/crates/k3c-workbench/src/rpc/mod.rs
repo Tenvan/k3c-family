@@ -2,6 +2,7 @@
 //! Sie bedient den Tauri-Command `rpc` und die Oberflächen-API ([`uiapi`]). Die Argumente stehen positionsgleich wie in
 //! Wails im JSON-Array.
 
+mod services;
 pub mod uiapi;
 
 use std::sync::Arc;
@@ -35,6 +36,14 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("McpInstructions", mcp_instructions),
     ("McpCalls", mcp_calls),
     ("McpUsage", mcp_usage),
+    ("Services", services::view),
+    ("ServicesReload", services::reload),
+    ("ServiceStart", services::start),
+    ("ServiceStop", services::stop),
+    ("ServiceRestart", services::restart),
+    ("ServicesStartAll", services::start_all),
+    ("ServicesStopAll", services::stop_all),
+    ("ServiceLogLevels", services::log_levels),
 ];
 
 fn encode(value: impl Serialize) -> Result<Value, RpcError> {

@@ -6,6 +6,7 @@ pub mod mcp;
 pub mod platform;
 pub mod ports;
 pub mod rpc;
+pub mod services;
 
 #[cfg(test)]
 mod nowindow_tests;

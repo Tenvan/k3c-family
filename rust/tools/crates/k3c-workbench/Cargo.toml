@@ -31,7 +31,9 @@ rmcp.workspace = true
 axum.workspace = true
 # Uhr der Nutzungsstatistik (`k3c_kit::usage` verlangt `DateTime<Local>`).
 chrono.workspace = true
-tokio = { workspace = true, features = ["rt-multi-thread", "signal", "time", "macros"] }
+tokio = { workspace = true, features = ["rt-multi-thread", "signal", "time", "macros", "sync", "io-util"] }
+# Dienste: ANSI-Sequenzen aus der Ausgabe entfernen.
+regex.workspace = true
 
 [target.'cfg(windows)'.dependencies]
 windows = { workspace = true, features = [
@@ -39,6 +41,12 @@ windows = { workspace = true, features = [
     "Win32_System_Console",
     "Win32_UI_Shell",
     "Win32_UI_WindowsAndMessaging",
+    # Dienste: wer am Port lauscht, CPU/Speicher, Elternprozess (Go: gopsutil).
+    "Win32_NetworkManagement_IpHelper",
+    "Win32_Networking_WinSock",
+    "Win32_System_Diagnostics_ToolHelp",
+    "Win32_System_ProcessStatus",
+    "Win32_System_Threading",
 ] }
 
 [dev-dependencies]

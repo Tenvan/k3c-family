@@ -5,7 +5,7 @@ use std::time::Duration;
 
 use serde_json::{Value, json};
 
-use super::events::{Emit, MCP_CALL, MCP_START, MCP_STATE, NOTIFY};
+use super::events::{CONSOLE_LINE, Emit, MCP_CALL, MCP_START, MCP_STATE, NOTIFY};
 use super::*;
 use crate::mcp::test_client::Client;
 use crate::rpc::call;
@@ -13,11 +13,15 @@ use crate::testutil::tmp_dir;
 
 type Seen = Arc<Mutex<Vec<(String, Value)>>>;
 
-/// App in einem Temp-Ordner, deren Ereignisse gesammelt werden.
+/// App in einem Temp-Ordner, deren Ereignisse gesammelt werden (ohne die zeitversetzten Konsolenzeilen).
 fn app(root: &Path, port: u16) -> (Arc<App>, Seen) {
     let seen = Seen::default();
     let sink = Arc::clone(&seen);
-    let forward: Emit = Arc::new(move |name: &str, data: Value| sink.lock().unwrap().push((name.to_owned(), data)));
+    let forward: Emit = Arc::new(move |name: &str, data: Value| {
+        if name != CONSOLE_LINE {
+            sink.lock().unwrap().push((name.to_owned(), data));
+        }
+    });
     let app = App::new(root.to_path_buf(), port, Some(forward)).with_usage_file(root.join("usage.json"));
     (Arc::new(app), seen)
 }
@@ -61,7 +65,7 @@ async fn startup_lauscht_und_schreibt_das_eigene_log() {
     );
 }
 
-/// Aus `TestBindingWartetAufStartup` (mit `Info`; `Sources` kommt mit RU69.2).
+/// Aus `TestBindingWartetAufStartup` (mit `Info`; `Sources` kommt mit einer späteren Session).
 #[tokio::test(flavor = "multi_thread")]
 async fn aufruf_wartet_auf_startup() {
     let root = tmp_dir();

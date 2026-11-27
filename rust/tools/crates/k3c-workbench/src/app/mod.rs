@@ -1,11 +1,13 @@
 //! Backend der Workbench (Port von `app.go`): es hostet den MCP-Server und das eigene Log; die Methoden der Oberfläche
 //! stehen in der Aufruf-Tabelle [`crate::rpc`]. Ohne Tauri-Typen, damit Fenster und Betrieb ohne Fenster es teilen.
 
+mod console_batch;
 pub mod events;
 pub mod headless;
 mod info;
 mod mcp_page;
 pub mod open_url;
+mod services;
 pub mod window;
 
 #[cfg(test)]
@@ -24,10 +26,13 @@ use k3c_kit::usage::Tracker;
 use serde_json::json;
 use tokio::runtime::Handle;
 
+use crate::services::Cancel;
 use crate::{mcp, ports};
-use events::{Emit, Events};
+use console_batch::LineBatcher;
+use events::{CONSOLE_LINE, Emit, Events};
 pub use info::{Info, McpState};
 pub use mcp_page::{McpOverview, McpUsageView, UsageRules};
+pub use services::ServicesView;
 
 /// Version der App (Info, MCP).
 pub const VERSION: &str = "0.1.0";
@@ -42,6 +47,9 @@ struct Running {
     server: Arc<mcp::Server>,
     /// Laufzeit des MCP-Servers; die blockierenden Methoden der Oberfläche rufen ihn darin.
     runtime: Handle,
+    services: services::Services,
+    /// Bricht beim Beenden wartende Starts und den Monitor ab (Go `svcCtx`).
+    cancel: Cancel,
 }
 
 /// Backend der Workbench.
@@ -118,16 +126,28 @@ impl App {
         Box::new(|| {})
     }
 
-    /// Öffnet Log und Statistik und startet den MCP-Server. Ein belegter Port hält die App nicht auf: der Grund steht
-    /// im Log und im Badge.
+    /// Konsolenpuffer, dessen neue Zeilen gebündelt als `console:line` an die Oberfläche gehen.
+    fn console_store(&self) -> Arc<Store> {
+        let events = self.events.clone();
+        let lines = LineBatcher::new(move |lines| events.emit_value(CONSOLE_LINE, &lines));
+        Arc::new(Store::new(
+            console::DEFAULT_CAPACITY,
+            Some(Box::new(move |line| lines.add(line))),
+        ))
+    }
+
+    /// Öffnet Log, Statistik und Dienste und startet den MCP-Server. Ein belegter Port hält die App nicht auf: der
+    /// Grund steht im Log und im Badge.
     pub async fn startup(&self) {
-        let store = Arc::new(Store::new(console::DEFAULT_CAPACITY, None));
+        let store = self.console_store();
         let (log, log_error) = applog::open_named(&self.root.join("logs"), ports::LOG_NAME, Arc::clone(&store));
         if let Some(e) = log_error {
             eprintln!("💥 k3c-workbench: eigenes Log nur im Speicher: {e}");
         }
         let logger = log.logger().clone();
         let tracker = self.open_tracker(&logger);
+        let cancel = Cancel::default();
+        let services = services::open(&self.root, Arc::clone(&store), &logger, &self.events, &cancel).await;
         let server = Arc::new(mcp::Server::new(self.server_config(&logger, &tracker)));
         let started = server.start().await;
         match &started {
@@ -147,6 +167,8 @@ impl App {
             tracker,
             server,
             runtime: Handle::current(),
+            services,
+            cancel,
         });
         self.set_mcp(started.err());
         self.mark_ready();
@@ -192,7 +214,8 @@ impl App {
         drop(self.ready.1.wait_while(guard, |ready| !*ready));
     }
 
-    /// Beendet Server, Statistik und Log (Fenster und Betrieb ohne Fenster).
+    /// Bricht laufende Befehle ab, stoppt die eigenen Dienste (rückwärts; übernommene laufen weiter), dann Server,
+    /// Statistik und Log (Fenster und Betrieb ohne Fenster).
     pub async fn shutdown(&self) {
         let taken = lock(&self.running).take();
         let Some(running) = taken else {
@@ -200,6 +223,10 @@ impl App {
         };
         let logger = running.log.logger();
         logger.info("🛑 k3c-workbench beendet", &[("ns", json!("main"))]);
+        running.cancel.cancel();
+        if let Ok(ctl) = &running.services {
+            ctl.stop_all().await;
+        }
         if let Err(e) = running.server.stop().await {
             logger.warn(
                 "❌ server nicht sauber beendet",

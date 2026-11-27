@@ -17,6 +17,10 @@ pub const MCP_CALL: &str = "mcp:call";
 pub const NOTIFY: &str = "ui:notify";
 /// Planungsdateien haben sich geändert.
 pub const PLANNING: &str = "planning:changed";
+/// Zustand eines Dienstes.
+pub const SERVICE_STATE: &str = "service:state";
+/// Neue Konsolenzeilen, gebündelt als Liste.
+pub const CONSOLE_LINE: &str = "console:line";
 
 /// Zusätzliche Senke der Ereignisse (im Fenster `AppHandle::emit`).
 pub type Emit = Arc<dyn Fn(&str, Value) + Send + Sync>;
