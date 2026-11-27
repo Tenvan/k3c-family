@@ -1,6 +1,7 @@
 # Namespace `tools-rust`: Cargo-Workspace rust/tools/ der Rust-Werkzeuge (Entscheidung 014, RU66 bis RU71): gemeinsamer
 # Code `k3c-kit`, später Asset-Logik, Studio und Workbench. Leitfaden: docs/standards/rust-werkzeuge.md. Build-Ordner
-# rust/tools/target, Temp der Tests unter .work/tmp (K3C_TMP). `run`, `dev`, `workbench:*` und `studio:*` folgen mit RU69/RU70.
+# rust/tools/target, Temp der Tests unter .work/tmp (K3C_TMP). `studio:*` ist die Studio-App (RU70, Ports siehe
+# crates/k3c-studio/src/ports.rs; die Go-Fassung bleibt unter `k3c-studio:*`); `run`, `dev` und `workbench:*` folgen mit RU69.
 version: '3'
 
 tasks:
@@ -41,3 +42,60 @@ tasks:
       K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
     cmds:
       - cargo fmt --all
+
+  studio:build:
+    desc: "Studio-App in Rust bauen (tauri build ohne Installer; EXE rust/tools/target/release/k3c-studio.exe, nicht nach bin/)"
+    deps: [':tmp', studio:cli]
+    dir: '{{.ROOT_DIR}}/rust/tools/crates/k3c-studio'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+    # Das Frontend baut tauri selbst (beforeBuildCommand: task k3c-studio:frontend).
+    cmds:
+      - bunx tauri build --no-bundle
+
+  studio:run:
+    desc: "Studio-App in Rust bauen und als Fenster starten (MCP 5281)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - task: studio:build
+      - rust/tools/target/release/k3c-studio{{exeExt}}
+
+  studio:dev:
+    desc: "Browser-Dev der Rust-Fassung: Backend ohne Fenster (MCP 5281, API 8293) und Vite unter http://localhost:5294; Rust-Änderungen brauchen einen Neustart"
+    deps: [studio:dev:server, studio:dev:ui]
+
+  studio:dev:server:
+    desc: "Backend ohne Fenster (cargo run -p k3c-studio -- --headless)"
+    deps: [':tmp']
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+    cmds:
+      - cargo run -p k3c-studio -- --headless
+
+  studio:dev:ui:
+    desc: "Oberfläche des Studios mit Vite (5294) gegen das Rust-Backend (Proxy /api auf 8293); öffnet den Browser"
+    dir: '{{.ROOT_DIR}}/tools/k3c-studio/frontend'
+    env:
+      K3C_STUDIO_API: 'http://127.0.0.1:8293'
+      K3C_STUDIO_UI_PORT: '5294'
+    cmds:
+      - bunx vite --open
+
+  studio:window:
+    desc: "Studio-App in Rust im Entwicklungsmodus (tauri dev): Vite 5294 mit Hot Reload, Neubau bei Rust-Änderungen"
+    deps: [':tmp', studio:cli]
+    dir: '{{.ROOT_DIR}}/rust/tools/crates/k3c-studio'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      # Nur für den Proxy von Vite, damit er nie auf die Go-Fassung zeigt.
+      K3C_STUDIO_API: 'http://127.0.0.1:8293'
+    cmds:
+      - bunx tauri dev
+
+  studio:cli:
+    internal: true
+    run: once
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    cmds:
+      - bun install --frozen-lockfile

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "k3c-studio",
+  "version": "0.1.0",
+  "identifier": "de.tenvan.k3c.studio-rs",
+  "build": {
+    "devUrl": "http://localhost:5294",
+    "frontendDist": "../../../../tools/k3c-studio/frontend/dist",
+    "beforeDevCommand": {
+      "script": "bunx vite --port 5294 --strictPort",
+      "cwd": "../../../../tools/k3c-studio/frontend",
+      "wait": false
+    },
+    "beforeBuildCommand": {
+      "script": "task k3c-studio:frontend",
+      "cwd": "../../../.."
+    }
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": { "csp": null }
+  },
+  "bundle": {
+    "active": false,
+    "icon": ["icons/icon.ico"]
+  }
+}
