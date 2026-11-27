@@ -9,6 +9,16 @@ thread_local! {
     static FAIL_WRITE: RefCell<Option<PathBuf>> = const { RefCell::new(None) };
     static FAIL_REMOVE: RefCell<bool> = const { RefCell::new(false) };
     static WRITTEN: RefCell<Vec<PathBuf>> = const { RefCell::new(Vec::new()) };
+    static GIT_ENV: RefCell<Vec<(String, Option<String>)>> = const { RefCell::new(Vec::new()) };
+}
+
+/// git-Aufrufe der Planung in diesem Thread laufen mit dieser (abgeschotteten) Umgebung.
+pub(super) fn isolate_git(env: Vec<(String, Option<String>)>) {
+    GIT_ENV.set(env);
+}
+
+pub(super) fn git_env() -> Vec<(String, Option<String>)> {
+    GIT_ENV.with_borrow(Clone::clone)
 }
 
 /// Schreiben nach `path` scheitert in diesem Thread; die übrigen Schreibziele werden mitgeschrieben.

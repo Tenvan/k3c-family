@@ -72,7 +72,7 @@ pub fn check_rel_format(name: &str, value: &str) -> Result<(), String> {
 }
 
 /// Kopf einer Datei (bis zur ersten `## `-Überschrift, höchstens [`HEAD_LIMIT`] Bytes).
-fn read_head(path: &Path) -> String {
+pub fn read_head(path: &Path) -> String {
     let mut bytes = Vec::new();
     let Ok(file) = File::open(path) else {
         return String::new();

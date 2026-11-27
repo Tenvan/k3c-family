@@ -1,6 +1,5 @@
 //! Felder und Abschnitte schreiben (Go `edit.go`): `set` ändert Kopf-Felder und zieht Index, Session-Tabelle,
-//! Fahrplan, Ordner und Projekte nach; `section` und `sections` ersetzen Abschnitte. `Create` und `Delete` folgen in
-//! RU69.10.
+//! Fahrplan, Ordner und Projekte nach; `section` und `sections` ersetzen Abschnitte.
 
 use std::collections::{BTreeMap, HashMap};
 use std::path::Path;
@@ -84,7 +83,7 @@ fn check_value(kind: &str, name: &str, value: &str, known: &HashMap<String, Stri
 }
 
 /// Einzeilig, ohne `|` (Werte landen in Tabellen), nicht leer.
-fn plain_value(name: &str, value: &str) -> Result<(), String> {
+pub fn plain_value(name: &str, value: &str) -> Result<(), String> {
     if value.trim().is_empty() || value.contains(['|', '\r', '\n']) {
         return Err(format!("{name}: Wert leer, mehrzeilig oder mit `|`"));
     }

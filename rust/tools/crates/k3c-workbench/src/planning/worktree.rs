@@ -1,54 +1,21 @@
 //! Welche Branches stehen in Worktrees, und zu welchen Sprints gehören sie?
 
-use std::ffi::OsStr;
 use std::path::Path;
 use std::time::Duration;
 
-use k3c_kit::proc::Cmd;
 use regex::Regex;
 
-use super::gitrepo::in_repo;
+use super::gitrepo::{git_out, in_repo};
 use super::planning::Sprint;
-use crate::capture;
 
 const TIMEOUT: Duration = Duration::from_secs(3);
-
-/// `git worktree list` in einem eigenen Thread mit eigener Laufzeit: die Planung liest synchron, auch wenn der Aufrufer
-/// schon in tokio läuft.
-fn list_worktrees(root: &Path) -> Option<String> {
-    std::thread::scope(|scope| {
-        scope
-            .spawn(|| {
-                let runtime = tokio::runtime::Builder::new_current_thread()
-                    .enable_all()
-                    .build()
-                    .ok()?;
-                runtime.block_on(async {
-                    let line: [&OsStr; 6] = [
-                        "git".as_ref(),
-                        "-C".as_ref(),
-                        root.as_os_str(),
-                        "worktree".as_ref(),
-                        "list".as_ref(),
-                        "--porcelain".as_ref(),
-                    ];
-                    let run = capture::output(Cmd::new(&line), None);
-                    let (status, out, _) = tokio::time::timeout(TIMEOUT, run).await.ok()?.ok()?;
-                    status.success().then(|| String::from_utf8_lossy(&out).into_owned())
-                })
-            })
-            .join()
-            .ok()
-            .flatten()
-    })
-}
 
 /// Branches aller Worktrees des Repos; ohne git oder Repo keine.
 pub fn worktrees(root: &Path) -> Vec<String> {
     if !in_repo(root) {
         return Vec::new();
     }
-    list_worktrees(root)
+    git_out(root, &["worktree", "list", "--porcelain"], TIMEOUT)
         .map(|out| parse_worktrees(&out))
         .unwrap_or_default()
 }

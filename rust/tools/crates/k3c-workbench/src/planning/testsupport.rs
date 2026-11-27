@@ -1,5 +1,4 @@
-//! Hilfen der Planungstests: Wurzeln unter `.work/` mit von Hand geschriebenen Dateien. Go legt sie über `Create` und
-//! `Set` an; die kommen erst mit RU69.9 und RU69.10.
+//! Hilfen der Planungstests: Wurzeln unter `.work/` mit von Hand geschriebenen Dateien (ohne Vorlagen).
 
 use std::path::{Path, PathBuf};
 

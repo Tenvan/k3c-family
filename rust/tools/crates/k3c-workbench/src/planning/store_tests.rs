@@ -1,5 +1,5 @@
 //! Schreib-Unterbau (`ChangeSet`, `write_atomic`): Zeilenenden, Reihenfolge, Zurücknehmen. Go prüft ihn über die
-//! schreibenden Werkzeuge (RU69.9, RU69.10).
+//! schreibenden Werkzeuge.
 
 use super::edit::set;
 use super::fixtures::{self, doc, values};

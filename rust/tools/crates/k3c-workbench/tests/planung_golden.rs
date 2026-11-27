@@ -11,10 +11,25 @@ use k3c_workbench::planning::{self, Filter};
 use serde::Deserialize;
 use serde_json::Value;
 
-/// Werkzeuge, die der Port schon kann; RU69.10 und RU69.11 ergänzen.
-const AKTIV: &[&str] = &["plan_get", "plan_list", "plan_set", "plan_section", "plan_sections"];
+/// Werkzeuge, die der Port schon kann; RU69.11 ergänzt.
+const AKTIV: &[&str] = &[
+    "plan_get",
+    "plan_list",
+    "plan_set",
+    "plan_section",
+    "plan_sections",
+    "plan_create",
+    "plan_delete",
+    "plan_index",
+];
 const FAELLE_GESAMT: usize = 174;
-const FAELLE_AKTIV: usize = 90;
+const FAELLE_AKTIV: usize = 125;
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Neuaufbau {
+    dry: Option<bool>,
+}
 
 #[derive(Deserialize)]
 struct Aufruf {
@@ -197,6 +212,19 @@ fn fuehre_aus(root: &Path, aufruf: &Aufruf) -> Result<String, String> {
         "plan_sections" => {
             let a: Abschnitte = serde_json::from_value(args()).map_err(falsch)?;
             planning::sections(root, &a.id, &a.sections)
+        }
+        "plan_create" => {
+            let a: planning::NewDoc = serde_json::from_value(args()).map_err(falsch)?;
+            planning::create(root, &a)
+        }
+        "plan_delete" => {
+            let a: Id = serde_json::from_value(args()).map_err(falsch)?;
+            planning::delete(root, &a.id)
+        }
+        "plan_index" => {
+            let a: Neuaufbau = serde_json::from_value(args()).map_err(falsch)?;
+            // dry ist wie im Tool standardmäßig an.
+            planning::rebuild_index(root, a.dry.unwrap_or(true))
         }
         other => Err(format!("aufruf.json: unbekanntes werkzeug {other:?}")),
     }

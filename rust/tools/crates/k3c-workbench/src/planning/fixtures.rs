@@ -1,5 +1,5 @@
-//! Wurzeln für die Schreibtests unter `.work/` (Go `tempRepo`, `relRepo`, `newProject`, `newSprint`). Go baut sie
-//! über `Create`; bis RU69.10 entstehen die Dateien hier von Hand. Die Vorlagen sind Kopien von docs/vorlagen/.
+//! Wurzeln für die Schreibtests unter `.work/` (Go `tempRepo`, `relRepo`). Die Dateien entstehen hier von Hand; die
+//! Wege über `create` liegen in `create_fixtures.rs`. Die Vorlagen sind Kopien von docs/vorlagen/.
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -28,7 +28,12 @@ const PROJEKTE_MD: &str = "# Projekte\n\nRangliste aller Projekte.\n\n## Aktiv\n
 /// `docs/` mit den Vorlagen, einem Ticket, Index, Fahrplan und Projekt-Übersicht.
 pub(super) fn repo() -> tempfile::TempDir {
     let tmp = tmp_dir();
-    let root = tmp.path();
+    populate(tmp.path());
+    tmp
+}
+
+/// Der Inhalt von [`repo`] unter `root` (die Vorlagen werden nur gelesen).
+pub(super) fn populate(root: &Path) {
     let templates = Path::new(env!("CARGO_MANIFEST_DIR"))
         .ancestors()
         .nth(4)
@@ -54,7 +59,6 @@ pub(super) fn repo() -> tempfile::TempDir {
     for state in STATES {
         fs::create_dir_all(root.join("docs").join("sprints").join(state)).expect("Sprint-Ordner");
     }
-    tmp
 }
 
 fn row(nr: &str) -> String {

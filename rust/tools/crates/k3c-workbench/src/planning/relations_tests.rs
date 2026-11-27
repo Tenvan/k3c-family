@@ -1,5 +1,5 @@
-//! Go `relations_test.go` ohne die Fälle mit `Create` (RU69.10): Prüfung, Status verworfen, Gegenrichtung und die
-//! Wege über `set`.
+//! Go `relations_test.go`: Prüfung, Status verworfen, Gegenrichtung und die Wege über `set`. Die Fälle mit `create`
+//! stehen in `create_cases_tests.rs`.
 
 use std::collections::BTreeMap;
 

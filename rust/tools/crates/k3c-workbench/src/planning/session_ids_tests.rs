@@ -1,4 +1,4 @@
-//! Go `session_ids_test.go` (B-372/AC-04): Session-IDs mit Buchstaben wie K3.2a lesen und ändern. Anlegen: RU69.10.
+//! Go `session_ids_test.go` (B-372/AC-04): Session-IDs mit Buchstaben wie K3.2a lesen und ändern. Anlegen: `create_cases_tests.rs`.
 
 use super::create::get;
 use super::edit::set;

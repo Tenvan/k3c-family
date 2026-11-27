@@ -1,5 +1,5 @@
 //! Domäne aus den Sessions: die Funktion selbst mit gestellter Fahrplan-Pflege und die Wege von Go `domains_test.go`
-//! über `set`. Die Schritte mit `Create` und `Delete` folgen in RU69.10.
+//! über `set`. Die Schritte mit `create` und `delete` stehen in `create_cases_tests.rs`.
 
 use super::domains::sync_sprint_domain;
 use super::edit::set;

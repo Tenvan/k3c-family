@@ -1,4 +1,4 @@
-//! Go `wz54_test.go` (B-862, B-863, B-865). Die Schritte mit `Create` und `RebuildIndex` folgen in RU69.10.
+//! Go `wz54_test.go` (B-862, B-863, B-865). Die Schritte mit `create` und `rebuild_index` stehen in `create_cases_tests.rs`.
 
 use std::cmp::Ordering;
 use std::collections::HashMap;

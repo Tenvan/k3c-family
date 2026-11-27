@@ -1,4 +1,4 @@
-//! Go `placeholder_rows_test.go` (B-436), Teil mit `Set`. Die Fälle, die `Create` prüfen, folgen in RU69.10.
+//! Go `placeholder_rows_test.go` (B-436), Teil mit `Set`. Die Fälle mit `create` stehen in `create_cases_tests.rs`.
 
 use super::edit::set;
 use super::fixtures::{doc, repo, session, sprint, values};

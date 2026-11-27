@@ -1,5 +1,5 @@
 //! Go `roadmap_test.go` (B-366, B-403, B-404), soweit über `Set`. `TestFahrplanZeileNachProjektRang` und die
-//! Anlege-Schritte prüfen `Create` und folgen in RU69.10.
+//! Anlege-Schritte stehen in `create_cases_tests.rs`.
 
 use std::path::Path;
 

@@ -1,7 +1,5 @@
 //! Projekte (B-357): docs/projekte/<KÜRZEL>-slug.md nach vorlagen/projekt.md. Nur aktive Projekte haben einen Rang,
 //! lückenlos ab 1; ABN (Abnahmen am Gerät) läuft ohne Rang neben der Rangfolge.
-//!
-//! Stand RU69.9: Lesen und Ändern. Anlegen und Löschen folgen in RU69.10.
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -10,8 +8,10 @@ use std::sync::LazyLock;
 use regex::Regex;
 use serde::Serialize;
 
+use super::create::{NewDoc, from_template, without_rows, write_new};
 use super::edit::{head_end, head_fields, set_field, set_fields};
-use super::planning::{fields, header, take};
+use super::list::archived;
+use super::planning::{fields, header, load, take};
 use super::projects_tables::{reorder_sprints, sync_overview};
 use super::store::{ChangeSet, Ref, docs_path, entries, quoted, read_text};
 use super::tables::{cells, find_table, first_of, heading, split_lines};
@@ -133,6 +133,50 @@ pub fn projects_in(c: &mut ChangeSet) -> Result<Vec<Project>, String> {
 
 pub fn find_project<'a>(projects: &'a [Project], id: &str) -> Option<&'a Project> {
     projects.iter().find(|p| p.id == id)
+}
+
+/// Legt docs/projekte/<ID>-<slug>.md an; ein aktives Projekt bekommt Rang = letzter + 1.
+pub fn create_project(c: &mut ChangeSet, input: &NewDoc, template: &str) -> Result<(), String> {
+    let id = &input.id;
+    if !is_project_id(id) {
+        return Err(format!("Projekt-Kürzel {}: drei Großbuchstaben, z. B. GRA", quoted(id)));
+    }
+    if find_project(&projects_in(c)?, id).is_some() {
+        return Err(format!("das Projekt {id} gibt es schon"));
+    }
+    if input.fields.contains_key("Rang") {
+        return Err("den Rang setzt plan_set nach dem Anlegen; neu: letzter + 1".to_owned());
+    }
+    let header = format!("{id} · {}", input.title);
+    let preset = [("Status", "aktiv"), ("Rang", "–"), ("Ziel-Tickets", "–")];
+    let text = from_template(&c.root, "projekt", template, &header, &preset, &input.fields)?;
+    let rel = format!("projekte/{id}-{}.md", input.slug);
+    write_new(c, "projekt", &rel, without_rows(&text, "## Sprints"));
+    c.notes.push(format!("{id} angelegt: docs/{rel} (Übersicht ergänzt)"));
+    rerank(c, id, 0)
+}
+
+/// Löscht ein Projekt ohne Sprints und ohne Sprints oder Tickets, die es nennen.
+pub fn delete_project(c: &mut ChangeSet, r: &Ref) -> Result<(), String> {
+    let text = c.read(&r.rel)?;
+    let project = parse_project(&text, r.rel.rsplit('/').next().unwrap_or(&r.rel));
+    if !project.sprints.is_empty() {
+        return Err(format!(
+            "{} hat Sprints ({}); erst zuordnen",
+            r.id,
+            project.sprints.join(", ")
+        ));
+    }
+    let data = load(&c.root)?;
+    if let Some(sprint) = data.sprints.iter().find(|s| s.project == r.id) {
+        return Err(format!("Sprint {} nennt {}", sprint.id, r.id));
+    }
+    let done = archived(&c.root);
+    if let Some(ticket) = data.tickets.iter().chain(&done).find(|t| t.project == r.id) {
+        return Err(format!("Ticket {} nennt {}", ticket.nr, r.id));
+    }
+    c.remove.push(r.rel.clone());
+    rerank(c, "", 0)
 }
 
 /// Vergibt die Ränge der aktiven Projekte lückenlos neu; `id` rückt auf Platz `pos` (1 … n), `pos` 0 lässt ein schon

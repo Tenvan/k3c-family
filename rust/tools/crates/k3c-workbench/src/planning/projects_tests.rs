@@ -1,5 +1,5 @@
 //! Go `projects_test.go`: Lesen, Rang, Zuordnung und Ablehnungen über `set`, dazu der Lese-Teil von
-//! `domains_test.go › TestProjektSprintVorSprintOhneProjekt`. Anlegen und Löschen: RU69.10.
+//! `domains_test.go › TestProjektSprintVorSprintOhneProjekt`. Anlegen und Löschen: `projects_write_tests.rs`.
 
 use std::path::Path;
 
