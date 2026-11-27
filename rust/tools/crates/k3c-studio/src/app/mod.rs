@@ -2,6 +2,8 @@
 //! Oberfläche stehen in der Aufruf-Tabelle [`rpc`]. Ohne Tauri-Typen, damit Fenster und Headless-Betrieb dasselbe nutzen.
 
 mod assets;
+mod balance;
+pub mod balance_events;
 pub mod headless;
 mod hub;
 pub mod open_url;
@@ -83,6 +85,8 @@ pub struct App {
     hub_engine: hubplan::EngineFactory,
     /// Gemerkte Prüfergebnisse des Asset-Katalogs (B-732).
     asset_memo: PruefMemo,
+    /// Öffnet eine Datei mit ihrem Standardprogramm (HTML-Bericht); Tests ersetzen es.
+    open_file: fn(&str) -> Result<(), String>,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -121,6 +125,7 @@ impl App {
             world_engine: exe_factory(),
             hub_engine: hubplan::exe_factory(),
             asset_memo: PruefMemo::default(),
+            open_file: crate::platform::shell_open,
         }
     }
 

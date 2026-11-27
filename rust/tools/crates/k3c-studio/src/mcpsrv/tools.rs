@@ -1,7 +1,8 @@
 //! Der einzige Katalog aller Tools des Studios (Port von `tools.go`): Name, Beschreibung, Annotations und Handler.
-//! Ein neues Tool kommt nur hier hinzu; spätere Sessions ergänzen ihre Gruppe als weiteren `tool_router`, tragen die
-//! Namen in [`CATALOG`] ein und kürzen `PENDING_TOOLS` in `tests/mcp_tools_golden.rs`.
+//! Ein neues Tool kommt als weiterer `tool_router` in seine Gruppe (hier oder, bei `sim_*`, in `tools_sim` und
+//! `simtest`) und mit seinem Namen in [`CATALOG`].
 
+use k3c_kit::logger::Logger;
 use rmcp::handler::server::common::Extension;
 use rmcp::handler::server::router::tool::ToolRouter;
 use rmcp::handler::server::wrapper::Parameters;
@@ -9,6 +10,7 @@ use rmcp::service::{RequestContext, RoleServer};
 use rmcp::{tool, tool_router};
 
 use super::kit::Workspace;
+use super::simtest_seam::Sim;
 use super::tools_assets_research::{self, SearcherFactory};
 use super::tools_assets_review::{self, ReviewFactory};
 use super::tools_engine::{self, LevelIn};
@@ -30,13 +32,16 @@ pub struct Studio {
     pub(super) searcher: SearcherFactory,
     /// Vergleich mit einer Basis für `assets_review` und `assets_preview`.
     pub(super) review: ReviewFactory,
+    /// Testläufe für `sim_test` und die Sim-Sperre.
+    pub(super) sim: Sim,
 }
 
 impl Studio {
     /// Mit den echten Quellen für Recherche und Review.
-    pub(super) fn new(world_engine: EngineFactory) -> Studio {
+    pub(super) fn new(world_engine: EngineFactory, log: Logger) -> Studio {
         Studio {
             world_engine,
+            sim: Sim::new(log),
             searcher: tools_assets_research::web_searcher(),
             review: tools_assets_review::dienst(),
         }
@@ -51,6 +56,9 @@ impl Studio {
 /// Reihenfolge der Tools in den Zählern wie in Go `register`.
 pub(super) const CATALOG: &[&str] = &[
     "level_generate",
+    "sim_run",
+    "replay_run",
+    "sim_test",
     "reports_list",
     "report_read",
     "saves_list",
@@ -87,6 +95,8 @@ pub(super) const CATALOG: &[&str] = &[
 /// Alle Routen.
 pub(super) fn router() -> ToolRouter<Studio> {
     Studio::engine_router()
+        + Studio::sim_router()
+        + Studio::simtest_router()
         + Studio::gamedata_router()
         + Studio::assets_router()
         + Studio::assets_set_router()

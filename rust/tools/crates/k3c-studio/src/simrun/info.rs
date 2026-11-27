@@ -53,7 +53,7 @@ fn go_time_opt<S: Serializer>(t: &Option<DateTime<Local>>, s: S) -> Result<S::Ok
 }
 
 /// Dauer auf ganze Sekunden gerundet, geschrieben wie Go `time.Duration` („12s“, „1m5s“, „1h0m0s“).
-fn go_seconds(millis: i64) -> String {
+pub(crate) fn go_seconds(millis: i64) -> String {
     let sign = if millis <= -500 { "-" } else { "" };
     let total = millis.unsigned_abs().saturating_add(500) / 1000;
     let (h, m, s) = (total / 3600, total / 60 % 60, total % 60);

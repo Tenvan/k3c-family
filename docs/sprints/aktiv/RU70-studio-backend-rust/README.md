@@ -107,7 +107,7 @@ keine (Leitfaden, 🧑 2026-11-26)
 | RU70.17 | `RU70.17-balance-auswertung-texte.md` | Umsetzung | autonom | fertig |
 | RU70.18 | `RU70.18-simrun-register-spec-stempel.md` | Umsetzung | autonom | fertig |
 | RU70.19 | `RU70.19-simrun-offline-berichte-datadoc.md` | Umsetzung | autonom | fertig |
-| RU70.20 | `RU70.20-mcp-sim-balance-bindings.md` | Umsetzung | autonom | in Arbeit |
+| RU70.20 | `RU70.20-mcp-sim-balance-bindings.md` | Umsetzung | autonom | fertig |
 | RU70.21 | `RU70.21-review-abnahme.md` | Review | autonom | offen |
 
 Reihenfolge = Tabelle; jede Session hängt an der vorigen (RU70.1 an RU66 und RU67).

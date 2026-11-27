@@ -14,7 +14,7 @@ use crate::gameexe::{self, Cancel, Event, Options};
 mod tests;
 
 /// Begrenzt einen Aufruf (auch `sim_run`, 100000 Ticks dauern Sekunden).
-const ENGINE_TIMEOUT: Duration = Duration::from_secs(120);
+pub(super) const ENGINE_TIMEOUT: Duration = Duration::from_secs(120);
 
 /// Argumente von `level_generate`; so gehen sie auch als Eingabe-JSON an die EXE.
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
@@ -31,10 +31,19 @@ pub(super) async fn game_call(
     options: Options,
     canceled: impl Future<Output = ()> + Send,
 ) -> Result<Event, gameexe::Error> {
+    game_call_within(options, ENGINE_TIMEOUT, canceled).await
+}
+
+/// Wie [`game_call`] mit eigener Frist (`sim_run` mit Fenster, `replay_run`).
+pub(super) async fn game_call_within(
+    options: Options,
+    limit: Duration,
+    canceled: impl Future<Output = ()> + Send,
+) -> Result<Event, gameexe::Error> {
     let stop = async {
         tokio::select! {
             () = canceled => Cancel::Canceled,
-            () = tokio::time::sleep(ENGINE_TIMEOUT) => Cancel::Deadline,
+            () = tokio::time::sleep(limit) => Cancel::Deadline,
         }
     };
     gameexe::call(options, stop).await

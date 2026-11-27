@@ -3,6 +3,12 @@
 
 mod checkout_policy;
 mod kit;
+mod simtest;
+mod simtest_baseline;
+mod simtest_lock;
+mod simtest_seam;
+mod simtest_spec;
+mod simtest_wait;
 #[cfg(test)]
 pub(crate) mod test_helpers;
 mod tools;
@@ -15,6 +21,8 @@ mod tools_assets_review;
 mod tools_assets_set;
 mod tools_engine;
 mod tools_gamedata;
+mod tools_replay;
+mod tools_sim;
 mod tools_world;
 mod tools_world_story;
 
@@ -22,6 +30,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use crate::ports;
+use crate::simrun::Registry;
 use crate::world::{self, EngineFactory};
 pub use kit::{Call, HEADER_ROOT, Snapshot, find_root};
 use kit::{KitServer, Logger, Options, Tracker, resolve_port_env};
@@ -50,6 +59,7 @@ pub struct Config {
 /// MCP-Server des Studios.
 pub struct Server {
     kit: Arc<KitServer<Studio>>,
+    sims: Arc<Registry>,
 }
 
 impl Server {
@@ -60,13 +70,18 @@ impl Server {
 
     /// Wie [`Server::new`] mit einer anderen Engine-Seite des Welten-Editors (Tests).
     pub(crate) fn with_world_engine(cfg: Config, world_engine: EngineFactory) -> Server {
-        Server::with_studio(cfg, Studio::new(world_engine))
+        let studio = Studio::new(world_engine, cfg.log.clone());
+        Server::with_studio(cfg, studio)
     }
 
     /// Wie [`Server::new`] mit fertigem Empfänger der Tools (Tests ersetzen Recherche und Review).
     fn with_studio(cfg: Config, studio: Studio) -> Server {
         let prompts = tools_assets_prompts::prompt_router(&cfg.root);
+        let sims = Arc::clone(&studio.sim.registry);
+        let stopping = Arc::clone(&sims);
         let options = Options {
+            // Beim Stoppen (auch beim Neustart) enden alle Testläufe; wartende werden verworfen.
+            before_stop: Some(Arc::new(move || stopping.cancel_all())),
             name: NAME.to_owned(),
             version: cfg.version,
             instructions: INSTRUCTIONS.to_owned(),
@@ -82,7 +97,13 @@ impl Server {
         };
         Server {
             kit: KitServer::new(options, studio, tools::router(), prompts),
+            sims,
         }
+    }
+
+    /// Das Register der Testläufe, das `sim_test` und die Balancing-Seite teilen.
+    pub fn sims(&self) -> Arc<Registry> {
+        Arc::clone(&self.sims)
     }
 
     /// Öffnet den HTTP-Server an 127.0.0.1 unter `/mcp`.

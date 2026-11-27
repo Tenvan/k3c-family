@@ -11,7 +11,7 @@ use serde_json::{Map, Value, json};
 mod mcp_client;
 
 /// Golden-Namen, die erst spätere Sessions von RU70 bringen; am Ende leer.
-const PENDING_TOOLS: &[&str] = &["replay_run", "sim_run", "sim_test"];
+const PENDING_TOOLS: &[&str] = &[];
 
 /// Schema auf das, was gleich sein muss: je Eigenschaft Typ (ohne `null`), Beschreibung, `enum`, `items.type`; dazu die
 /// sortierten Pflichtfelder.

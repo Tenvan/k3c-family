@@ -115,7 +115,7 @@ fn sources(src: &Path, path: &Path, out: &mut Vec<(String, String)>) {
 }
 
 /// `balance`, `simrun`, `datadoc`, `gamedata` und die Balance-Bindings schreiben nur über die Helfer mit Wächter.
-/// `simrun`, `datadoc` und `app/balance*.rs` zählen mit, sobald es sie gibt (RU70.18 bis RU70.20).
+/// Von den Bindings (`app/balance*.rs`) muss wie in Go mindestens eines dabei sein.
 #[test]
 fn balancing_schreibt_nur_ueber_waechter() {
     let raw_write = Regex::new(
@@ -130,6 +130,7 @@ fn balancing_schreibt_nur_ueber_waechter() {
             sources(&src, &path, &mut files);
         }
     }
+    let before = files.len();
     for entry in fs::read_dir(src.join("app")).expect("app") {
         let path = entry.expect("Eintrag").path();
         if path
@@ -139,9 +140,10 @@ fn balancing_schreibt_nur_ueber_waechter() {
             sources(&src, &path, &mut files);
         }
     }
+    let bindings = files.len() - before;
     assert!(
-        files.len() >= 20,
-        "nur {} Dateien gelesen: Pfade stimmen nicht",
+        files.len() >= 20 && bindings > 0,
+        "nur {} Dateien, {bindings} Bindings gelesen: Pfade stimmen nicht",
         files.len()
     );
     // die Helfer selbst, jeder Aufruf hinter dem Wächter

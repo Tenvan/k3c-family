@@ -8,7 +8,7 @@ use k3c_kit::uikit::{self, Method};
 use serde::Serialize;
 use serde_json::Value;
 
-use super::{App, assets, hub, world};
+use super::{App, assets, balance, hub, world};
 
 #[cfg(test)]
 #[path = "rpc_tests.rs"]
@@ -17,7 +17,7 @@ mod tests;
 /// Eine Methode: Argumente als JSON-Array, Ergebnis oder Fehlertext. Sie darf blockieren.
 pub type Handler = fn(&App, &[Value]) -> Result<Value, String>;
 
-/// Alle Methoden nach Namen wie in Go. Spätere Sessions ergänzen hier und kürzen `PENDING_METHODS`.
+/// Alle Methoden nach Namen wie in Go.
 pub const METHODS: &[(&str, Handler)] = &[
     ("Info", info),
     ("StudioSounds", studio_sounds),
@@ -59,6 +59,24 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("HubCheck", hub::check),
     ("HubRules", hub::rules),
     ("HubSave", hub::save),
+    ("BalanceStart", balance::start),
+    ("BalanceRuns", balance::runs),
+    ("BalanceStop", balance::stop),
+    ("BalanceReports", balance::report_list),
+    ("BalanceBaselines", balance::baselines),
+    ("BalanceReport", balance::report),
+    ("BalanceTuning", balance::tuning),
+    ("BalanceDataFiles", balance::data_files),
+    ("BalanceDataDoc", balance::data_doc),
+    ("BalanceDataValues", balance::data_values),
+    ("BalanceDataValuesAll", balance::data_values_all),
+    ("BalanceReportRate", balance::report_rate),
+    ("BalanceReportDelete", balance::report_delete),
+    ("BalanceReportsRate", balance::reports_rate),
+    ("BalanceReportsDelete", balance::reports_delete),
+    ("BalanceSaveBaseline", balance::save_baseline),
+    ("BalanceInsights", balance::insights),
+    ("BalanceReportHTML", balance::report_html),
 ];
 
 pub(super) fn encode(value: impl Serialize) -> Result<Value, String> {

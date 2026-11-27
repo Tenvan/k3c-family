@@ -11,27 +11,8 @@ use serde_json::{Value, json};
 use super::*;
 use crate::app::VERSION;
 
-/// Methoden von `GoApp`, die erst spätere Sessions von RU70 bringen; am Ende leer.
-const PENDING_METHODS: &[&str] = &[
-    "BalanceStart",
-    "BalanceRuns",
-    "BalanceStop",
-    "BalanceReports",
-    "BalanceBaselines",
-    "BalanceReport",
-    "BalanceTuning",
-    "BalanceDataFiles",
-    "BalanceDataDoc",
-    "BalanceDataValues",
-    "BalanceDataValuesAll",
-    "BalanceReportRate",
-    "BalanceReportDelete",
-    "BalanceReportsRate",
-    "BalanceReportsDelete",
-    "BalanceSaveBaseline",
-    "BalanceInsights",
-    "BalanceReportHTML",
-];
+/// Methoden von `GoApp`, die noch fehlen; seit RU70.20 keine (AC-03).
+const PENDING_METHODS: &[&str] = &[];
 
 fn app() -> Arc<App> {
     let app = App::new("unbenutzt".into(), 5281, None);
