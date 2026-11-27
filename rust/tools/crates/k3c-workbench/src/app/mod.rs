@@ -4,6 +4,8 @@
 mod console_batch;
 pub mod events;
 mod git;
+#[path = "github.rs"]
+mod github_status;
 pub mod headless;
 mod info;
 mod logs;
@@ -96,7 +98,7 @@ impl App {
         let usage_file = config_path(&root, ports::USAGE_FILE);
         let git = GitSeat {
             repo: gitops::Repo::new(root.clone()),
-            merged: github::merged_source(root.clone()),
+            github: Arc::new(github::Client::new(root.clone())),
         };
         App {
             git,

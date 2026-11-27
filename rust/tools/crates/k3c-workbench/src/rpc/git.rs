@@ -27,6 +27,26 @@ pub(super) fn check_merged(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcE
     encode(app.git_check_merged(&names.unwrap_or_default())?)
 }
 
+pub(super) fn prs(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    no_args(args)?;
+    encode(app.git_prs()?)
+}
+
+pub(super) fn pr_create(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    let (title, body) = uikit::args::<(String, String)>(args.to_vec())?;
+    encode(app.git_pr_create(&title, &body)?)
+}
+
+pub(super) fn pr_action(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    let (number, action) = uikit::args::<(i64, String)>(args.to_vec())?;
+    encode(app.git_pr_action(number, &action)?)
+}
+
+pub(super) fn github_status(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    let (force,) = uikit::args::<(bool,)>(args.to_vec())?;
+    encode(app.github_status(force)?)
+}
+
 pub(super) fn stamp(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
     no_args(args)?;
     encode(app.git_stamp()?)

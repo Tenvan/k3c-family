@@ -70,7 +70,7 @@ keine (Leitfaden, 🧑 2026-11-26).
 | RU69.4 | `RU69.4-check-run.md` | Umsetzung | autonom | fertig |
 | RU69.5 | `RU69.5-logs.md` | Umsetzung | autonom | fertig |
 | RU69.6 | `RU69.6-git.md` | Umsetzung | autonom | fertig |
-| RU69.7 | `RU69.7-github-git-commit.md` | Umsetzung | autonom | in Arbeit |
+| RU69.7 | `RU69.7-github-git-commit.md` | Umsetzung | autonom | fertig |
 | RU69.8 | `RU69.8-planung-modell-lesen.md` | Umsetzung | autonom | offen |
 | RU69.9 | `RU69.9-planung-felder-abschnitte.md` | Umsetzung | autonom | offen |
 | RU69.10 | `RU69.10-planung-anlegen-loeschen-index.md` | Umsetzung | autonom | offen |

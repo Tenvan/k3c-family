@@ -61,6 +61,10 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("GitDeleteBranches", git::delete_branches),
     ("GitCheckMerged", git::check_merged),
     ("GitStamp", git::stamp),
+    ("GitPRs", git::prs),
+    ("GitPRCreate", git::pr_create),
+    ("GitPRAction", git::pr_action),
+    ("GitHubStatus", git::github_status),
 ];
 
 /// Das eine Argument einer Methode mit einem Namen.

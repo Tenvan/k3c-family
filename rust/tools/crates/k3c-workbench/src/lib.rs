@@ -2,6 +2,8 @@
 //! oder `--headless` (Oberflächen-API für den Browser) hostet den MCP-Server k3c-workbench.
 
 pub mod app;
+mod capture;
+pub mod gitcommit;
 pub mod github;
 pub mod gitops;
 pub mod logs;

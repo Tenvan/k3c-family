@@ -50,6 +50,8 @@ pub(super) const CATALOG: &[&str] = &[
     "task_stop",
     "task_status",
     "task_output",
+    "gh_status",
+    "git_commit",
 ];
 
 #[tool_router]
@@ -84,4 +86,6 @@ pub(super) fn router() -> ToolRouter<Workbench> {
         + Workbench::service_router()
         + Workbench::port_router()
         + Workbench::task_router()
+        + Workbench::github_router()
+        + Workbench::git_commit_router()
 }

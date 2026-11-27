@@ -4,6 +4,8 @@
 mod check;
 mod checkout_policy;
 mod console;
+mod git_commit;
+mod github;
 mod logs;
 mod logstats;
 mod logtext;
@@ -91,6 +93,10 @@ pub struct Config {
     pub on_notify: Option<NotifyHook>,
     /// Ein Prüflauf beginnt oder endet (Quellenleiste der Oberfläche).
     pub on_check: Option<CheckHook>,
+    /// Quelle für `gh_status`; ohne sie das echte `gh` in `root`.
+    pub github: Option<Arc<crate::github::Client>>,
+    /// Änderungen an der Umgebung von git für `git_commit` (Tests schotten damit ab).
+    pub git_env: Vec<crate::gitops::EnvChange>,
 }
 
 impl Default for Config {
@@ -109,6 +115,8 @@ impl Default for Config {
             on_call: None,
             on_notify: None,
             on_check: None,
+            github: None,
+            git_env: Vec::new(),
         }
     }
 }
@@ -124,6 +132,8 @@ struct Env {
     worktrees: worktree_services::Worktrees,
     port_busy: PortBusy,
     checks: Arc<check::Checks>,
+    github: Arc<crate::github::Client>,
+    git_env: Vec<crate::gitops::EnvChange>,
 }
 
 impl Env {
@@ -142,6 +152,11 @@ impl Env {
             worktrees: worktree_services::Worktrees::default(),
             port_busy: cfg.port_busy.clone().unwrap_or_else(worktree_services::port_busy),
             checks: Arc::new(checks),
+            github: cfg
+                .github
+                .clone()
+                .unwrap_or_else(|| Arc::new(crate::github::Client::new(cfg.root.clone()))),
+            git_env: cfg.git_env.clone(),
         }
     }
 }
