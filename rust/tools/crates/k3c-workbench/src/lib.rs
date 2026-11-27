@@ -8,6 +8,7 @@ pub mod github;
 pub mod gitops;
 pub mod logs;
 pub mod mcp;
+pub mod planning;
 pub mod platform;
 pub mod ports;
 pub mod rpc;

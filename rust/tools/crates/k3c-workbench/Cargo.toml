@@ -21,6 +21,8 @@ tauri-build.workspace = true
 
 [dependencies]
 k3c-kit = { path = "../k3c-kit" }
+# Planung: Ticket-Kern (Go `assetkit/ticket`), hier das Umbenennen mit Wiederholung.
+k3c-assetkit = { path = "../k3c-assetkit" }
 tauri.workspace = true
 tauri-plugin-window-state.workspace = true
 tauri-plugin-single-instance.workspace = true
