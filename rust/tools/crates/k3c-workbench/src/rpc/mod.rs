@@ -85,6 +85,14 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("PlaytestStop", playtest::stop),
     ("PlaytestStatus", playtest::status),
     ("PlaytestCheck", playtest::check),
+    ("PlaytestTranscribe", playtest::transcribe),
+    ("PlaytestModels", playtest::models),
+    ("PlaytestTranscribeStatus", playtest::transcribe_status),
+    ("PlaytestTranscribeCancel", playtest::transcribe_cancel),
+    ("PlaytestTimeline", playtest::timeline),
+    ("PlaytestFindings", playtest::findings),
+    ("PlaytestFindingUpdate", playtest::finding_update),
+    ("PlaytestFrameSkip", playtest::frame_skip),
 ];
 
 /// Das eine Argument einer Methode mit einem Namen.

@@ -23,7 +23,7 @@ pub(super) const STAND_RUNNING: &str = "laeuft";
 /// Nur ASCII-Ziffern: nichts, was aus der Ablage herausführt.
 static ID: LazyLock<Option<Regex>> = LazyLock::new(|| Regex::new(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+$").ok());
 
-fn valid_id(id: &str) -> bool {
+pub(super) fn valid_id(id: &str) -> bool {
     ID.as_ref().is_some_and(|re| re.is_match(id))
 }
 

@@ -28,7 +28,7 @@ fn write(root: &Path, rel: &str, text: &str) {
 }
 
 /// Ein docs/ mit den echten Vorlagen (nur gelesen), leerem Index und Fahrplan.
-fn plan_repo() -> tempfile::TempDir {
+pub(in crate::mcp) fn plan_repo() -> tempfile::TempDir {
     let tmp = tmp_dir();
     let root = tmp.path();
     write(root, "docs/backlog/README.md", PLAN_INDEX);

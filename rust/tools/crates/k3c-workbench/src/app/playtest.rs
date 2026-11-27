@@ -1,6 +1,6 @@
-//! Die Commands der Aufnahme auf der Seite Spieltest (Port von `app_playtest.go`, B-1218). Der Ordner-Vertrag steht in
-//! [`crate::playtest`]; die Methoden reichen nur durch und melden ins Log. Auswertung (RU69.14) und Medien (RU69.15)
-//! fehlen noch.
+//! Die Commands der Aufnahme und Auswertung auf der Seite Spieltest (Port von `app_playtest.go`, B-1218). Der
+//! Ordner-Vertrag steht in [`crate::playtest`]; die Methoden reichen nur durch und melden ins Log. Medien und
+//! Bildbeschreibung (RU69.15) fehlen noch.
 
 use std::path::Path;
 use std::sync::{Arc, Mutex, OnceLock, PoisonError};
@@ -12,8 +12,9 @@ use tokio::runtime::Handle;
 use super::services::STOPPED;
 use super::{App, lock};
 use crate::playtest::{
-    self, Capability, Config, Devices, Error, LogFn, LookPath, Options, PickCache, Plan, Probe, Recorder, Session,
-    Spawn, Status, Store,
+    self, Active, Capability, Config, Devices, Error, Finding, FindingPatch, JobStatus, LogFn, LookPath, ModelInfo,
+    Options, PickCache, Plan, Probe, Recorder, Session, Spawn, Status, Store, Timeline, TranscribeConfig,
+    TranscribeOptions, Transcriber,
 };
 
 /// Fristen der kurzen ffmpeg-Aufrufe: Probe, Geräteliste, Prüfung der Auswertung.
@@ -59,7 +60,7 @@ impl Tools {
     }
 }
 
-/// Zustand der Seite Spieltest: höchstens ein Recorder je App.
+/// Zustand der Seite Spieltest: höchstens ein Recorder und eine Auswertung je App.
 #[derive(Default)]
 pub(super) struct PlaytestSeat {
     /// Kennung der laufenden Aufnahme; die Ablage fragt sie, auch bevor es einen Recorder gibt.
@@ -67,16 +68,20 @@ pub(super) struct PlaytestSeat {
     cache: PickCache,
     tools: OnceLock<Tools>,
     recorder: OnceLock<Arc<Recorder>>,
+    transcriber: OnceLock<Arc<Transcriber>>,
 }
 
 impl App {
-    fn playtest_store(&self) -> Store {
+    /// Kennung der laufenden Aufnahme (auch für die Ablage der MCP-Tools).
+    pub(super) fn playtest_active(&self) -> Active {
         let active = Arc::clone(&self.playtest.active);
+        Arc::new(move || active.lock().unwrap_or_else(PoisonError::into_inner).clone())
+    }
+
+    fn playtest_store(&self) -> Store {
         Store {
             root: self.root.join("playtests"),
-            active: Some(Arc::new(move || {
-                active.lock().unwrap_or_else(PoisonError::into_inner).clone()
-            })),
+            active: Some(self.playtest_active()),
         }
     }
 
@@ -233,6 +238,90 @@ impl App {
         let tools = self.playtest_tools()?;
         Ok(playtest::check(&tools.look_path, &tools.out, &(tools.model)()))
     }
+
+    fn transcriber(&self) -> Result<&Arc<Transcriber>, String> {
+        if let Some(transcriber) = self.playtest.transcriber.get() {
+            return Ok(transcriber);
+        }
+        let tools = self.playtest_tools()?.clone();
+        let root = self.root.clone();
+        let config = TranscribeConfig {
+            store: self.playtest_store(),
+            spawn: tools.spawn,
+            look_path: tools.look_path,
+            out: tools.out,
+            model: tools.model,
+            models: Arc::new(move || models(&root)),
+            log: Some(self.playtest_log()),
+        };
+        Ok(self.playtest.transcriber.get_or_init(|| Transcriber::new(config)))
+    }
+
+    /// Wertet eine Session im Hintergrund aus: Transkript aus `voice.wav`, ein Bild je Marker.
+    pub fn playtest_transcribe(&self, id: &str, options: &TranscribeOptions) -> Result<JobStatus, String> {
+        self.wait();
+        self.transcriber()?.start(id, options).map_err(|e| e.to_string())
+    }
+
+    /// Die wählbaren Modelldateien (`K3C_WHISPER_MODEL`, `models/`, `models/whisper/`) mit Größe.
+    pub fn playtest_models(&self) -> Vec<ModelInfo> {
+        self.wait();
+        models(&self.root)
+    }
+
+    /// Stand der Auswertung.
+    pub fn playtest_transcribe_status(&self) -> JobStatus {
+        self.wait();
+        self.playtest
+            .transcriber
+            .get()
+            .map_or_else(JobStatus::default, |t| t.status())
+    }
+
+    /// Bricht die Auswertung ab.
+    pub fn playtest_transcribe_cancel(&self) -> Result<(), String> {
+        self.wait();
+        let transcriber = self
+            .playtest
+            .transcriber
+            .get()
+            .ok_or_else(|| Error::NoJob.to_string())?;
+        transcriber.cancel().map_err(|e| e.to_string())
+    }
+
+    /// Zeitleiste einer Session: Sätze, Marker und deren Bilder.
+    pub fn playtest_timeline(&self, id: &str) -> Result<Timeline, String> {
+        self.wait();
+        self.playtest_store().timeline(id).map_err(|e| e.to_string())
+    }
+
+    /// Die Befunde einer Session (`findings.json`).
+    pub fn playtest_findings(&self, id: &str) -> Result<Vec<Finding>, String> {
+        self.wait();
+        self.playtest_store().findings(id).map_err(|e| e.to_string())
+    }
+
+    /// Setzt Haken und Vorschlag (Domäne, Typ, Prio, Projekt, Sprint) eines Befunds.
+    pub fn playtest_finding_update(&self, id: &str, finding: &str, patch: &FindingPatch) -> Result<Finding, String> {
+        self.wait();
+        self.playtest_store()
+            .update_finding(id, finding, patch)
+            .map_err(|e| e.to_string())
+    }
+
+    /// Blendet das Bild eines Markers aus oder ein (die Datei bleibt).
+    pub fn playtest_frame_skip(&self, id: &str, nr: i64, skip: bool) -> Result<(), String> {
+        self.wait();
+        self.playtest_store()
+            .set_frame_skip(id, nr, skip)
+            .map_err(|e| e.to_string())
+    }
+}
+
+/// Die wählbaren Modelle der Wurzel, mit `K3C_WHISPER_MODEL` aus der Umgebung.
+fn models(root: &Path) -> Vec<ModelInfo> {
+    let env = std::env::var(playtest::MODEL_ENV).unwrap_or_default();
+    playtest::list_models(root, &env)
 }
 
 #[cfg(test)]

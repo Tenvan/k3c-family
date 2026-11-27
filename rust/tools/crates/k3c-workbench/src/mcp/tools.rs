@@ -58,6 +58,11 @@ pub(super) const CATALOG: &[&str] = &[
     "plan_section",
     "plan_sections",
     "plan_delete",
+    "playtest_list",
+    "playtest_get",
+    "playtest_frame",
+    "playtest_findings_set",
+    "playtest_tickets_create",
     "gh_status",
     "plan_waves",
     "plan_queue",
@@ -100,6 +105,7 @@ pub(super) fn router() -> ToolRouter<Workbench> {
         + Workbench::port_router()
         + Workbench::task_router()
         + Workbench::planning_router()
+        + Workbench::playtest_router()
         + Workbench::github_router()
         + Workbench::planning_waves_router()
         + Workbench::planning_digest_router()

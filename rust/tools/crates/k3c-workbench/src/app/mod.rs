@@ -245,6 +245,10 @@ impl App {
             on_check: Some(Arc::new(move |st| {
                 check.emit_value(events::SOURCE_STATE, &logs::check_source(st));
             })),
+            playtest: mcp::PlaytestHooks {
+                active: Some(self.playtest_active()),
+                ..mcp::PlaytestHooks::default()
+            },
             ..mcp::Config::default()
         }
     }

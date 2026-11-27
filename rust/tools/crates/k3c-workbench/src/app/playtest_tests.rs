@@ -83,6 +83,47 @@ fn playtest_bindings_liste_plan_loeschen() {
     assert!(procs.lock().unwrap().is_empty(), "Prozess gestartet");
 }
 
+/// Die acht Commands der Auswertung; ohne Modell startet kein Prozess.
+#[test]
+fn playtest_auswertung_ueber_die_commands() {
+    let (root, app, procs) = app();
+    let session = json!("2026-11-21-1");
+    put(
+        &root.path().join("playtests"),
+        "2026-11-21-1/markers.jsonl",
+        "{\"ts\":2,\"kind\":\"pad\",\"player\":1}\n",
+    );
+    put(
+        &root.path().join("playtests"),
+        "2026-11-21-1/frames/marker-1.jpg",
+        "jpg",
+    );
+    let idle = json!({"running": false, "id": "", "step": "", "done": 0, "total": 0, "message": "", "error": ""});
+    assert_eq!(rpc(&app, "PlaytestTranscribeStatus", &[]), idle);
+    assert_eq!(refused(&app, "PlaytestTranscribeCancel", &[]), "keine Auswertung aktiv");
+    assert!(rpc(&app, "PlaytestModels", &[]).is_array());
+    let options = json!({"model": "", "language": ""});
+    let error = refused(&app, "PlaytestTranscribe", &[session.clone(), options]);
+    assert!(error.starts_with("Modell fehlt: fehlt.bin"), "{error}");
+    assert_eq!(rpc(&app, "PlaytestTranscribeStatus", &[]), idle);
+    let timeline = rpc(&app, "PlaytestTimeline", std::slice::from_ref(&session));
+    assert_eq!(timeline["entries"][0]["frame"], "frames/marker-1.jpg");
+    let skip = [session.clone(), json!(1), json!(true)];
+    assert_eq!(rpc(&app, "PlaytestFrameSkip", &skip), Value::Null);
+    let timeline = rpc(&app, "PlaytestTimeline", std::slice::from_ref(&session));
+    assert_eq!(timeline["entries"][0]["skip"], true);
+    assert_eq!(rpc(&app, "PlaytestFindings", std::slice::from_ref(&session)), json!([]));
+    put(
+        &root.path().join("playtests"),
+        "2026-11-21-1/findings.json",
+        r#"{"findings":[{"id":"f1","quote":"x","ts":1}]}"#,
+    );
+    let patch = [session, json!("f1"), json!({"selected": true, "type": "Idee"})];
+    let changed = rpc(&app, "PlaytestFindingUpdate", &patch);
+    assert_eq!((&changed["selected"], &changed["type"]), (&json!(true), &json!("Idee")));
+    assert!(procs.lock().unwrap().is_empty(), "Prozess gestartet");
+}
+
 #[test]
 fn playtest_aufnahme_ueber_die_commands() {
     let (_root, app, procs) = app();

@@ -17,7 +17,7 @@ use crate::planning::{self, Filter, NewDoc, NextFilter};
 
 #[cfg(test)]
 #[path = "planning_tests.rs"]
-mod tests;
+pub(super) mod tests;
 
 /// Eingabe von `plan_get` und `plan_delete`.
 #[derive(Deserialize, JsonSchema)]

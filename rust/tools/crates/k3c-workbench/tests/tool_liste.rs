@@ -12,14 +12,7 @@ use serde_json::{Map, Value, json};
 mod test_client;
 
 /// Tools, die erst spätere Sessions von RU69 bringen; am Ende leer.
-const AUSSTEHEND: &[&str] = &[
-    "playtest_findings_set",
-    "playtest_frame",
-    "playtest_get",
-    "playtest_list",
-    "playtest_tickets_create",
-    "workbench_resources",
-];
+const AUSSTEHEND: &[&str] = &["workbench_resources"];
 
 fn snapshot_path() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/data/go-tools.json")
@@ -97,7 +90,7 @@ async fn tools_wie_go() {
     let go = snapshot();
     let rust = rust_tools().await;
     assert_eq!(go.len(), 45, "Schnappschuss: {:?}", go.keys());
-    assert_eq!(AUSSTEHEND.len(), 6);
+    assert_eq!(AUSSTEHEND.len(), 1);
     for (name, tool) in &rust {
         assert_eq!(Some(tool), go.get(name), "{name} weicht von der Go-Fassung ab");
     }

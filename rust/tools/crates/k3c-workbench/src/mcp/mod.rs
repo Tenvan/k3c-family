@@ -14,6 +14,8 @@ mod planning;
 mod planning_digest;
 mod planning_index;
 mod planning_waves;
+mod playtest;
+mod playtest_text;
 mod ports;
 mod services;
 mod stats_target;
@@ -62,6 +64,7 @@ use crate::services::Controller;
 pub use check::{CheckHook, CheckState};
 pub(crate) use logs::log_path;
 pub use notify::{Notice, NotifyHook};
+pub use playtest::PlaytestHooks;
 pub(crate) use status::log_sources;
 pub use tasks::TaskHost;
 use tools::Workbench;
@@ -101,6 +104,8 @@ pub struct Config {
     pub github: Option<Arc<crate::github::Client>>,
     /// Änderungen an der Umgebung von git für `git_commit` (Tests schotten damit ab).
     pub git_env: Vec<crate::gitops::EnvChange>,
+    /// Laufende Aufnahme der App und Attrappen für `playtest_*`.
+    pub playtest: PlaytestHooks,
 }
 
 impl Default for Config {
@@ -121,6 +126,7 @@ impl Default for Config {
             on_check: None,
             github: None,
             git_env: Vec::new(),
+            playtest: PlaytestHooks::default(),
         }
     }
 }
@@ -138,6 +144,7 @@ struct Env {
     checks: Arc<check::Checks>,
     github: Arc<crate::github::Client>,
     git_env: Vec<crate::gitops::EnvChange>,
+    playtest: PlaytestHooks,
 }
 
 impl Env {
@@ -161,6 +168,7 @@ impl Env {
                 .clone()
                 .unwrap_or_else(|| Arc::new(crate::github::Client::new(cfg.root.clone()))),
             git_env: cfg.git_env.clone(),
+            playtest: cfg.playtest.clone(),
         }
     }
 }

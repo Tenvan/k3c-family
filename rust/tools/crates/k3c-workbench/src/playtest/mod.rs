@@ -8,6 +8,7 @@ mod devices;
 mod encoders;
 mod exec;
 mod ffmpeg_find;
+mod findings;
 mod frames;
 mod level;
 #[allow(clippy::module_inception)]
@@ -15,8 +16,15 @@ mod playtest;
 mod record;
 mod start;
 mod stats;
+mod tickets;
+mod timeline;
+mod transcribe;
+mod transcribe_job;
+mod transcript_txt;
 mod watch;
 
+#[cfg(test)]
+pub(crate) mod eval_rig_tests;
 #[cfg(test)]
 pub(crate) mod rig_tests;
 
@@ -28,10 +36,16 @@ pub use devices::{Monitor, Probe, check_devices};
 pub use encoders::{PickCache, pick_encoder};
 pub use exec::{Devices, Proc, Spawn, exec_spawn, game_finder, list_devices, run_output};
 pub use ffmpeg_find::{FFMPEG_ENV, LookPath, find_ffmpeg};
+pub use findings::{Finding, FindingIn, FindingPatch};
 pub use frames::{capture_start, frame_args, frame_at};
-pub use playtest::{Action, File, Meta, Plan, Session, Store};
+pub use playtest::{Action, Active, File, Meta, Plan, Session, Store};
 pub use record::{Config, Options, Recorder, Status, ffmpeg_args, game_args, voice_args};
 pub use stats::{EvalStats, Segment, Transcript, make_stats, save_stats};
+pub use tickets::{Planner, RepoPlanner, TicketDefaults, TicketResult};
+pub use timeline::{Entry, FrameDesc, Marker, Timeline};
+pub use transcribe::{ModelInfo, frame_name, list_models, whisper_args};
+pub use transcribe_job::{JobStatus, TranscribeConfig, TranscribeOptions, Transcriber};
+pub use transcript_txt::transcript_text;
 pub use watch::Stats;
 
 /// Dateien des Ordner-Vertrags, die das Modul kennt.
@@ -59,6 +73,13 @@ pub enum Error {
     NoMic,
     BadMonitor,
     NoVideo,
+    NoVoice,
+    TranscribeBusy,
+    NoJob,
+    /// Die Auswertung wurde abgebrochen.
+    Canceled,
+    /// Rest der Meldung nach „ungültiger Befund“.
+    BadFinding(String),
     Other(String),
 }
 
@@ -84,6 +105,11 @@ impl std::fmt::Display for Error {
             Error::NoMic => "kein Mikrofon gewählt",
             Error::BadMonitor => "ungültiger Monitor (0 bis 15)",
             Error::NoVideo => "video.mkv fehlt (gelöscht?), kein Bild möglich",
+            Error::NoVoice => "voice.wav fehlt, nichts zu transkribieren",
+            Error::TranscribeBusy => "Auswertung läuft schon",
+            Error::NoJob => "keine Auswertung aktiv",
+            Error::Canceled => "abgebrochen",
+            Error::BadFinding(rest) => return write!(f, "ungültiger Befund{rest}"),
             Error::Other(text) => text,
         };
         f.write_str(text)

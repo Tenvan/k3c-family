@@ -1,4 +1,5 @@
-//! `TestFrameArgs` und `TestCaptureStart` aus `transcribe_test.go`; für `FrameAt` hat Go keinen eigenen Test hier.
+//! `TestFrameArgs` und `TestCaptureStart` aus `transcribe_test.go`, `TestFrameAtZieltBildUndLehntAb` aus
+//! `findings_test.go`.
 
 use std::sync::{Arc, Mutex};
 
@@ -88,4 +89,6 @@ fn frame_at_erzeugt_einmal_und_meldet_fehler() {
         Error::NoVideo
     );
     assert_eq!(frame_at(&store, &found, &fails, "../x", 1).unwrap_err(), Error::BadId);
+    let unknown = frame_at(&store, &found, &fails, "2026-05-05-5", 5).unwrap_err();
+    assert_eq!(unknown, Error::NotFound);
 }

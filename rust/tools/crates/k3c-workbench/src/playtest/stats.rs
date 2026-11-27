@@ -1,5 +1,5 @@
 //! Statistik der Auswertung (Port von `stats.go`) samt der Form von `transcript.json`, in der sie steht. Den Lauf
-//! selbst bringt RU69.14.
+//! selbst macht `transcribe_job.rs`.
 
 use std::path::Path;
 use std::time::{Duration, SystemTime};
