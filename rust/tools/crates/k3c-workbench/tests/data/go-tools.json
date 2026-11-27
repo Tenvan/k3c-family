@@ -1,0 +1,1169 @@
+[
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Führt eine Prüfung aus einem festen Katalog aus (task:check, task:test, task:typecheck, task:lint, task:build, task:check:go, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:diff:go, task:check:race, go:test, go:lint, dev:test, task:check:dev) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. dev:test baut das Workbench-Frontend bei Bedarf und fährt go test der Workbench, task:check:dev ist die volle Workbench-Prüfung (Frontend, Vitest, go test, Lint); beide brauchen task install. task:check:diff prüft nur, was die geänderten Dateien gegenüber der Basis HEAD brauchen (vor jedem Commit), in zwei Stufen: Stufe 1 Regel-Tests, Lint, Typecheck, go vet; Stufe 2 nur nach grüner Stufe 1 die Tests der geänderten Pakete. task:check:diff:plan zeigt nur die Schritte, task:check:diff:js und task:check:diff:go wiederholen nach einem roten Lauf nur diese Bahn; task:check:race ist der langsame Race-Detector (Review, CI). Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>. Wartet bis zum Ende des Laufs und meldet dabei Fortschritt (ohne progressToken höchstens 4 min, dann Lauf-ID; run=<ID> wartet weiter auf diesen Lauf). Nie in Schleifen nachfragen. Nutze es bei: jeder Prüfung vor einem Abschluss. Statt: task check, task test, go test oder golangci-lint in der Shell; volle Ausgabe über console_tail check:<ziel>.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "pattern": {
+          "description": "optionales Testmuster, nur bei task:test, go:test und dev:test",
+          "type": "string"
+        },
+        "run": {
+          "description": "Lauf-ID aus einer Antwort „läuft noch“: wartet weiter auf diesen Lauf und liefert sein Ergebnis, statt einen neuen zu starten",
+          "type": "string"
+        },
+        "target": {
+          "description": "Ziel aus dem Katalog: task:check, task:test, task:typecheck, task:lint, task:build, task:check:go, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:diff:go, task:check:race, go:test, go:lint, dev:test, task:check:dev",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "check_run"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Flüchtiger Konsolenpuffer eines Dienstes oder Laufs (z. B. Vite, check:task:test), stderr mit \"! \"; since liefert nur neuere Zeilen. Nutze es bei: Startfehler, Rohausgabe eines Prüflaufs. Statt: Ausgabe in der Shell mitlesen.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "limit": {
+          "description": "Zahl der letzten Zeilen, Standard 50, höchstens 500",
+          "type": "integer"
+        },
+        "service": {
+          "description": "Dienst oder Lauf, z. B. Vite oder check:task:test (Lauf des eigenen Checkouts, im Worktree checkout setzen)",
+          "type": "string"
+        },
+        "since": {
+          "description": "nur Zeilen nach dieser Nummer (Nr. aus der letzten Antwort)",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "service"
+      ]
+    },
+    "name": "console_tail"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Erreichbare Adressen je Dienst und des MCP-Servers (target: Dienst oder mcp). Nutze es bei: vor jedem HTTP-Aufruf und jeder Browserprüfung, gerade im Worktree mit versetzten Ports. Statt: Ports raten.",
+    "inputSchema": {
+      "properties": {
+        "target": {
+          "description": "Dienst aus svc_status oder mcp; leer: alle",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "get_urls"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "GitHub-Stand je Sprint über die gh-CLI: PR (offen, Entwurf, gemergt), CI (grün, rot, läuft), Merge-Konflikt, dazu der letzte CI-Lauf auf main. 60 s zwischengespeichert, force holt neu. Nutze es bei: Stand von PR und CI eines Sprints. Statt: gh pr list und gh run list in der Shell.",
+    "inputSchema": {
+      "properties": {
+        "force": {
+          "description": "Zwischenspeicher (60 s) umgehen",
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "name": "gh_status"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Committet die genannten Dateien des Repos auf dem aktuellen Feature-Branch. Staged wird nur, was in paths steht; liegt anderes im Index, lehnt das Werkzeug ab. Auf main wird nie committet. Die Nachricht folgt dem Format `typ(domäne): Betreff` (docs/arbeitsweise.md › Commit-Titel). Hooks laufen. Nutze es bei: jedem Commit, auch bei Planungsdateien, die die Workbench angelegt hat. Statt: git add und git commit in der Shell.",
+    "inputSchema": {
+      "properties": {
+        "body": {
+          "description": "Rumpf der Nachricht; ggf. Co-Authored-By-Zeile",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "paths": {
+          "description": "Dateien relativ zum Repo; nur diese werden gestaged und committet",
+          "type": "array"
+        },
+        "scope": {
+          "description": "Domäne der Session kleingeschrieben, z. B. sim, cli, reg, dev, inf; leer = kein Scope",
+          "type": "string"
+        },
+        "subject": {
+          "description": "Betreff, eine Zeile, höchstens 72 Zeichen",
+          "type": "string"
+        },
+        "type": {
+          "description": "feat, fix, docs, refactor, test, perf, chore, ci, build oder style",
+          "type": "string"
+        }
+      },
+      "required": [
+        "paths",
+        "subject",
+        "type"
+      ]
+    },
+    "name": "git_commit"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Zeilen um einen Zeitpunkt ts (before/after), älteste zuerst, \">\" markiert die erste Zeile ab ts. Nutze es bei: was geschah vor und nach einem Fehler. Statt: Datei an der Stelle öffnen.",
+    "inputSchema": {
+      "properties": {
+        "after": {
+          "description": "Zeilen danach, Standard 10",
+          "type": "integer"
+        },
+        "before": {
+          "description": "Zeilen davor, Standard 10",
+          "type": "integer"
+        },
+        "limit": {
+          "description": "höchstens so viele Zeilen insgesamt, Standard 100, höchstens 500",
+          "type": "integer"
+        },
+        "service": {
+          "description": "Dienst mit Logdatei aus logs_services, z. B. k3c-workbench",
+          "type": "string"
+        },
+        "ts": {
+          "description": "Zeitpunkt RFC 3339, z. B. aus logs_errors oder logs_query",
+          "type": "string"
+        }
+      },
+      "required": [
+        "service",
+        "ts"
+      ]
+    },
+    "name": "logs_context"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Warnungen und Fehler, gleichartige Meldungen zu je einer Zeile verdichtet (Standard: ab WARN, 24h, alle Dienste). Nutze es bei: erste Fehlersuche. Statt: Logdatei lesen.",
+    "inputSchema": {
+      "properties": {
+        "level": {
+          "description": "Mindest-Level, Standard WARN",
+          "type": "string"
+        },
+        "service": {
+          "description": "Dienst mit Logdatei aus logs_services; leer: alle",
+          "type": "string"
+        },
+        "since": {
+          "description": "Standard 24h",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "logs_errors"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Logzeilen eines Dienstes, neueste zuerst, gefiltert nach level, ns, pattern (Regex auf die Meldung) und since. Nutze es bei: gezielte Suche. Statt: Datei lesen oder grep.",
+    "inputSchema": {
+      "properties": {
+        "level": {
+          "description": "Mindest-Level: DEBUG, INFO, WARN oder ERROR",
+          "type": "string"
+        },
+        "limit": {
+          "description": "höchstens so viele Einträge, Standard 100, höchstens 500",
+          "type": "integer"
+        },
+        "ns": {
+          "description": "nur dieser Bereich, z. B. mcp",
+          "type": "string"
+        },
+        "pattern": {
+          "description": "regulärer Ausdruck auf die Meldung",
+          "type": "string"
+        },
+        "service": {
+          "description": "Dienst mit Logdatei aus logs_services, z. B. k3c-workbench",
+          "type": "string"
+        },
+        "since": {
+          "description": "Dauer wie 30m, 24h, 7d oder Zeitpunkt RFC 3339",
+          "type": "string"
+        }
+      },
+      "required": [
+        "service"
+      ]
+    },
+    "name": "logs_query"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Dienste mit Logdatei (logs/*.jsonl mit Größe und letztem Eintrag) und Konsolen-Quellen. Nutze es bei: welcher Name gilt für service. Statt: ls logs/.",
+    "inputSchema": {
+      "properties": {},
+      "required": []
+    },
+    "name": "logs_services"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Neue Zeilen eines Dienstes ab einem Byte-Cursor, älteste zuerst, mit dem Cursor für den nächsten Aufruf. Nutze es bei: Tailing während eines Tests. Statt: tail -f.",
+    "inputSchema": {
+      "properties": {
+        "cursor": {
+          "description": "Byte-Cursor aus der letzten Antwort, 0 = Anfang",
+          "type": "integer"
+        },
+        "limit": {
+          "description": "höchstens so viele Einträge, Standard 100, höchstens 500",
+          "type": "integer"
+        },
+        "service": {
+          "description": "Dienst mit Logdatei aus logs_services, z. B. k3c-workbench",
+          "type": "string"
+        }
+      },
+      "required": [
+        "service"
+      ]
+    },
+    "name": "logs_since"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Zahl der Einträge je Level oder Namensraum (groupBy) seit since, für einen oder alle Dienste. Nutze es bei: Überblick, ob ein Dienst auffällig viel warnt. Statt: Zeilen zählen mit grep.",
+    "inputSchema": {
+      "properties": {
+        "groupBy": {
+          "description": "level (Standard) oder ns",
+          "type": "string"
+        },
+        "service": {
+          "description": "Dienst mit Logdatei aus logs_services; leer: alle",
+          "type": "string"
+        },
+        "since": {
+          "description": "Dauer wie 30m, 24h oder Zeitpunkt RFC 3339; Standard 1h",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "logs_stats"
+  },
+  {
+    "annotations": {
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Zeigt dem Nutzer einen Hinweis in der Oberfläche von k3c-workbench (level info, success, warn oder error). Nutze es bei: lange Arbeit fertig, Entscheidung oder Freigabe nötig. Statt: auf den Chat hoffen.",
+    "inputSchema": {
+      "properties": {
+        "level": {
+          "description": "info, success, warn oder error",
+          "type": "string"
+        },
+        "text": {
+          "description": "optionaler Text darunter",
+          "type": "string"
+        },
+        "title": {
+          "description": "kurze Überschrift",
+          "type": "string"
+        }
+      },
+      "required": [
+        "level",
+        "title"
+      ]
+    },
+    "name": "notify_ui"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Prüft die Planungsangaben eines Tickets oder Sprints für Arbeitswellen (docs/arbeitsweise.md › Planungsangaben) und nennt die Mängel: Planungsangaben oder einzelne Zeilen fehlen, Bereich leer, Umgebung: ? (beim Sprint je offener Session), Größe: L, unbekannte ID oder Freitext in „Abhängig von“, Bereich überlappt mit einem anderen offenen Ticket. Archivierte Tickets prüft es nicht; es ändert nichts. Nutze es bei: vor der Freigabe einer Spec und vor plan_waves. Statt: Regeln und Einschränkungen von Hand prüfen.",
+    "inputSchema": {
+      "properties": {
+        "id": {
+          "description": "Ticket B-123 oder Sprint M8",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "name": "plan_check"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Legt Ticket (nächste Nummer, Index), Sprint (in geplant/, Fahrplan), Session (Session-Tabelle) oder Projekt (docs/projekte, Übersicht, Rang = letzter + 1) als Kopie der Vorlage an. Inhalte danach mit plan_sections füllen. Nutze es bei: neues Ticket, neuer Sprint, neue Session, neues Projekt. Statt: Vorlage von Hand kopieren.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "fields": {
+          "description": "Kopf-Felder; Ticket braucht Domäne, Typ, Prio, Projekt und Sprint (keine ungeplanten Tickets); Sprint und Session brauchen Domäne (die Sprint-Domäne folgt danach den Sessions)",
+          "type": "object"
+        },
+        "id": {
+          "description": "Sprint M9, Session M9.1 oder Projekt-Kürzel GRA; beim Ticket leer (nächste freie Nummer)",
+          "type": "string"
+        },
+        "kind": {
+          "description": "ticket, sprint, session oder projekt",
+          "type": "string"
+        },
+        "slug": {
+          "description": "Kurzname für Datei oder Ordner: a-z, 0-9, -",
+          "type": "string"
+        },
+        "title": {
+          "description": "Titel, beim Ticket als Aussage",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "slug",
+        "title"
+      ]
+    },
+    "name": "plan_create"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Löscht einen Sprint-Entwurf in geplant/, eine Session darin oder ein Projekt ohne Sprints und Tickets. Tickets nie: plan_set Status verworfen. Nutze es bei: Entwurf verwerfen. Statt: Dateien und Verweise von Hand löschen.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "name": "plan_delete"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Schreibt je erledigtem Sprint docs/sprints/erledigt/<Sprint>/ZUSAMMENFASSUNG.md (höchstens 60 Zeilen): Ziel und Abnahme gekürzt, Kriterien mit Status aus den Session-Ergebnissen, Tickets mit Status; regelbasiert, ohne KI. Originale bleiben, vorhandene Zusammenfassungen nur mit neu. dry (Standard true) zeigt nur die Sprints. Nutze es bei: erledigte Sprints verdichten, bevor eine Session sie liest. Statt: Sprint-Ordner ganz lesen oder Zusammenfassungen von Hand.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "dry": {
+          "description": "nur anzeigen, nichts schreiben (Standard true)",
+          "type": "boolean"
+        },
+        "neu": {
+          "description": "vorhandene ZUSAMMENFASSUNG.md neu schreiben (Standard: unverändert lassen)",
+          "type": "boolean"
+        },
+        "älter_als": {
+          "description": "nur Sprints vor dieser Sprint-ID (gleiches Präfix, z. B. SP10) oder mit letzter Abnahme vor dem Datum JJJJ-MM-TT; leer = alle erledigten",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "plan_digest"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Ein Ticket, eine Sprint-README, eine Session oder ein Projekt als Markdown, mit Pfad in der ersten Zeile. Nutze es bei: eine Planungsdatei lesen. Statt: Datei suchen und lesen.",
+    "inputSchema": {
+      "properties": {
+        "id": {
+          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "name": "plan_get"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Baut docs/backlog/README.md (offene und eingeplante Tickets) und docs/backlog/archiv/README.md (erledigte und verworfene) aus den Ticket-Dateien neu auf: Zeilen gelöschter oder verschobener Dateien verschwinden, fehlende kommen nach Nummer dazu, die Reihenfolge bisheriger Zeilen bleibt. dry (Standard true) zeigt nur die Zahlen. Nutze es bei: Index passt nicht mehr zu den Dateien (z. B. nach git rm oder Umnummerieren). Statt: Index von Hand bearbeiten.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "dry": {
+          "description": "nur die Zahlen zeigen, nichts schreiben (Standard true)",
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "name": "plan_index"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Sprints mit Sessions und Tickets als je eine Zeile, filterbar nach kind, status, domain, sprint, projekt; archive mit erledigten Tickets. Sprints mit Projekt nach Rang und Platz im Projekt, ohne Projekt dahinter. kind projekt: Projekte nach Rang mit Sprints und Fortschritt. Tickets beginnen mit der Zeile `Tickets: <gezeigt> von <alle nicht archivierten> · <n> offen · <n> eingeplant · <n> ungeplant` (offen/eingeplant = Status, ungeplant = ohne Sprint); sprint `ungeplant` (oder –) zeigt nur Tickets ohne Sprint. Nutze es bei: Überblick über Sprints, Sessions und Tickets. Statt: docs/sprints und docs/backlog durchsuchen.",
+    "inputSchema": {
+      "properties": {
+        "archive": {
+          "description": "auch erledigte und verworfene Tickets aus backlog/archiv",
+          "type": "boolean"
+        },
+        "domain": {
+          "description": "Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP",
+          "type": "string"
+        },
+        "kind": {
+          "description": "ticket, sprint, projekt oder leer für Sprints und Tickets",
+          "type": "string"
+        },
+        "projekt": {
+          "description": "Projekt-Kürzel: nur dieses Projekt, seine Sprints und Tickets",
+          "type": "string"
+        },
+        "sprint": {
+          "description": "Sprint-ID: nur dieser Sprint und seine Tickets; – oder ungeplant: Tickets ohne Sprint (wie der Schnellfilter Ungeplant der Workbench)",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status, z. B. aktiv, geplant, offen, eingeplant, erledigt",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "plan_list"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Nächste Session nach docs/arbeitsweise.md › Autonomer Ablauf, Schritt 1, aus den lokalen Dateien: aktive Projekte nach Rang, ihre aktiven Sprints in Tabellen-Reihenfolge, erste Session offen und autonom mit erledigten Abhängigkeiten, die mit keiner Session in Arbeit kollidiert (wie plan_waves: gleiche Sperre der Sprint-README oder überlappende Erlaubte Dateien; ohne Dateimenge noch Domäne bzw. Lane); domain grenzt ein. Antwort: Kopf (ID, Pfad, Sprint, Domäne, Lane, Umgebung, Modell, Branch sprint/<präfix>, Kriterien), Session-Datei, ihre Kriterien aus der Sprint-README und höchstens drei parallel mögliche Sessions (ohne Kollision untereinander, je mit Modell); sonst der Grund je Projekt. Je aktivem Sprint gilt der Stand von refs/remotes/origin/sprint/<präfix> (README, Sessions; kein fetch), sonst der lokale Stand; die Antwort nennt das je Sprint. Nutze es bei: Start einer autonomen Session. Statt: Projekte, Sprint-READMEs und Session-Dateien einzeln lesen.",
+    "inputSchema": {
+      "properties": {
+        "domain": {
+          "description": "nur Sessions dieser Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "plan_next"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Ralf-Queue nach docs/arbeitsweise.md › Ralf-Queue: Freigaben (Specs im Entwurf mit „Braucht 🧑: Freigabe“), Entscheidungen und Abnahmen je Gerät (PC, unbekannt): offene Mensch-Sessions aktiver Sprints mit dem Gerät aus einer Zeile „Gerät:“ im Abschnitt Kontext, dazu Tickets und Sprints mit „Braucht 🧑: Abnahme“ oder „Gerät“. device zeigt nur die Abnahmen an einem Gerät. Nutze es bei: 🧑 gesammelt vorlegen, was Freigabe, Entscheidung oder Abnahme braucht. Statt: Mensch-Sessions und Specs einzeln suchen.",
+    "inputSchema": {
+      "properties": {
+        "device": {
+          "description": "nur Abnahmen an diesem Gerät: PC oder unbekannt",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "plan_queue"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Ersetzt den Inhalt eines Abschnitts (## Name) eines Tickets, Sprints, einer Session oder eines Projekts. Nutze es bei: Abschnitt wie Ergebnis oder Ziel füllen. Statt: Datei von Hand bearbeiten.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "type": "string"
+        },
+        "section": {
+          "description": "Abschnitt der Vorlage ohne ##, z. B. Ausgangslage, Ergebnis",
+          "type": "string"
+        },
+        "text": {
+          "description": "neuer Inhalt (Markdown, Unterüberschriften ab ###)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "section",
+        "text"
+      ]
+    },
+    "name": "plan_section"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Ersetzt mehrere Abschnitte (## Name) eines Tickets, Sprints, einer Session oder eines Projekts in einem Aufruf; erst werden alle Abschnitte geprüft, ein unbekannter bricht ab, ohne etwas zu schreiben. Nutze es bei: Spec oder Session mit mehreren Abschnitten füllen. Statt: plan_section je Abschnitt.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "type": "string"
+        },
+        "sections": {
+          "description": "Abschnitt der Vorlage ohne ## → neuer Inhalt (Markdown, Unterüberschriften ab ###), z. B. {\"Ziel\": \"…\", \"Kontext\": \"…\"}",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "sections"
+      ]
+    },
+    "name": "plan_sections"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Setzt Kopf-Felder (Titel (nur Sprint und Ticket: ändert die Überschrift samt Fahrplan, Projekt-Tabelle und Index), Status, Prio, Sprint, Projekt, Reife, Spec, Revision, Freigabe …; Sprints haben keine Prio) und zieht nach: Index, Session-Tabelle, Fahrplan, Archiv bei erledigt/verworfen, Sprint-Ordner beim Status, Sprint-Tabelle des Projekts. Session: Status (auch verworfen), Domäne (REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP; Feld, Überschrift und Fahrplan des Sprints folgen; am Sprint nicht setzbar), Lane (– oder Kurzname a-z, 0-9, -) und Modell (–, haiku, sonnet, opus, fable), beide auch in älteren Dateien ohne das Feld. Projekt: Status, Rang (die anderen rücken lückenlos), Sprints (neue Reihenfolge, kommagetrennt). Ticket-Relationen: Duplikat von (eine ID, setzt verworfen), Ersetzt (IDs, kommagetrennt); geprüft auf ID, Selbstverweis, Zyklus. Nutze es bei: Status, Prio oder andere Kopf-Felder ändern. Statt: Datei, Index und Fahrplan von Hand bearbeiten.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "fields": {
+          "description": "Kopf-Felder wie in der Vorlage, z. B. {\"Status\": \"fertig\"}",
+          "type": "object"
+        },
+        "id": {
+          "description": "Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fields",
+        "id"
+      ]
+    },
+    "name": "plan_set"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Arbeitswellen nach docs/arbeitsweise.md › Parallelität und Wellen aus den lokalen Dateien: Kandidaten sind offene autonome Sessions aktiver Sprints (Dateimenge aus „Erlaubte Dateien“, Sperre aus der Sprint-README), freigegebene Tickets ohne Sprint und freigegebene geplante Sprints mit „Braucht 🧑: –“. Ebene aus „Abhängig von“, Kollision bei überlappendem Bereich (Präfix, ohne Sammeldateien) oder gleicher Sperre; Rang, dann Prio, dann Reihenfolge entscheidet. Zwei Lanes: zweit (Second Worker, autonom) und haupt (Hauptrechner). Jeder Knoten bekommt eine Lane: Session mit Lane zweit gehört zweit, anderer Lane-Wert haupt, Sim-Domäne nur zweit, sonst die erste freie (zweit zuerst). Sessions in Arbeit stehen in Welle 1 und belegen ihre Lane. wave_count zeigt die ersten N Wellen (Standard 1). Je zurückgestelltem Knoten der Grund, dazu die Knoten in keiner Welle (Bereich fehlt, wartet auf …, Fehler: unbekannte ID). project und domain grenzen nur die Anzeige ein. Nutze es bei: Welle planen oder starten. Statt: Wellen von Hand aus Tickets und Sprints rechnen.",
+    "inputSchema": {
+      "properties": {
+        "domain": {
+          "description": "nur Knoten dieser Domäne zeigen (Lanes und Kollisionen gelten für alle)",
+          "type": "string"
+        },
+        "project": {
+          "description": "nur Knoten dieses Projekts zeigen, z. B. WZG (Lanes und Kollisionen gelten für alle)",
+          "type": "string"
+        },
+        "wave_count": {
+          "description": "Zahl der gezeigten Wellen, ab Welle 1 (Standard 1)",
+          "type": "integer"
+        }
+      },
+      "required": []
+    },
+    "name": "plan_waves"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Schreibt oder aktualisiert Befunde (findings.json) einer Session; je Befund id, quote, ts, Vorschlag für Typ, Prio, Projekt, Sprint und duplicate_of (offenes Ticket, vorher mit plan_list geprüft). Haken (selected) und Ticket setzt nur Ralf bzw. playtest_tickets_create. Nutze es bei: Befunde aus Transkript und Markern vorschlagen. Statt: findings.json von Hand schreiben.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "findings": {
+          "description": "Befunde; vorhandene (gleiche id) werden aktualisiert, Haken und Ticket bleiben",
+          "type": "array"
+        },
+        "id": {
+          "description": "Session-Kennung",
+          "type": "string"
+        }
+      },
+      "required": [
+        "findings",
+        "id"
+      ]
+    },
+    "name": "playtest_findings_set"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Zieht ein Bild an Zeitpunkt t (Unix-ms) aus video.mkv nach frames/t-<t>.jpg und nennt den Pfad (dann mit Read ansehen). Nutze es bei: ein Bild zu einer Transkript-Stelle ohne Marker. Statt: ffmpeg von Hand aufrufen.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Session-Kennung",
+          "type": "string"
+        },
+        "t": {
+          "description": "Zeitpunkt in Unix-ms (ts eines Markers oder einer Zeile von playtest_get)",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "t"
+      ]
+    },
+    "name": "playtest_frame"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Eine Session: Kopf, Fragebogen, Befunde und die Zeitleiste aus Transkript-Sätzen und Markern (Spielkontext, Bildpfad, Zeitpunkt ts in Unix-ms), seitenweise mit limit und cursor. Nutze es bei: Transkript und Marker lesen, um Befunde zu bilden. Statt: transcript.json und markers.jsonl von Hand öffnen.",
+    "inputSchema": {
+      "properties": {
+        "cursor": {
+          "description": "ab welcher Zeile der Zeitleiste (aus der letzten Antwort)",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Session-Kennung, z. B. 2026-11-22-1 (aus playtest_list)",
+          "type": "string"
+        },
+        "limit": {
+          "description": "Zeilen der Zeitleiste je Aufruf (Standard 60, höchstens 500)",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "name": "playtest_get"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Aufgenommene Spieltests (playtests/) mit Stand, Dauer, Markern und Befunden, neueste zuerst. Nutze es bei: Auswertung eines Spieltests beginnen. Statt: playtests/ durchsuchen.",
+    "inputSchema": {
+      "properties": {},
+      "required": []
+    },
+    "name": "playtest_list"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Legt für alle angehakten Befunde ohne Ticket per Planungslogik ein Ticket an (Zitat, Bild, Spielkontext; Domäne, Typ, Prio, Projekt, Sprint vom Befund oder aus den Argumenten) und trägt die ID ein; Befunde mit duplicate_of bekommen stattdessen einen Hinweis im vorhandenen Ticket. Nutze es bei: Ralf hat Befunde angehakt und Tickets angefordert. Statt: je Befund plan_create und plan_sections von Hand.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "domain": {
+          "description": "Domäne für Befunde ohne eigene (REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP)",
+          "type": "string"
+        },
+        "id": {
+          "description": "Session-Kennung",
+          "type": "string"
+        },
+        "prio": {
+          "description": "Prio für Befunde ohne eigene, sonst mittel",
+          "type": "string"
+        },
+        "project": {
+          "description": "Projekt-Kürzel für Befunde ohne eigenes",
+          "type": "string"
+        },
+        "sprint": {
+          "description": "Sprint für Befunde ohne eigenen (fehlt er, zuerst plan_create kind sprint)",
+          "type": "string"
+        },
+        "type": {
+          "description": "Typ für Befunde ohne eigenen (Idee, Problem, Schuld, Frage)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "name": "playtest_tickets_create"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Belegung der Dev-Ports (Dienste und MCP), auch durch fremde Prozesse, mit PID. Nutze es bei: Start scheitert an belegtem Port. Statt: netstat -ano oder Get-NetTCPConnection.",
+    "inputSchema": {
+      "properties": {},
+      "required": []
+    },
+    "name": "ports_status"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Prüft einen Dienst sofort mit seiner Health-Prüfung, ohne ihn zu ändern; ungesund mit Grund und Belegung des Ports. Nutze es bei: Dienst läuft laut svc_status, antwortet aber nicht. Statt: curl auf den Port.",
+    "inputSchema": {
+      "properties": {
+        "service": {
+          "description": "Name aus svc_status, z. B. Vite",
+          "type": "string"
+        }
+      },
+      "required": [
+        "service"
+      ]
+    },
+    "name": "svc_health"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Startet einen eigenen Dienst neu und wartet, bis er gesund ist; verlangt confirm=true. Nutze es bei: Dienst hängt oder braucht neue Konfiguration. Statt: Stopp und Start von Hand in der Shell.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "confirm": {
+          "description": "muss true sein: der Dienst ist während des Neustarts weg",
+          "type": "boolean"
+        },
+        "service": {
+          "description": "Name aus svc_status, z. B. Vite",
+          "type": "string"
+        },
+        "waitSeconds": {
+          "description": "höchstens so lange auf Health warten (1–60, Standard 60)",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "service"
+      ]
+    },
+    "name": "svc_restart"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Startet einen Dienst und wartet, bis er gesund ist (waitSeconds, höchstens 60 s). Nutze es bei: Dienst gestoppt oder fehlgeschlagen. Statt: task dev oder task start in der Shell; Ausgabe über console_tail <Dienst>.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "service": {
+          "description": "Name aus svc_status, z. B. Vite",
+          "type": "string"
+        },
+        "waitSeconds": {
+          "description": "höchstens so lange auf Health warten (1–60, Standard 60)",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "service"
+      ]
+    },
+    "name": "svc_start"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Startet alle Dienste, die nicht laufen, und wartet, bis sie gesund sind; antwortet mit svc_status. Nutze es bei: Umgebung frisch hochfahren. Statt: mehrere task-Befehle in der Shell.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "svc_start_all"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Alle Dienste aus services.json mit Zustand, Port, PID, CPU, Speicher, Laufzeit, Neustarts, Log-Level der letzten 60 min und letztem Fehler. Nutze es bei: jeder Arbeit an der laufenden Umgebung, als ersten Aufruf. Statt: tasklist, netstat oder Raten.",
+    "inputSchema": {
+      "properties": {},
+      "required": []
+    },
+    "name": "svc_status"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Stoppt einen Dienst samt Prozessbaum; übernommene (vor k3c-workbench gestartete) nur mit force. Nutze es bei: Port freigeben, Dienst beenden. Statt: taskkill oder Stop-Process.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "force": {
+          "description": "nötig für übernommene Dienste (vor k3c-workbench gestartet): beendet deren Prozessbaum",
+          "type": "boolean"
+        },
+        "service": {
+          "description": "Name aus svc_status, z. B. Vite",
+          "type": "string"
+        }
+      },
+      "required": [
+        "service"
+      ]
+    },
+    "name": "svc_stop"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Stoppt alle eigenen Dienste in umgekehrter Startreihenfolge; übernommene bleiben. Nutze es bei: Umgebung herunterfahren. Statt: Prozesse einzeln beenden.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "svc_stop_all"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Taskfile-Baum nach Namensraum; jeder Task ist mit task_start startbar (kein Freigabe-Schloss). Nutze es bei: welcher Task existiert. Statt: task --list-all.",
+    "inputSchema": {
+      "properties": {
+        "namespace": {
+          "description": "nur dieser Namensraum, z. B. golden",
+          "type": "string"
+        },
+        "query": {
+          "description": "Freitext auf Name und Beschreibung",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "task_list"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Konsole eines Task-Laufs (wie die rechte Hälfte der Tasks-Seite), since für neuere Zeilen. Nutze es bei: Ausgabe eines laufenden oder beendeten Tasks. Statt: Ausgabe in der Shell mitlesen.",
+    "inputSchema": {
+      "properties": {
+        "limit": {
+          "description": "Zahl der letzten Zeilen, Standard 50, höchstens 500",
+          "type": "integer"
+        },
+        "since": {
+          "description": "nur Zeilen nach dieser Nummer",
+          "type": "integer"
+        },
+        "task": {
+          "description": "Name aus task_list",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task"
+      ]
+    },
+    "name": "task_output"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Startet einen beliebigen Task aus task_list und kehrt sofort zurück (kein Freigabe-Schloss). Nutze es bei: Werkzeug-Tasks ohne eigenes Tool. Statt: task <name> in der Shell. Auf das Ende warten: check_run.",
+    "inputSchema": {
+      "properties": {
+        "args": {
+          "description": "Zusatzargumente, angehängt als task <name> -- <args>; keine Shell-Metazeichen",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "task": {
+          "description": "Name aus task_list, z. B. go:golden",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task"
+      ]
+    },
+    "name": "task_start"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Läufe dieser Sitzung mit Zustand, Exit-Code, Dauer und Argumenten. Nutze es bei: ist mein Task fertig. Statt: Prozessliste.",
+    "inputSchema": {
+      "properties": {
+        "task": {
+          "description": "nur dieser Task; leer: alle Läufe dieser Sitzung",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "name": "task_status"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Stoppt einen laufenden Task samt Prozessbaum. Nutze es bei: Task hängt oder läuft ungewollt. Statt: taskkill.",
+    "inputSchema": {
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "task": {
+          "description": "Name aus task_list",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task"
+      ]
+    },
+    "name": "task_stop"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Ressourcenverbrauch von k3c-workbench: Live-Heap, Prozess-RSS, Kindprozesse, Goroutinen, Handles, Trend je Stunde, Größe der Puffer (Konsole, Prüfläufe), die Vorgänge mit der größten Allokation und abgelegte Heap-Profile (go tool pprof). Nutze es bei: Workbench wird langsam oder frisst Speicher, Verdacht auf ein Leck. Statt: Task-Manager und Raten.",
+    "inputSchema": {
+      "properties": {},
+      "required": []
+    },
+    "name": "workbench_resources"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Zustand von k3c-workbench: Adresse, Laufzeit, Aufrufe, Fehler, Clients und parallele Aufrufe. Nutze es bei: Werkzeug antwortet seltsam, welcher Checkout gilt, Versionen. Statt: Prozesse und Ports von Hand prüfen.",
+    "inputSchema": {
+      "properties": {},
+      "required": []
+    },
+    "name": "workbench_status"
+  }
+]
