@@ -9,15 +9,10 @@ use k3c_workbench::rpc::METHODS;
 
 /// Methoden, die erst spätere Sessions von RU69 bringen; am Ende leer.
 const AUSSTEHEND_UI: &[&str] = &[
-    "GitAction",
-    "GitCheckMerged",
-    "GitDeleteBranches",
     "GitHubStatus",
-    "GitOverview",
     "GitPRAction",
     "GitPRCreate",
     "GitPRs",
-    "GitStamp",
     "PlanningData",
     "PlanningDoc",
     "PlanningDocs",

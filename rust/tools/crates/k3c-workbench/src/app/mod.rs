@@ -3,6 +3,7 @@
 
 mod console_batch;
 pub mod events;
+mod git;
 pub mod headless;
 mod info;
 mod logs;
@@ -15,6 +16,8 @@ pub mod window;
 
 #[cfg(test)]
 mod app_tests;
+#[cfg(test)]
+mod git_tests;
 #[cfg(test)]
 mod winicon_tests;
 
@@ -30,9 +33,11 @@ use serde_json::json;
 use tokio::runtime::Handle;
 
 use crate::services::Cancel;
-use crate::{mcp, ports};
+use crate::{github, gitops, mcp, ports};
 use console_batch::LineBatcher;
 use events::{CONSOLE_LINE, Emit, Events};
+use git::GitSeat;
+pub use git::GitView;
 pub use info::{Info, McpState};
 pub use logs::Source;
 pub use mcp_page::{McpOverview, McpUsageView, UsageRules};
@@ -69,6 +74,8 @@ pub struct App {
     ready: (Mutex<bool>, Condvar),
     mcp: Mutex<McpState>,
     running: Mutex<Option<Running>>,
+    /// Seite Git (B-580).
+    git: GitSeat,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -87,7 +94,12 @@ impl App {
     /// App für die Repo-Wurzel `root` mit dem MCP-Port `port`; `forward` bekommt die Ereignisse zusätzlich zum Bus.
     pub fn new(root: PathBuf, port: u16, forward: Option<Emit>) -> App {
         let usage_file = config_path(&root, ports::USAGE_FILE);
+        let git = GitSeat {
+            repo: gitops::Repo::new(root.clone()),
+            merged: github::merged_source(root.clone()),
+        };
         App {
+            git,
             root,
             port,
             usage_file,
