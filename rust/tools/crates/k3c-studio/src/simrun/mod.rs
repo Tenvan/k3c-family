@@ -3,16 +3,16 @@
 //! Läufen je Checkout und einer Warteschlange dahinter. Der Runner eines Laufs ist eine Funktion; den Offline-Runner
 //! (Spiel-EXE `k3c-game sim balance`) liefert [`offline`], die Online-Runner bleiben in `mcpsrv`.
 //!
-//! Go `registry.go` ist auf [`registry`] (Register) und [`run`] (Lauf, Abbruch-Token) verteilt.
-//!
-//! [`offline`], [`reports`], [`reportlist`] und [`manage`] sind aus RU70.19 vorgezogen, soweit die Tests aus RU70.18
-//! sie brauchen (V11); der Rest sind Stubs.
+//! Go `registry.go` ist auf [`registry`] (Register) und [`run`] (Lauf, Abbruch-Token) verteilt, `offline.go` auf
+//! [`offline`] (Lauf im Register) und [`offline_run`] (Aufruf der EXE). Berichte lesen, auflisten und verwalten:
+//! [`reports`], [`reportlist`], [`manage`].
 
 pub mod baseline;
 pub mod info;
 pub mod manage;
 pub mod notify;
 pub mod offline;
+pub mod offline_run;
 pub mod pervariant;
 pub mod registry;
 pub mod reportlist;
@@ -22,7 +22,17 @@ pub mod spec;
 pub mod stamp;
 
 #[cfg(test)]
+mod insights_status_tests;
+#[cfg(test)]
+mod manage_tests;
+#[cfg(test)]
+mod offline_exe_tests;
+#[cfg(test)]
+mod offline_tests;
+#[cfg(test)]
 mod test_helpers;
+#[cfg(test)]
+mod tune_tests;
 
 pub use info::Info;
 pub use notify::Notify;

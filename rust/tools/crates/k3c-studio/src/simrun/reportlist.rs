@@ -1,4 +1,4 @@
-//! Liste der Berichte (Port von `reportlist.go`, Methode `BalanceReports`). Aus RU70.19 vorgezogen (V11).
+//! Liste der Berichte (Port von `reportlist.go`, Methode `BalanceReports`).
 
 use std::fs;
 use std::path::{Path, PathBuf};

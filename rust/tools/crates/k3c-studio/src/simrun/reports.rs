@@ -1,7 +1,4 @@
 //! Berichte lesen (Port von `reports.go`).
-//!
-//! Aus RU70.19 vorgezogen (V11): alles, was Status, Liste und Baseline brauchen; [`read_tuning`], [`read_insights`] und
-//! [`write_html`] sind noch Stubs.
 
 use std::fs;
 use std::io::ErrorKind;
@@ -13,6 +10,7 @@ use serde_json::Value;
 
 use super::stamp::{StampRaw, read_object};
 use crate::balance::insights::{Insights, Meta};
+use crate::balance::insights_files::{BASELINE_PATH, meta_of, read_baseline, reevaluate};
 use crate::balance::progress::{GoalView, Progress, QualityView};
 use crate::balance::summary::{Summary, read_summary};
 use crate::balance::tune::{TuneBest, Tuning};
@@ -213,7 +211,7 @@ fn num(v: Option<f64>) -> String {
 }
 
 /// Wie Go `filepath.Clean` für einen relativen Pfad: Teile ohne „.“, „..“ hebt den vorigen Teil auf.
-fn clean_parts(rel: &str) -> Vec<&str> {
+pub(super) fn clean_parts(rel: &str) -> Vec<&str> {
     let mut parts: Vec<&str> = Vec::new();
     for part in rel.split(['/', '\\']) {
         match part {
@@ -266,19 +264,30 @@ pub(super) fn read_report_file(root: &Path, rel: &str) -> Result<Vec<u8>, String
 }
 
 /// Liest ein Abstimm-Ergebnis unter `reports/` (Pfadprüfung wie [`read_report`]).
-#[allow(clippy::unimplemented)] // V11: Stub bis RU70.19, kein Test dieser Session ruft ihn auf.
-pub fn read_tuning(_root: &Path, _rel: &str) -> Result<Tuning, String> {
-    unimplemented!("RU70.19")
+pub fn read_tuning(root: &Path, rel: &str) -> Result<Tuning, String> {
+    let raw = read_report_file(root, rel)?;
+    read_object(&raw).map_err(|e| format!("ergebnis {}: {e}", go_quoted(rel)))
 }
 
 /// Wertet einen `balance-*.json` unter `reports/` aus (B-632); die Baseline des Checkouts liefert den Trend.
-#[allow(clippy::unimplemented)] // V11: Stub bis RU70.19, kein Test dieser Session ruft ihn auf.
-pub fn read_insights(_root: &Path, _rel: &str) -> Result<Insights, String> {
-    unimplemented!("RU70.19")
+pub fn read_insights(root: &Path, rel: &str) -> Result<Insights, String> {
+    let summary = read_balance_report(root, rel)?;
+    let base = read_baseline(&root.join(BASELINE_PATH))?;
+    let stem = Path::new(rel).with_extension("");
+    summary.insights(root, base.as_ref(), meta_of(root, &stem, BASELINE_PATH))
 }
 
 /// Schreibt `.md` und `.html` eines `balance-*.json` unter `reports/` neu; Ergebnis ist der Pfad der HTML-Datei.
-#[allow(clippy::unimplemented)] // V11: Stub bis RU70.19, kein Test dieser Session ruft ihn auf.
-pub fn write_html(_root: &Path, _rel: &str) -> Result<PathBuf, String> {
-    unimplemented!("RU70.19")
+pub fn write_html(root: &Path, rel: &str) -> Result<PathBuf, String> {
+    read_balance_report(root, rel)?;
+    reevaluate(&report_path(root, rel)?, root)
+}
+
+/// Nur `balance-*.json` (ein `tuning-*.json` hat ein anderes Format).
+fn read_balance_report(root: &Path, rel: &str) -> Result<Summary, String> {
+    let name = rel.rsplit(['/', '\\']).find(|p| !p.is_empty()).unwrap_or_default();
+    if !name.starts_with("balance-") {
+        return Err(format!("bericht {}: nur balance-*.json", go_quoted(rel)));
+    }
+    read_report(root, rel)
 }

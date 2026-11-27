@@ -2,7 +2,7 @@
 //! (`k3c-game sim balance`, `crate::gameexe`, `docs/standards/k3c-game-laeufe.md`). Bericht des Testers und eigener
 //! Bericht liegen in `reports/simtest-<id>/`. Mit `head` läuft der Lauf sichtbar im Spiel (`--window [--speed N]`).
 //!
-//! Aus RU70.19 vorgezogen (V11): alles außer dem Aufruf der Spiel-EXE ([`run_exe`] ist noch ein Stub).
+//! Den Aufruf der EXE enthält [`super::offline_run`].
 
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
@@ -45,12 +45,6 @@ pub struct ProcResult {
 
 /// Rechnet einen Lauf der Engine (Test-Naht).
 pub type Exec = Arc<dyn Fn(CancelToken, Proc) -> ProcResult + Send + Sync>;
-
-/// Rechnet mit der Spiel-EXE des Checkouts `p.dir` (`k3c-game sim balance`).
-#[allow(clippy::unimplemented)] // V11: Stub bis RU70.19, kein Test dieser Session ruft ihn auf.
-pub fn run_exe(_cancel: CancelToken, _proc: Proc) -> ProcResult {
-    unimplemented!("RU70.19")
-}
 
 impl Registry {
     /// Prüft die Spec und reiht einen Offline-Lauf ein (wartet, wenn alle Plätze belegt sind). Mit `per_variant` reiht

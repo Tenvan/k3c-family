@@ -12,7 +12,8 @@ use serde_json::{Value, json};
 
 use super::info::Info;
 use super::notify::Notify;
-use super::offline::{Exec, run_exe};
+use super::offline::Exec;
+use super::offline_run::exe_exec;
 use super::run::{CANCELED, CancelToken, DONE, FAILED, RUNNING, Run, Runner, WAITING, lock};
 use super::spec::Spec;
 use crate::balance::writeguard;
@@ -65,7 +66,7 @@ impl Registry {
     pub fn new(log: Logger) -> Arc<Registry> {
         Arc::new_cyclic(|me| Registry {
             me: me.clone(),
-            exec: Mutex::new(Arc::new(run_exe)),
+            exec: Mutex::new(exe_exec(log.clone())),
             log,
             inner: Mutex::new(Inner {
                 next: 0,
