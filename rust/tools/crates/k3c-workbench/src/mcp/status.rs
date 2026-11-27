@@ -9,9 +9,6 @@ use k3c_kit::mcp::Workspace;
 use super::tools::Workbench;
 use crate::ports;
 
-/// Prüfläufe kommen mit RU69.4.
-const RUNS: &str = "Läufe: noch keine";
-
 pub(super) async fn workbench_status(app: &Workbench, ws: &Workspace) -> Result<String, String> {
     let server = app
         .server
@@ -41,7 +38,7 @@ pub(super) async fn workbench_status(app: &Workbench, ws: &Workspace) -> Result<
     }
     lines.push(app.service_summary(ws).await);
     lines.push(format!("Log-Quellen: {}", log_sources(&ws.root).join(", ")));
-    lines.push(RUNS.to_owned());
+    lines.extend(app.env.checks.run_lines(ws));
     Ok(lines.join("\n"))
 }
 

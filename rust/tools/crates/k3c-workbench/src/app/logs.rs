@@ -54,7 +54,7 @@ fn seconds(ms: f64) -> String {
     format!("{:.1} s", ms / 1000.0).replacen('.', ",", 1)
 }
 
-fn check_source(st: &CheckState) -> Source {
+pub(super) fn check_source(st: &CheckState) -> Source {
     let at = st.at.format("%H:%M:%S").to_string();
     let (state, detail) = if st.running {
         ("running", format!("läuft seit {at}"))

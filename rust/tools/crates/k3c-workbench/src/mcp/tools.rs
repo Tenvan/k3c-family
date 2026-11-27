@@ -28,6 +28,7 @@ pub(super) struct Workbench {
 pub(super) const CATALOG: &[&str] = &[
     "workbench_status",
     "notify_ui",
+    "check_run",
     "console_tail",
     "svc_status",
     "svc_health",
@@ -70,6 +71,7 @@ impl Workbench {
 /// Alle Tools der Workbench.
 pub(super) fn router() -> ToolRouter<Workbench> {
     Workbench::tool_router()
+        + Workbench::check_router()
         + Workbench::console_router()
         + Workbench::service_router()
         + Workbench::port_router()

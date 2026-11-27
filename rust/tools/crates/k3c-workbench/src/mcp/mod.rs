@@ -1,8 +1,8 @@
 //! MCP-Server von k3c-workbench (Port von `mcpsrv/server.go`) auf dem Gerüst `k3c_kit::mcp` (HTTP an 127.0.0.1, Zähler
 //! und Aufruf-Log, Checkout je Aufruf). Den Katalog führt nur `tools.rs`.
 
+mod check;
 mod checkout_policy;
-mod checks;
 mod console;
 mod notify;
 mod ports;
@@ -46,7 +46,7 @@ use k3c_kit::usage::Tracker;
 use rmcp::handler::server::router::tool::ToolRouter;
 
 use crate::services::Controller;
-pub use checks::CheckState;
+pub use check::{CheckHook, CheckState};
 pub use notify::{Notice, NotifyHook};
 pub(crate) use status::log_sources;
 pub use tasks::TaskHost;
@@ -81,6 +81,8 @@ pub struct Config {
     pub on_call: Option<CallHook>,
     /// Hinweis an den Nutzer in der Oberfläche (`notify_ui`).
     pub on_notify: Option<NotifyHook>,
+    /// Ein Prüflauf beginnt oder endet (Quellenleiste der Oberfläche).
+    pub on_check: Option<CheckHook>,
 }
 
 impl Default for Config {
@@ -98,6 +100,7 @@ impl Default for Config {
             on_start: None,
             on_call: None,
             on_notify: None,
+            on_check: None,
         }
     }
 }
@@ -110,22 +113,24 @@ struct Env {
     tasks: Option<Arc<dyn TaskHost>>,
     worktrees: worktree_services::Worktrees,
     port_busy: PortBusy,
-    checks: checks::Checks,
+    checks: Arc<check::Checks>,
 }
 
 impl Env {
     fn new(cfg: &Config) -> Env {
+        let console = cfg
+            .console
+            .clone()
+            .unwrap_or_else(|| Arc::new(Store::new(DEFAULT_CAPACITY, None)));
+        let checks = check::Checks::new(cfg.log.clone(), Arc::clone(&console), cfg.on_check.clone());
         Env {
             log: cfg.log.clone(),
-            console: cfg
-                .console
-                .clone()
-                .unwrap_or_else(|| Arc::new(Store::new(DEFAULT_CAPACITY, None))),
+            console,
             services: cfg.services.clone(),
             tasks: cfg.tasks.clone(),
             worktrees: worktree_services::Worktrees::default(),
             port_busy: cfg.port_busy.clone().unwrap_or_else(worktree_services::port_busy),
-            checks: checks::Checks::default(),
+            checks: Arc::new(checks),
         }
     }
 }
@@ -144,8 +149,23 @@ impl Server {
 
     /// Wie [`Server::new`] mit eigenem Router (Tests hängen weitere Tools an).
     fn with_router(cfg: Config, router: ToolRouter<Workbench>) -> Server {
+        let env = Env::new(&cfg);
+        Server::build(cfg, env, router)
+    }
+
+    /// Wie [`Server::new`] mit gestellten Prüfläufen (Tests).
+    #[cfg(test)]
+    fn with_check_hooks(cfg: Config, hooks: check::Hooks) -> Server {
+        let mut env = Env::new(&cfg);
+        let console = Arc::clone(&env.console);
+        let checks = check::Checks::with_hooks(cfg.log.clone(), console, cfg.on_check.clone(), hooks);
+        env.checks = Arc::new(checks);
+        Server::build(cfg, env, tools::router())
+    }
+
+    fn build(cfg: Config, env: Env, router: ToolRouter<Workbench>) -> Server {
         let own = Arc::new(OnceLock::new());
-        let env = Arc::new(Env::new(&cfg));
+        let env = Arc::new(env);
         let app = Workbench {
             server: Arc::clone(&own),
             usage: cfg.usage.clone(),
@@ -195,7 +215,8 @@ impl Server {
         self.env.stop_worktrees().await;
     }
 
-    /// Trägt den Stand eines Prüflaufs ein (Konsole und Quellenleiste).
+    /// Trägt den Stand eines Prüflaufs ein (Tests der Konsole).
+    #[cfg(test)]
     pub fn record_check(&self, state: CheckState) {
         self.env.checks.record(state);
     }

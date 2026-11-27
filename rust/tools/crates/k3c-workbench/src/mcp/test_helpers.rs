@@ -30,11 +30,6 @@ pub(super) struct IdIn {
     id: String,
 }
 
-#[derive(Deserialize, JsonSchema)]
-pub(super) struct TargetIn {
-    target: String,
-}
-
 /// Datei, die die Attrappe `plan_section` im Checkout des Aufrufs schreibt.
 pub(super) const WRITTEN: &str = "geschrieben.md";
 
@@ -63,11 +58,6 @@ impl Workbench {
     #[tool(description = "Test")]
     async fn plan_get(&self, Parameters(input): Parameters<IdIn>) -> String {
         input.id
-    }
-
-    #[tool(description = "Test")]
-    async fn check_run(&self, Parameters(input): Parameters<TargetIn>) -> Result<String, String> {
-        Err(format!("unbekanntes Ziel {:?}", input.target))
     }
 }
 

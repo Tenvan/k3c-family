@@ -1,0 +1,9 @@
+src/zzTmpFail.ts:2:55: error eslint(max-depth): Blocks are nested too deeply (5). Maximum allowed is 4. help: Consider refactoring your code.
+src/world/levelGenerator.ts:51:39: warning unicorn(no-new-array): Do not use `new Array(singleArgument)`. help: It's not clear whether the argument is meant to be the length of the array or the only element. If the argument is the array's length, consider using `Array.from({ length: n })`. If the argument is the only element, use `[element]`.
+src/tools/gamepadTest.ts:47:14: warning eslint(no-extra-boolean-cast): Redundant double negation help: Remove the double negation as it will already be coerced to a boolean
+src/tools/gamepadTest.ts:47:83: warning eslint(no-extra-boolean-cast): Redundant double negation help: Remove the double negation as it will already be coerced to a boolean
+src/world/sim/economy.ts:100:33: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+src/world/sim/economy.ts:101:12: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+src/world/sim/economy.ts:105:36: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+src/world/sim/economy.ts:108:25: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+src/world/sim/economy.ts:151:63: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it

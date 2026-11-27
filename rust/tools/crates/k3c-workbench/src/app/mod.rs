@@ -201,6 +201,7 @@ impl App {
     fn server_config(&self, logger: &Logger, tracker: &Arc<Tracker>) -> mcp::Config {
         let (start, call, notify) = (self.events.clone(), self.events.clone(), self.events.clone());
         let log = logger.clone();
+        let check = self.events.clone();
         mcp::Config {
             root: self.root.clone(),
             port: self.port,
@@ -213,6 +214,9 @@ impl App {
                 let message = format!("📨 Hinweis an die Oberfläche: {}", n.title);
                 log.info(&message, &[("ns", json!("mcp")), ("level", json!(n.level))]);
                 notify.emit_value(events::NOTIFY, n);
+            })),
+            on_check: Some(Arc::new(move |st| {
+                check.emit_value(events::SOURCE_STATE, &logs::check_source(st));
             })),
             ..mcp::Config::default()
         }
