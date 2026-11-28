@@ -1,6 +1,6 @@
 # RU69 · DEV · Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -79,10 +79,11 @@ keine (Leitfaden, 🧑 2026-11-26).
 | RU69.13 | `RU69.13-spieltest-ablage-aufnahme.md` | Umsetzung | autonom | fertig |
 | RU69.14 | `RU69.14-spieltest-auswertung-mcp.md` | Umsetzung | autonom | fertig |
 | RU69.15 | `RU69.15-bildbeschreibung-medien-ressourcen.md` | Umsetzung | autonom | fertig |
-| RU69.16 | `RU69.16-review.md` | Review | autonom | in Arbeit |
+| RU69.16 | `RU69.16-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+- 2026-11-28, Second Worker. AC-01 bis AC-03 belegt (RU69.15 samt Rauchprobe, RU69.11, RU69.15; in RU69.16 erneut grün).
+- AC-04 mit Einschränkung: alle Schritte von `check:all` grün außer 11 TLS-Tests in `tools/assetkit` (x509, Norton; Paket vom Sprint unberührt). Go-Workbench bis auf die fünf Adapter-Dateien unverändert.
+- Review des Sprint-Diffs ohne schweren Befund; keine Drift zur Go-Fassung. Keine neuen Tickets; offene Punkte in den Session-Ergebnissen unter „Für den Hauptrechner“.
+- PC-Abnahme: B-1295 (RU71). Kein Abnahme-Ticket für Sim, Balance, Gen (nicht berührt).
