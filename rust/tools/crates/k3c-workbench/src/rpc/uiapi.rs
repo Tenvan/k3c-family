@@ -8,7 +8,7 @@ use k3c_kit::uikit::{self, Method};
 use serde_json::Value;
 
 use super::METHODS;
-use crate::app::{APP_NAME, App};
+use crate::app::{APP_NAME, App, playtest_media};
 
 #[cfg(test)]
 #[path = "uiapi_tests.rs"]
@@ -36,7 +36,8 @@ fn api(app: &Arc<App>) -> uikit::Api {
     }
 }
 
-/// Alle Adressen unter `/api/dev/`. Braucht eine Laufzeit mit mehreren Threads und `uikit::serve`.
+/// Alle Adressen unter `/api/dev/` (Aufrufe, Strom, Player und Marker-Bilder). Braucht eine Laufzeit mit mehreren
+/// Threads und `uikit::serve`.
 pub fn router(app: &Arc<App>) -> axum::Router {
-    api(app).router()
+    api(app).router().merge(playtest_media::router(app))
 }

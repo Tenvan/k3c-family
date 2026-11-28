@@ -17,6 +17,7 @@ mod planning_waves;
 mod playtest;
 mod playtest_text;
 mod ports;
+mod resources;
 mod services;
 mod stats_target;
 mod status;
@@ -56,10 +57,11 @@ use std::sync::{Arc, OnceLock};
 
 use k3c_kit::console::{DEFAULT_CAPACITY, Store};
 use k3c_kit::logger::Logger;
-use k3c_kit::mcp::{Call, CallHook, Options, Server as KitServer, Snapshot};
+use k3c_kit::mcp::{Call, CallHook, Options, Server as KitServer, Snapshot, TrackFn};
 use k3c_kit::usage::Tracker;
 use rmcp::handler::server::router::tool::ToolRouter;
 
+use crate::resmon::Monitor;
 use crate::services::Controller;
 pub use check::{CheckHook, CheckState};
 pub(crate) use logs::log_path;
@@ -106,6 +108,8 @@ pub struct Config {
     pub git_env: Vec<crate::gitops::EnvChange>,
     /// Laufende Aufnahme der App und Attrappen für `playtest_*`.
     pub playtest: PlaytestHooks,
+    /// Ressourcen-Monitoring: Tool `workbench_resources` und Messung je Aufruf.
+    pub resources: Option<Arc<Monitor>>,
 }
 
 impl Default for Config {
@@ -127,6 +131,7 @@ impl Default for Config {
             github: None,
             git_env: Vec::new(),
             playtest: PlaytestHooks::default(),
+            resources: None,
         }
     }
 }
@@ -145,6 +150,7 @@ struct Env {
     github: Arc<crate::github::Client>,
     git_env: Vec<crate::gitops::EnvChange>,
     playtest: PlaytestHooks,
+    resources: Option<Arc<Monitor>>,
 }
 
 impl Env {
@@ -169,8 +175,15 @@ impl Env {
                 .unwrap_or_else(|| Arc::new(crate::github::Client::new(cfg.root.clone()))),
             git_env: cfg.git_env.clone(),
             playtest: cfg.playtest.clone(),
+            resources: cfg.resources.clone(),
         }
     }
+}
+
+/// Messung je Tool-Aufruf.
+fn track_fn(monitor: &Arc<Monitor>) -> TrackFn {
+    let monitor = Arc::clone(monitor);
+    Arc::new(move |name: &str| monitor.track(name))
 }
 
 /// MCP-Server der Workbench.
@@ -225,11 +238,15 @@ impl Server {
             write_tool: Some(Arc::new(checkout_policy::write_tool)),
             target: Some(Arc::new(stats_target::target_of)),
             catalog: tools::CATALOG.iter().map(|name| (*name).to_owned()).collect(),
+            track: env.resources.as_ref().map(track_fn),
             ..Options::default()
         };
         let kit = KitServer::new(options, app, router, None);
         // Frisch angelegt, also noch leer.
         let _ = own.set(Arc::downgrade(&kit));
+        if let Some(monitor) = &env.resources {
+            resources::register_gauges(monitor, &env, Arc::downgrade(&kit));
+        }
         Server { kit, env }
     }
 

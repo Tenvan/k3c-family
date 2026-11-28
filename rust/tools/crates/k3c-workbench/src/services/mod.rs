@@ -39,6 +39,7 @@ pub use config::{HEALTH_PROCESS, Service, load, shift};
 pub use controller::{Controller, Failure, Outcome};
 pub use filewatch::Watch;
 pub use levels::LevelCounts;
+pub(crate) use options::go_duration;
 pub use options::{Cancel, Checker, Exit, KillPid, Listener, Options, OutFn, Sampler, Spawned, Starter, WaitError};
 pub(crate) use runtime::{executable, exit_of, spawn};
 pub(crate) use status::go_time;

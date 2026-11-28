@@ -1,5 +1,5 @@
-//! Tool-Liste gegen den Schnappschuss der Go-Workbench (`tests/data/go-tools.json`): was Rust anbietet, ist gleich, der
-//! Rest steht in [`AUSSTEHEND`].
+//! Tool-Liste gegen den Schnappschuss der Go-Workbench (`tests/data/go-tools.json`): Rust bietet dieselben Tools,
+//! abweichen darf nur die Beschreibung der Tools aus [`ABWEICHUNG_BESCHREIBUNG`].
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -11,8 +11,9 @@ use serde_json::{Map, Value, json};
 #[path = "../src/mcp/test_client.rs"]
 mod test_client;
 
-/// Tools, die erst spätere Sessions von RU69 bringen; am Ende leer.
-const AUSSTEHEND: &[&str] = &["workbench_resources"];
+/// Tools, deren Beschreibung (nur sie) abweichen darf: ohne Go-Laufzeit gibt es Threads statt Goroutinen und keine
+/// Heap-Profile.
+const ABWEICHUNG_BESCHREIBUNG: &[&str] = &["workbench_resources"];
 
 fn snapshot_path() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/data/go-tools.json")
@@ -90,17 +91,20 @@ async fn tools_wie_go() {
     let go = snapshot();
     let rust = rust_tools().await;
     assert_eq!(go.len(), 45, "Schnappschuss: {:?}", go.keys());
-    assert_eq!(AUSSTEHEND.len(), 1);
-    for (name, tool) in &rust {
-        assert_eq!(Some(tool), go.get(name), "{name} weicht von der Go-Fassung ab");
-    }
-    let pending: BTreeSet<&str> = AUSSTEHEND.iter().copied().collect();
-    assert_eq!(pending.len(), AUSSTEHEND.len(), "Name doppelt in AUSSTEHEND");
-    let done: Vec<&&str> = pending.iter().filter(|name| rust.contains_key(**name)).collect();
-    assert!(done.is_empty(), "schon vorhanden: {done:?}");
-    let both: BTreeSet<&str> = rust.keys().map(String::as_str).chain(pending).collect();
+    let offered: BTreeSet<&str> = rust.keys().map(String::as_str).collect();
     let wanted: BTreeSet<&str> = go.keys().map(String::as_str).collect();
-    assert_eq!(both, wanted);
+    assert_eq!(offered, wanted);
+    for (name, tool) in &rust {
+        let mut expected = go[name].clone();
+        if ABWEICHUNG_BESCHREIBUNG.contains(&name.as_str()) {
+            assert_ne!(
+                expected["description"], tool["description"],
+                "{name} weicht nicht mehr ab"
+            );
+            expected["description"] = tool["description"].clone();
+        }
+        assert_eq!(tool, &expected, "{name} weicht von der Go-Fassung ab");
+    }
 }
 
 /// Erneuert den Schnappschuss aus der laufenden Go-Workbench (nur `initialize` und `tools/list`, nur lesend):

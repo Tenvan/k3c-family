@@ -14,8 +14,8 @@ use super::transcribe::frame_name;
 use super::transcribe_job::read_meta;
 use super::{Error, FILE_MARKERS, FILE_TRANSCRIPT, Store, null_default};
 
-/// Beschreibungen der Marker-Bilder (Schreiber: Bildmodell, RU69.15).
-const FILE_DESCRIPTIONS: &str = "descriptions.json";
+/// Beschreibungen der Marker-Bilder (Schreiber: [`super::vision`]).
+pub(super) const FILE_DESCRIPTIONS: &str = "descriptions.json";
 
 #[allow(clippy::trivially_copy_pass_by_ref)] // Signatur für `skip_serializing_if`
 fn zero<T: Default + PartialEq>(value: &T) -> bool {
@@ -121,7 +121,7 @@ fn leading_number(key: &str) -> Option<i64> {
 }
 
 /// Liest `descriptions.json` (Marker-Nummer → Beschreibung); fehlt oder bricht sie, ist die Karte leer.
-fn read_descriptions(dir: &Path) -> BTreeMap<i64, FrameDesc> {
+pub(super) fn read_descriptions(dir: &Path) -> BTreeMap<i64, FrameDesc> {
     let parsed: Option<BTreeMap<String, Option<FrameDesc>>> = std::fs::read(dir.join(FILE_DESCRIPTIONS))
         .ok()
         .and_then(|raw| serde_json::from_slice(&raw).ok());

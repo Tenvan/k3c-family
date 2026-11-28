@@ -1,20 +1,11 @@
-//! Port von `TestUIMethodsWieWailsTS`: Aufruf-Tabelle und [`AUSSTEHEND_UI`] zusammen sind genau die Methoden von
-//! `interface GoApp` (`tests/data/ui-methoden.txt`).
+//! Port von `TestUIMethodsWieWailsTS`: die Aufruf-Tabelle hat genau die Methoden von `interface GoApp`
+//! (`tests/data/ui-methoden.txt`).
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 
 use std::collections::BTreeSet;
 use std::path::PathBuf;
 
 use k3c_workbench::rpc::METHODS;
-
-/// Methoden, die erst spätere Sessions von RU69 bringen; am Ende leer.
-const AUSSTEHEND_UI: &[&str] = &[
-    "PlaytestDescribe",
-    "PlaytestDescribeCancel",
-    "PlaytestDescribeStatus",
-    "PlaytestVisionInfo",
-    "Resources",
-];
 
 fn file(relative: &str) -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(relative)
@@ -26,15 +17,10 @@ fn wanted() -> BTreeSet<String> {
 }
 
 #[test]
-fn tabelle_und_ausstehende_sind_go_app() {
+fn tabelle_ist_go_app() {
     let table: BTreeSet<String> = METHODS.iter().map(|(name, _)| (*name).to_owned()).collect();
     assert_eq!(table.len(), METHODS.len(), "Name doppelt in METHODS");
-    let pending: BTreeSet<String> = AUSSTEHEND_UI.iter().map(|name| (*name).to_owned()).collect();
-    assert_eq!(pending.len(), AUSSTEHEND_UI.len(), "Name doppelt in AUSSTEHEND_UI");
-    let done: Vec<&String> = table.intersection(&pending).collect();
-    assert!(done.is_empty(), "schon vorhanden: {done:?}");
-    let both: BTreeSet<String> = table.union(&pending).cloned().collect();
-    assert_eq!(both, wanted());
+    assert_eq!(table, wanted());
 }
 
 #[test]

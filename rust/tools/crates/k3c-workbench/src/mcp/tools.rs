@@ -27,6 +27,7 @@ pub(super) struct Workbench {
 /// Reihenfolge der Tools in den Zählern wie in Go `register`.
 pub(super) const CATALOG: &[&str] = &[
     "workbench_status",
+    "workbench_resources",
     "notify_ui",
     "check_run",
     "console_tail",
@@ -97,6 +98,7 @@ impl Workbench {
 /// Alle Tools der Workbench.
 pub(super) fn router() -> ToolRouter<Workbench> {
     Workbench::tool_router()
+        + Workbench::resources_router()
         + Workbench::check_router()
         + Workbench::console_router()
         + Workbench::logs_router()

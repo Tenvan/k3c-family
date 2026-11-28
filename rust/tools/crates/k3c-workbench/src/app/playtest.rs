@@ -1,6 +1,6 @@
 //! Die Commands der Aufnahme und Auswertung auf der Seite Spieltest (Port von `app_playtest.go`, B-1218). Der
-//! Ordner-Vertrag steht in [`crate::playtest`]; die Methoden reichen nur durch und melden ins Log. Medien und
-//! Bildbeschreibung (RU69.15) fehlen noch.
+//! Ordner-Vertrag steht in [`crate::playtest`]; die Methoden reichen nur durch und melden ins Log. Die Player- und
+//! Marker-Dateien liefert [`super::playtest_media`].
 
 use std::path::Path;
 use std::sync::{Arc, Mutex, OnceLock, PoisonError};
@@ -12,9 +12,9 @@ use tokio::runtime::Handle;
 use super::services::STOPPED;
 use super::{App, lock};
 use crate::playtest::{
-    self, Active, Capability, Config, Devices, Error, Finding, FindingPatch, JobStatus, LogFn, LookPath, ModelInfo,
-    Options, PickCache, Plan, Probe, Recorder, Session, Spawn, Status, Store, Timeline, TranscribeConfig,
-    TranscribeOptions, Transcriber,
+    self, Active, Capability, Config, Describer, Devices, Error, Finding, FindingPatch, JobStatus, LogFn, LookPath,
+    ModelInfo, Options, PickCache, Plan, Probe, Recorder, Session, Spawn, Status, Store, Timeline, TranscribeConfig,
+    TranscribeOptions, Transcriber, VisionConfig, VisionInfo, VisionStatus,
 };
 
 /// Fristen der kurzen ffmpeg-Aufrufe: Probe, Geräteliste, Prüfung der Auswertung.
@@ -69,6 +69,7 @@ pub(super) struct PlaytestSeat {
     tools: OnceLock<Tools>,
     recorder: OnceLock<Arc<Recorder>>,
     transcriber: OnceLock<Arc<Transcriber>>,
+    describer: OnceLock<Arc<Describer>>,
 }
 
 impl App {
@@ -78,7 +79,7 @@ impl App {
         Arc::new(move || active.lock().unwrap_or_else(PoisonError::into_inner).clone())
     }
 
-    fn playtest_store(&self) -> Store {
+    pub(super) fn playtest_store(&self) -> Store {
         Store {
             root: self.root.join("playtests"),
             active: Some(self.playtest_active()),
@@ -103,9 +104,14 @@ impl App {
     }
 
     fn playtest_log(&self) -> LogFn {
+        self.namespace_log("main")
+    }
+
+    /// Meldungen der Spieltest-Module unter dem Thema `ns`.
+    fn namespace_log(&self, ns: &'static str) -> LogFn {
         let logger = self.logger();
         Arc::new(move |level, message, fields| {
-            let mut all: Vec<(&str, Value)> = vec![("ns", json!("main"))];
+            let mut all: Vec<(&str, Value)> = vec![("ns", json!(ns))];
             all.extend_from_slice(fields);
             if level == "warn" {
                 logger.warn(message, &all);
@@ -315,6 +321,57 @@ impl App {
         self.playtest_store()
             .set_frame_skip(id, nr, skip)
             .map_err(|e| e.to_string())
+    }
+}
+
+impl App {
+    fn describer(&self) -> Result<&Arc<Describer>, String> {
+        if let Some(describer) = self.playtest.describer.get() {
+            return Ok(describer);
+        }
+        let runtime = lock(&self.running)
+            .as_ref()
+            .map(|r| r.runtime.clone())
+            .ok_or_else(|| STOPPED.to_owned())?;
+        let (models, exe) = (self.root.clone(), self.root.clone());
+        let config = VisionConfig {
+            store: self.playtest_store(),
+            models: Arc::new(move || playtest::list_vision_models(&models)),
+            run_exe: Arc::new(move || {
+                let env = std::env::var(playtest::VISION_ENV).unwrap_or_default();
+                playtest::vision_runtime(&exe, &env)
+            }),
+            run: playtest::exec_vision(runtime),
+            log: Some(self.namespace_log("playtest")),
+        };
+        Ok(self.playtest.describer.get_or_init(|| Describer::new(config)))
+    }
+
+    /// Die Bildmodelle (`models/vision/`) und ob die Laufzeit llama.cpp bereitsteht.
+    pub fn playtest_vision_info(&self) -> Result<VisionInfo, String> {
+        self.wait();
+        Ok(self.describer()?.info())
+    }
+
+    /// Beschreibt die Marker-Bilder (leer: alle ausgewählten) mit dem Bildmodell im Hintergrund.
+    pub fn playtest_describe(&self, id: &str, model: &str, numbers: &[i64]) -> Result<VisionStatus, String> {
+        self.wait();
+        self.describer()?.start(id, model, numbers).map_err(|e| e.to_string())
+    }
+
+    /// Stand der Bildbeschreibung.
+    pub fn playtest_describe_status(&self) -> VisionStatus {
+        self.wait();
+        self.playtest
+            .describer
+            .get()
+            .map_or_else(VisionStatus::default, |d| d.status())
+    }
+
+    /// Bricht die Bildbeschreibung ab; fertige Beschreibungen bleiben.
+    pub fn playtest_describe_cancel(&self) -> Result<(), String> {
+        self.wait();
+        self.describer()?.cancel().map_err(|e| e.to_string())
     }
 }
 

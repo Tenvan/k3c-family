@@ -14,6 +14,8 @@ mod mcp_page;
 pub mod open_url;
 mod planning;
 mod playtest;
+pub(crate) mod playtest_media;
+mod resources;
 mod services;
 mod tasks;
 mod ticket;
@@ -71,6 +73,10 @@ struct Running {
     cancel: Cancel,
     /// Wächter der Planungsdateien; er endet beim Fallenlassen.
     planning: crate::planning::Watcher,
+    /// Ressourcen-Monitoring (Seite Monitoring, `workbench_resources`).
+    resources: Arc<crate::resmon::Monitor>,
+    /// Takt der Proben; er endet beim Fallenlassen.
+    ticker: Option<crate::resmon::Ticker>,
 }
 
 /// Backend der Workbench.
@@ -152,11 +158,6 @@ impl App {
             .map_or_else(String::new, |r| r.server.url())
     }
 
-    /// Misst einen Aufruf der Oberfläche; bis zum Ressourcen-Monitor (RU69.15) ohne Wirkung.
-    pub fn track(&self, _name: &str) -> Box<dyn FnOnce() + Send> {
-        Box::new(|| {})
-    }
-
     /// Konsolenpuffer, dessen neue Zeilen gebündelt als `console:line` an die Oberfläche gehen.
     fn console_store(&self) -> Arc<Store> {
         let events = self.events.clone();
@@ -177,6 +178,7 @@ impl App {
         }
         let logger = log.logger().clone();
         let tracker = self.open_tracker(&logger);
+        let (resources, ticker) = self.start_resources(&logger);
         let cancel = Cancel::default();
         let planning = planning::watch(self, &self.events);
         let services = services::open(&self.root, Arc::clone(&store), &logger, &self.events, &cancel).await;
@@ -186,6 +188,7 @@ impl App {
             console: Some(Arc::clone(&store)),
             services: Some(services.clone()),
             tasks: Some(Arc::clone(&tasks) as Arc<dyn mcp::TaskHost>),
+            resources: Some(Arc::clone(&resources)),
             ..self.server_config(&logger, &tracker)
         };
         let server = Arc::new(mcp::Server::new(config));
@@ -211,6 +214,8 @@ impl App {
             tasks,
             cancel,
             planning,
+            resources,
+            ticker,
         });
         self.set_mcp(started.err());
         self.mark_ready();
@@ -275,6 +280,7 @@ impl App {
         let logger = running.log.logger();
         logger.info("🛑 k3c-workbench beendet", &[("ns", json!("main"))]);
         running.cancel.cancel();
+        drop(running.ticker);
         drop(running.planning);
         // Ein halb gelaufener Testlauf darf die Anwendung nicht überleben, unabhängig von den Diensten.
         if let Err(e) = running.tasks.stop_all().await {

@@ -21,6 +21,8 @@ mod timeline;
 mod transcribe;
 mod transcribe_job;
 mod transcript_txt;
+mod vision;
+mod vision_exec;
 mod watch;
 
 #[cfg(test)]
@@ -46,6 +48,11 @@ pub use timeline::{Entry, FrameDesc, Marker, Timeline};
 pub use transcribe::{ModelInfo, frame_name, list_models, whisper_args};
 pub use transcribe_job::{JobStatus, TranscribeConfig, TranscribeOptions, Transcriber};
 pub use transcript_txt::transcript_text;
+pub use vision::{
+    Describer, VISION_ENV, VisionConfig, VisionInfo, VisionModel, VisionStatus, list_vision_models, vision_args,
+    vision_runtime,
+};
+pub use vision_exec::{VisionRun, exec_vision};
 pub use watch::Stats;
 
 /// Dateien des Ordner-Vertrags, die das Modul kennt.

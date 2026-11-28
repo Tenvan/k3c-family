@@ -126,6 +126,12 @@ impl Checks {
         self.runs.lock().unwrap_or_else(PoisonError::into_inner)
     }
 
+    /// Gemerkte Läufe und Bytes ihrer Zeilen.
+    pub(super) fn stats(&self) -> (usize, i64) {
+        let (jobs, bytes) = self.runs().stats();
+        (jobs, i64::try_from(bytes).unwrap_or(i64::MAX))
+    }
+
     /// Warnung zur Task-Version oder `None`; Fehler, wenn Task zu alt ist.
     async fn version_warning(&self, target: &targets::CheckTarget, pattern: &str) -> Result<Option<String>, String> {
         if !taskversion::needs_version(target, pattern) {

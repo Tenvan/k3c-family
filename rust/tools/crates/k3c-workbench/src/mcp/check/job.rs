@@ -136,4 +136,17 @@ impl Runs {
     pub(super) fn job(&self, id: &str) -> Option<Arc<Job>> {
         self.jobs.iter().find(|j| j.id == id).map(Arc::clone)
     }
+
+    /// Zahl der gemerkten Läufe und die Bytes ihrer gesammelten Zeilen (Ressourcen-Monitoring).
+    pub(super) fn stats(&self) -> (usize, usize) {
+        let bytes = self
+            .jobs
+            .iter()
+            .map(|job| {
+                let data = job.data();
+                data.output.iter().chain(&data.tail).map(String::len).sum::<usize>()
+            })
+            .sum();
+        (self.jobs.len(), bytes)
+    }
 }

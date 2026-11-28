@@ -93,6 +93,11 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("PlaytestFindings", playtest::findings),
     ("PlaytestFindingUpdate", playtest::finding_update),
     ("PlaytestFrameSkip", playtest::frame_skip),
+    ("PlaytestVisionInfo", playtest::vision_info),
+    ("PlaytestDescribe", playtest::describe),
+    ("PlaytestDescribeStatus", playtest::describe_status),
+    ("PlaytestDescribeCancel", playtest::describe_cancel),
+    ("Resources", resources),
 ];
 
 /// Das eine Argument einer Methode mit einem Namen.
@@ -138,6 +143,11 @@ fn mcp_calls(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
 fn mcp_usage(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
     no_args(args)?;
     encode(app.mcp_usage()?)
+}
+
+fn resources(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    let (window_min,) = uikit::args::<(i64,)>(args.to_vec())?;
+    encode(app.resources(window_min))
 }
 
 /// Ruft die Methode `name` auf und misst sie.

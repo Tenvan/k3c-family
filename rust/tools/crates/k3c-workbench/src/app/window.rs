@@ -9,7 +9,7 @@ use tauri::webview::{Color, PageLoadEvent};
 use tauri::{AppHandle, Emitter, Manager, RunEvent, Runtime, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 use tauri_plugin_window_state::StateFlags;
 
-use super::{App, events::Emit, open_url as address};
+use super::{App, events::Emit, open_url as address, playtest_media};
 use crate::platform;
 
 /// Name des Fensters; `capabilities/default.json` gilt für ihn.
@@ -32,9 +32,21 @@ fn open_url(url: String) -> Result<(), String> {
     platform::shell_open(address::allowed_url(&url)?)
 }
 
-/// Registriert die Commands; generisch, damit der Test die Mock-Laufzeit nutzen kann.
+/// Registriert die Commands und das Protokoll `k3c` der Player- und Marker-Dateien; generisch, damit der Test die
+/// Mock-Laufzeit nutzen kann.
 pub fn builder<R: Runtime>(b: tauri::Builder<R>) -> tauri::Builder<R> {
     b.invoke_handler(tauri::generate_handler![crate::rpc::rpc, open_url])
+        .register_asynchronous_uri_scheme_protocol(playtest_media::PROTOCOL, |ctx, request, responder| {
+            let app = ctx.app_handle().try_state::<AppState>().map(|s| Arc::clone(&s.0));
+            tauri::async_runtime::spawn_blocking(move || match app {
+                Some(app) => responder.respond(app.media_response(&request)),
+                None => {
+                    let mut response = tauri::http::Response::new(Vec::new());
+                    *response.status_mut() = tauri::http::StatusCode::NOT_FOUND;
+                    responder.respond(response);
+                }
+            });
+        })
 }
 
 /// App, deren Ereignisse zusätzlich an alle Fenster gehen.

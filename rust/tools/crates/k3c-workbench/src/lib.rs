@@ -12,6 +12,7 @@ pub mod planning;
 pub mod platform;
 pub mod playtest;
 pub mod ports;
+pub mod resmon;
 pub mod rpc;
 pub mod services;
 pub mod taskcat;

@@ -71,6 +71,28 @@ pub(super) fn transcribe_cancel(app: &Arc<App>, args: &[Value]) -> Result<Value,
     Ok(Value::Null)
 }
 
+pub(super) fn vision_info(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    no_args(args)?;
+    encode(app.playtest_vision_info()?)
+}
+
+pub(super) fn describe(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    // `null` statt der Liste heißt wie in Go: alle ausgewählten.
+    let (id, model, numbers) = uikit::args::<(String, String, Option<Vec<i64>>)>(args.to_vec())?;
+    encode(app.playtest_describe(&id, &model, &numbers.unwrap_or_default())?)
+}
+
+pub(super) fn describe_status(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    no_args(args)?;
+    encode(app.playtest_describe_status())
+}
+
+pub(super) fn describe_cancel(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
+    no_args(args)?;
+    app.playtest_describe_cancel()?;
+    Ok(Value::Null)
+}
+
 pub(super) fn timeline(app: &Arc<App>, args: &[Value]) -> Result<Value, RpcError> {
     let (id,) = uikit::args::<(String,)>(args.to_vec())?;
     encode(app.playtest_timeline(&id)?)
