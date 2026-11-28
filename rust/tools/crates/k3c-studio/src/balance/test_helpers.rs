@@ -82,9 +82,9 @@ pub fn seeds(n: usize) -> Vec<String> {
     (1..=n).map(|i| i.to_string()).collect()
 }
 
-/// Der Bericht `testdata/insights-run7.json` des Go-Pakets (Go `fixture`).
+/// Der Bericht `tests/data/insights-run7.json` (Go `fixture`).
 pub fn fixture() -> Summary {
-    let path = repo_root().join("tools/k3c-studio/internal/balance/testdata/insights-run7.json");
+    let path = repo_root().join("rust/tools/crates/k3c-studio/tests/data/insights-run7.json");
     read_summary(&std::fs::read(path).expect("Fixture")).expect("Fixture lesbar")
 }
 

@@ -1,5 +1,5 @@
 # Namespace `k3c-workbench`: die Workbench (Tauri-Fenster, MCP-Server, React-Oberfläche in frontend/). Backend in Rust:
-# rust/tools/crates/k3c-workbench (Entscheidung 014); `test`, `gotest` und `lint` prüfen bis RU71.4 noch die Go-Fassung.
+# rust/tools/crates/k3c-workbench (Entscheidung 014).
 # `dev` ist der Client-Server-Betrieb: `k3c-workbench --headless` (MCP-Server und Oberflächen-API ohne Fenster) per
 # `cargo run`, dazu Vite mit Hot Reload der Oberfläche im Browser (http://localhost:5191) und Proxy /api. Rust-Änderungen
 # brauchen einen Neustart. Der MCP-Port im dev ist DEV_MCP_PORT (5190), damit die laufende Workbench (5180) unberührt
@@ -63,17 +63,6 @@ tasks:
       - echo "   K3C_DEV_PORT={{.WT_MCP_PORT}} (MCP, .mcp.json nutzt ihn), K3C_DEV_UI_API_PORT={{.WT_API_PORT}}, Vite http://localhost:{{.WT_UI_PORT}}"
       - echo "   MCP-Tools mit checkout=<Worktree> gegen http://127.0.0.1:{{.WT_MCP_PORT}}/mcp; die Wurzel-Workbench (5180) bleibt unberührt"
 
-  dist:
-    internal: true
-    desc: Stellt nur sicher, dass frontend/dist für go:embed existiert (Platzhalter; im dev liefert Vite die Oberfläche, Typfehler blockieren das Backend nicht)
-    dir: '{{.DEV}}/frontend'
-    status:
-      - test -f dist/index.html
-    cmds:
-      - mkdir -p dist
-      - echo '<!doctype html><title>K3C Workbench</title>' > dist/index.html
-      - touch dist/.placeholder
-
   dev:ui:
     desc: Oberfläche mit Vite gegen das Backend von dev:server (Proxy /api); öffnet sie im Standard-Browser
     dir: '{{.DEV}}/frontend'
@@ -100,13 +89,11 @@ tasks:
       - task: dev
 
   frontend:
-    desc: Frontend von k3c-workbench bauen (go:embed braucht frontend/dist; nur bei geänderten Quellen)
+    desc: Frontend von k3c-workbench bauen (Typecheck und vite build nach frontend/dist; nur bei geänderten Quellen)
     dir: '{{.DEV}}/frontend'
     cmds:
       - bunx tsc --noEmit
       - bunx vite build
-    status:
-      - test ! -f dist/.placeholder # Platzhalter aus dist: immer echt bauen, nie in die EXE
     sources:
       - src/**/*
       - index.html
@@ -118,10 +105,14 @@ tasks:
       - dist/**/*
 
   test:
-    desc: k3c-workbench testen (Frontend mit Vitest, go test)
+    desc: k3c-workbench testen (Frontend mit Vitest, cargo test -p k3c-workbench)
+    deps: [':tmp', frontend]
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
     cmds:
       - task: vitest
-      - task: gotest
+      - cd '{{.ROOT_DIR}}/rust/tools' && cargo test -p k3c-workbench
 
   vitest:
     desc: Frontend von k3c-workbench testen (Vitest; check:diff nur bei Änderungen am Frontend, B-619)
@@ -130,33 +121,15 @@ tasks:
     cmds:
       - bunx vitest run --config vitest.config.ts {{.VITEST_ARGS}}
 
-  gotest:
-    desc: go test für k3c-workbench (ohne Sim-Pakete, CHECK_SIM=1 nimmt sie mit), die Asset-Logik tools/assetkit und den gemeinsamen Code tools/workkit (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
-    deps: [':tmp', frontend]
-    dir: '{{.DEV}}'
-    # Paketliste ohne Sim-Pakete (Sperre, CHECK_SIM=1 nimmt sie mit, B-857; balance und simrun seit WZ63.5 im Studio) aus
-    # tools/checkdiff › simDirs wie bei check:go; WB_PKGS (CI) hat Vorrang. Scheitert die Liste, bricht der Lauf ab,
-    # statt auf ./... zurückzufallen.
-    vars:
-      WB_GO_PKGS:
-        sh: cd "{{.ROOT_DIR}}" && go run ./tools/checkdiff -wbpkgs
-    cmds:
-      - go test {{.GO_TEST_FLAGS}} {{.WB_PKGS | default .WB_GO_PKGS | default "./paketliste-fehlt"}}
-      - cmd: cd ../assetkit && go test {{.GO_TEST_FLAGS}} ./...
-        if: '[ "{{.ASSETKIT}}" != "0" ]'
-      - cmd: cd ../workkit && go test {{.GO_TEST_FLAGS}} ./...
-        if: '[ "{{.WORKKIT}}" != "0" ]'
-
   lint:
-    desc: golangci-lint für k3c-workbench, tools/assetkit und tools/workkit
+    desc: cargo clippy für k3c-workbench mit -D warnings, alle Ziele
     deps: [':tmp', frontend]
-    dir: '{{.DEV}}'
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
     cmds:
-      - golangci-lint run --allow-serial-runners {{.WB_LINT_PKGS}}
-      - cmd: cd ../assetkit && golangci-lint run --allow-serial-runners
-        if: '[ "{{.ASSETKIT}}" != "0" ]'
-      - cmd: cd ../workkit && golangci-lint run --allow-serial-runners
-        if: '[ "{{.WORKKIT}}" != "0" ]'
+      - cargo clippy -p k3c-workbench --all-targets -- -D warnings
 
   build:
     desc: "EXE von k3c-workbench bauen, feste EXE bin/k3c-workbench (cargo build --release, Frontend eingebettet; nur bei geänderten Quellen, `--force` erzwingt; laufende Workbench vorher schließen, sonst scheitert die Kopie)"

@@ -8,7 +8,7 @@ use k3c_kit::console::Store;
 use serde_json::json;
 
 use super::test_client::Client;
-use super::test_helpers::write;
+use super::test_helpers::mark_root;
 use super::workspace_tests::repo_with_worktree;
 use super::{CheckState, Config, Server, checkout_policy};
 use crate::testutil::tmp_dir;
@@ -46,12 +46,12 @@ async fn console_tail_je_checkout() {
     let tmp = tmp_dir();
     let (main, wt, _) = repo_with_worktree(tmp.path());
     let store = Arc::new(Store::new(0, None));
-    store.add("check:task:check:go", "stdout", "lauf der Wurzel");
-    store.add("check:wt1/task:check:go", "stdout", "lauf des Worktrees");
+    store.add("check:task:check:diff", "stdout", "lauf der Wurzel");
+    store.add("check:wt1/task:check:diff", "stdout", "lauf des Worktrees");
     let server = started(&main, &store).await;
-    server.record_check(finished("wt1/task:check:go"));
+    server.record_check(finished("wt1/task:check:diff"));
     let (mut own, mut root) = (from(&server, &wt).await, from(&server, &main).await);
-    let arguments = json!({"service": "check:task:check:go"});
+    let arguments = json!({"service": "check:task:check:diff"});
     let (text, is_error) = own.call_text("console_tail", arguments.clone()).await;
     assert!(!is_error && text.contains("lauf des Worktrees"), "{text}");
     assert!(!text.contains("lauf der Wurzel"), "{text}");
@@ -76,7 +76,7 @@ async fn console_tail_je_checkout() {
 async fn quellen_cursor_farben_und_fehler() {
     let tmp = tmp_dir();
     let main = tmp.path().join("k3c");
-    write(&main.join("go.mod"), "module k3c\n");
+    mark_root(&main);
     let store = Arc::new(Store::new(0, None));
     let server = started(&main, &store).await;
     let mut client = Client::connect(server.url()).await;

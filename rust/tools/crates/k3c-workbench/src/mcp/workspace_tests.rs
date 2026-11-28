@@ -12,7 +12,7 @@ use serde_json::json;
 
 use super::Config;
 use super::test_client::Client;
-use super::test_helpers::{WRITTEN, started, write};
+use super::test_helpers::{WRITTEN, mark_root, started, write};
 use crate::testutil::tmp_dir;
 
 /// Repo-Wurzel mit einem Worktree wt1, wie `git worktree add` sie schreibt, und ein fremdes Repo daneben.
@@ -21,7 +21,7 @@ pub(super) fn repo_with_worktree(base: &Path) -> (PathBuf, PathBuf, PathBuf) {
     let foreign = base.join("anders");
     let wt = main.join(".claude").join("worktrees").join("wt1");
     for dir in [&main, &wt, &foreign] {
-        write(&dir.join("go.mod"), "module k3c\n");
+        mark_root(dir);
     }
     let gitdir = |p: PathBuf| format!("gitdir: {}\n", p.display().to_string().replace('\\', "/"));
     write(
@@ -40,16 +40,16 @@ async fn status_from(url: &str, dir: Option<&Path>) -> (String, bool) {
 }
 
 #[test]
-fn find_root_sucht_das_go_mod_des_spiels() {
+fn find_root_sucht_cargo_toml_und_data() {
     let tmp = tmp_dir();
     let root = tmp.path().join("k3c");
     let sub = root.join("tools").join("k3c-workbench");
-    write(&root.join("go.mod"), "module k3c\n\ngo 1.27.0\n");
-    write(&sub.join("go.mod"), "module k3c/tools/k3c-workbench\n");
+    mark_root(&root);
+    std::fs::create_dir_all(&sub).unwrap();
     assert!(same_path(find_root(&sub).unwrap(), &root));
-    // Der Temp-Ordner liegt im Repo; die Laufwerkswurzel hat sicher kein go.mod.
+    // Der Temp-Ordner liegt im Repo; die Laufwerkswurzel hat sicher keinen Marker.
     let drive: PathBuf = std::env::current_dir().unwrap().components().take(2).collect();
-    assert!(find_root(drive).is_err(), "ohne go.mod kein Fehler");
+    assert!(find_root(drive).is_err(), "ohne Marker kein Fehler");
 }
 
 #[tokio::test(flavor = "multi_thread")]
@@ -70,7 +70,7 @@ async fn workspace_aus_header() {
     let (text, is_error) = status_from(&url, Some(&foreign)).await;
     assert!(is_error && text.contains("kein Worktree von"), "fremdes Repo: {text}");
     let (text, is_error) = status_from(&url, main.parent()).await;
-    assert!(is_error, "Ordner ohne go.mod nicht abgelehnt: {text}");
+    assert!(is_error, "Ordner ohne Marker nicht abgelehnt: {text}");
     // Ohne Header bleibt es bei der Repo-Wurzel.
     let (text, _) = status_from(&url, None).await;
     assert!(text.contains(&label), "ohne Zuordnung: {text}");

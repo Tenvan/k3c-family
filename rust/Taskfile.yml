@@ -89,8 +89,8 @@ tasks:
         args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/public/rig=$p/public/rig {{.ROOT_DIR}}/public/audio=$p/public/audio {{.ROOT_DIR}}/LICENSE=$p/LICENSE {{.ROOT_DIR}}/LICENSE-ASSETS=$p/LICENSE-ASSETS {{.ROOT_DIR}}/rust/paket/README.txt=$p/README.txt"
         if [ -d public/schrift ]; then args="$args {{.ROOT_DIR}}/public/schrift=$p/public/schrift"; fi
         bun tools/sync/main.ts $args
-        # Spieldaten ohne Go-Quellen und Doku, wie im Go-Paket
-        rm -f "$p"/data/*.go "$p"/data/*.md "$p"/data/*/*.md
+        # Spieldaten ohne Doku
+        rm -f "$p"/data/*.md "$p"/data/*/*.md
       # Cheat-Fenster neben die Spiel-EXE (RU56, B-1135)
       - cp "{{.ROOT_DIR}}/rust/target/release/k3c-devwin.exe" "{{.PAKET}}/k3c-devwin.exe"
       # Lizenzdatei (B-1121): Liste der Lizenz-Seite (`k3c-game licenses`) plus Lizenztexte aller gelinkten Rust-Crates
@@ -121,7 +121,7 @@ tasks:
       - powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/tools/measure/measure.ps1" -Engine rustgame {{.CLI_ARGS}}
 
   game:dev:
-    desc: "Rust-Spiel im Debug-Bau starten (Arbeitsordner Repo-Wurzel, findet data/ und Grafik direkt); kein Neustart bei Änderungen (cargo-watch wäre ein neues Werkzeug, engine/devrun kennt nur Go)"
+    desc: "Rust-Spiel im Debug-Bau starten (Arbeitsordner Repo-Wurzel, findet data/ und Grafik direkt); kein Neustart bei Änderungen (cargo-watch wäre ein neues Werkzeug)"
     dir: '{{.ROOT_DIR}}'
     deps: [':gen:paper']
     cmds:

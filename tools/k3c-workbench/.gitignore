@@ -1,5 +1,4 @@
-# Wails: EXE, Standard-Icon und Manifest (erzeugt wails build neu) und generierte Bindings (die Oberfläche nutzt
-# sie nicht, siehe frontend/src/api/wails.ts)
+# Lokale Reste alter Wails-Bauten (nichts erzeugt sie mehr); die Zeilen bleiben, solange sie auf Rechnern liegen.
 build/
 frontend/wailsjs/
 frontend/package.json.md5

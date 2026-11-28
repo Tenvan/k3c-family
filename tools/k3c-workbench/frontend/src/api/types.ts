@@ -4,8 +4,8 @@ import type { GitBackend } from './typesGit';
 import type { ResourceView } from './typesResources';
 import type { TicketCreated, TicketInput } from '@webkit/lib/ticket';
 
-// Backend-Vertrag der Oberfläche (B-064 › Backend-Vertrag). Go-Seite: tools/k3c-workbench/app.go.
-// Wails-Laufzeit → wails.ts, ohne sie → http.ts (k3c-workbench -headless/-dev), im Test und mit ?mock=1 → mock.ts; welche gilt, entscheidet index.ts.
+// Backend-Vertrag der Oberfläche (B-064 › Backend-Vertrag). Gegenstück: rust/tools/crates/k3c-workbench.
+// Tauri-Fenster → tauri.ts, ohne es → http.ts (k3c-workbench -headless/-dev), im Test und mit ?mock=1 → mock.ts; welche gilt, entscheidet index.ts.
 
 /** Zustand des MCP-Servers (Go: MCPState). */
 export interface McpState {

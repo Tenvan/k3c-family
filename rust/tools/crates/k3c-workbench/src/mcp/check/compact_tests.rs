@@ -52,7 +52,7 @@ const CASES: &[(&str, &str, &[&str], &str)] = &[
         "warning",
     ),
     (
-        "go:test",
+        "task:check:diff",
         "gotest",
         &[
             "--- FAIL: TestZZFalsch (0.00s)",
@@ -62,7 +62,7 @@ const CASES: &[(&str, &str, &[&str], &str)] = &[
         "ok ",
     ),
     (
-        "go:lint",
+        "task:check:diff",
         "golangci",
         &[
             "zz_tmp_test.go:11:35: Error return value is not checked (errcheck)",
@@ -72,7 +72,7 @@ const CASES: &[(&str, &str, &[&str], &str)] = &[
         "func zz",
     ),
     (
-        "dev:test",
+        "task:check:dev",
         "vite",
         &[
             "error during build:",

@@ -1,6 +1,6 @@
 //! Port der Lauf-Tests aus `check_test.go`, dazu die Temp-Variablen des Kindprozesses, die Einträge im eigenen Log
 //! (`tools_logs_test.go`) und das Ziel im Aufruf-Log (`stats_target_test.go`). Kindprozess ist immer das Test-Binary
-//! selbst ([`helper_process`]), nie `task`, `go` oder `cargo`.
+//! selbst ([`helper_process`]), nie `task` oder `cargo`.
 
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
@@ -16,7 +16,7 @@ use crate::mcp::{Config, Server};
 use crate::testutil::tmp_dir;
 
 const HELPER: &str = "K3C_HELPER";
-const TEMP_NAMES: [&str; 3] = ["TMP", "TEMP", "GOTMPDIR"];
+const TEMP_NAMES: [&str; 2] = ["TMP", "TEMP"];
 
 fn helper_args() -> Vec<String> {
     let exe = std::env::current_exe().unwrap().display().to_string();
@@ -100,7 +100,7 @@ async fn zeitlimit_beendet_den_prozessbaum() {
     assert!(start.elapsed() < Duration::from_millis(6000), "{:?}", start.elapsed());
 }
 
-/// AC: der Kindprozess eines Laufs bekommt `TMP`, `TEMP` und `GOTMPDIR` unter `.work/` seines Checkouts.
+/// AC: der Kindprozess eines Laufs bekommt `TMP` und `TEMP` unter `.work/` seines Checkouts.
 #[tokio::test(flavor = "multi_thread")]
 async fn kindprozess_bekommt_temp_unter_work() {
     let (mut hooks, started) = hooks(|_| RunResult::default());
@@ -129,7 +129,7 @@ async fn lehnt_ab_ohne_prozessstart() {
         ("task:alles".to_owned(), String::new()),
         ("task:lint".to_owned(), "planning".to_owned()),
         ("task:test".to_owned(), "--watch".to_owned()),
-        ("go:test".to_owned(), "-v".to_owned()),
+        ("task:check:dev".to_owned(), "TestX".to_owned()),
     ];
     let long = "a".repeat(101);
     for bad in [";", "&", "`", "\"", "'", "<", ">", "%", "\\", " ", "a b", long.as_str()] {
@@ -142,8 +142,7 @@ async fn lehnt_ab_ohne_prozessstart() {
     assert_eq!(
         error,
         "unbekanntes Ziel \"task:alles\"; gültige Ziele: task:check, task:test, task:typecheck, task:lint, \
-         task:build, task:check:go, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:diff:go, \
-         task:check:race, go:test, go:lint, dev:test, task:check:dev"
+         task:build, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:dev"
     );
     assert_eq!(fake.started(), 0);
 }

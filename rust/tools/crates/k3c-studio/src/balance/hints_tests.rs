@@ -128,7 +128,7 @@ fn reevaluated() -> (String, String) {
     copy_dir(&repo_root().join("data"), &root.join("data"));
     let dir = root.join("reports").join("simtest-run-9");
     fs::create_dir_all(&dir).expect("Ordner");
-    let source = repo_root().join("tools/k3c-studio/internal/balance/testdata/insights-run7.json");
+    let source = repo_root().join("rust/tools/crates/k3c-studio/tests/data/insights-run7.json");
     let report = dir.join("balance-20261025-062117.json");
     fs::copy(source, &report).expect("Fixture");
     assert!(

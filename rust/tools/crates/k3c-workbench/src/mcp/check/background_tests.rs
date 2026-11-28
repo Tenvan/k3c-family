@@ -38,20 +38,20 @@ async fn langer_lauf_liefert_lauf_id() {
             ..RunResult::default()
         }
     });
-    let text = fake.run("task:check:go", "").await.unwrap();
+    let text = fake.run("task:check:diff", "").await.unwrap();
     assert!(text.contains("läuft noch"), "{text}");
     let id = run_id(&text);
-    let want = format!("weiter warten mit check_run {{run: \"{id}\"}}, Ausgabe mit console_tail check:task:check:go");
+    let want = format!("weiter warten mit check_run {{run: \"{id}\"}}, Ausgabe mit console_tail check:task:check:diff");
     assert!(text.ends_with(&want), "{text}");
     let text = fake.resume(&id, &Progress::none()).await.unwrap();
     assert!(text.contains("läuft noch"), "{text}");
-    let error = fake.run("task:check:go", "").await.unwrap_err();
+    let error = fake.run("task:check:diff", "").await.unwrap_err();
     assert!(error.contains("läuft bereits"), "{error}");
     gate.open();
     // Auf das Ende des Laufs warten, nicht auf Zeit.
     job_done(&fake, &id).await;
     let got = fake.resume(&id, &Progress::none()).await.unwrap();
-    assert!(got.contains("task:check:go · exit 1"), "{got}");
+    assert!(got.contains("task:check:diff · exit 1"), "{got}");
     assert!(got.contains("FAIL: TestKaputt"), "{got}");
 }
 
@@ -96,8 +96,8 @@ fn instructions_nennen_console_tail_parameter() {
 
 #[test]
 fn job_haelt_nur_fehlerzeilen_und_das_ende() {
-    let target = find_target("go:test").unwrap();
-    let job = Job::new("L1".to_owned(), target, "go:test".to_owned());
+    let target = find_target("task:check:diff").unwrap();
+    let job = Job::new("L1".to_owned(), target, "task:check:diff".to_owned());
     for _ in 0..1000 {
         job.add("ok zeile");
     }

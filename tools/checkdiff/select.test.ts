@@ -33,6 +33,10 @@ describe('classify', () => {
     ['Lockfile zählt als Client', ['bun.lock'], 'RC'],
     ['checkdiff prüft sich selbst', ['tools/checkdiff/run.ts'], 'RC'],
     ['cleanup bekommt Lint, Typecheck und Vitest', ['tools/cleanup/cleanup.ts'], 'RC'],
+    ['sync zählt als Client', ['tools/sync/sync.ts'], 'RC'],
+    ['rustpaket zählt als Client', ['tools/rustpaket/pruefen.ts'], 'RC'],
+    ['ruletable zählt als Client', ['tools/ruletable/table.ts'], 'RC'],
+    ['soundatlas zählt als Client', ['tools/soundatlas/atlas.ts'], 'RC'],
     ['Wurzel: Tests und Konfiguration', ['tests/planning.test.ts', 'vitest.config.ts'], 'RC'],
   ])('%s', (_name, files, want) => {
     expect(flags(classify(files))).toBe(want);

@@ -93,11 +93,11 @@ pub(super) struct Checks {
 struct CheckIn {
     #[serde(default)]
     #[schemars(
-        description = "Ziel aus dem Katalog: task:check, task:test, task:typecheck, task:lint, task:build, task:check:go, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:diff:go, task:check:race, go:test, go:lint, dev:test, task:check:dev"
+        description = "Ziel aus dem Katalog: task:check, task:test, task:typecheck, task:lint, task:build, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:dev"
     )]
     target: String,
     #[serde(default)]
-    #[schemars(description = "optionales Testmuster, nur bei task:test, go:test und dev:test")]
+    #[schemars(description = "optionales Testmuster, nur bei task:test")]
     pattern: String,
     #[serde(default)]
     #[schemars(

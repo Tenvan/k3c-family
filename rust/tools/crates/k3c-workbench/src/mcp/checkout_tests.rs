@@ -12,7 +12,7 @@ use serde_json::json;
 
 use super::Config;
 use super::test_client::Client;
-use super::test_helpers::{WRITTEN, started, write};
+use super::test_helpers::{WRITTEN, mark_root, started};
 use crate::testutil::tmp_dir;
 
 /// Variablen, mit denen ein umgebender Git-Aufruf (Hook) die Tests auf ein fremdes Repo lenken könnte.
@@ -43,7 +43,7 @@ async fn git(repo: &Path, args: &[&str]) {
 /// Repo des Spiels mit den Worktrees unter den relativen Pfaden `worktrees` (B-388).
 async fn git_repo(base: &Path, worktrees: &[&str]) -> (PathBuf, Vec<PathBuf>) {
     let main = base.join("k3c");
-    write(&main.join("go.mod"), "module k3c\n");
+    mark_root(&main);
     git(&main, &["init", "-q"]).await;
     git(&main, &["add", "."]).await;
     git(&main, &["commit", "-qm", "start"]).await;

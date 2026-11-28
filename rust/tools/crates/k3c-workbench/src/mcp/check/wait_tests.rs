@@ -43,12 +43,12 @@ async fn mit_fortschritt_wartet_bis_zum_ende() {
     let listener = tokio::spawn(async move {
         for _ in 0..2 {
             let msg = got.recv().await.unwrap();
-            assert!(msg.contains("task:check:go läuft seit"), "{msg}");
+            assert!(msg.contains("task:check:diff läuft seit"), "{msg}");
         }
         gate.open();
     });
-    let text = fake.run_with("task:check:go", &progress).await.unwrap();
-    assert!(text.contains("task:check:go · exit 1"), "{text}");
+    let text = fake.run_with("task:check:diff", &progress).await.unwrap();
+    assert!(text.contains("task:check:diff · exit 1"), "{text}");
     assert!(text.contains("FAIL: TestKaputt"), "{text}");
     listener.await.unwrap();
 }

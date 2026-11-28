@@ -1,49 +1,44 @@
 # Einstieg für alle Aufgaben: `task --list` (Voraussetzung: Go Task, requirements.md).
-# Die Werkzeuge laufen direkt (bunx, go, wails); package.json hält nur noch Abhängigkeiten.
+# Die Werkzeuge laufen direkt (bunx, cargo); package.json hält nur noch Abhängigkeiten.
 #
 # Aufbau: Dieses Taskfile hält die Kernbefehle ohne Namensraum (Workspace) und die Prüf-Aggregate `check:*`.
 # Alles andere liegt als eigenes Taskfile im Ordner des Projekts und erscheint hier unter dem Namen des Projekts
 # (die Workbench gruppiert nach dem Namensraum vor dem Doppelpunkt):
 #
-#   go           engine/Taskfile.yml            go test, Lint, Race, Abdeckung, Golden-Dateien
 #   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench (Tauri): dev (Client/Server), window (tauri dev), build, run, frontend, test, lint
 #   k3c-studio   tools/k3c-studio/Taskfile.yml  Studio (Welten, Assets, Hub; Tauri): dev (Client/Server), window, build, run, headless, frontend, test, lint
-#   balance      tools/k3c-studio/internal/balance/Taskfile.yml  Balancing-Tester (seit WZ63.5 im Studio)
+#   balance      rust/crates/k3c-balance/Taskfile.yml  Balancing-Tester (Handweg; Läufe rechnet die Spiel-EXE)
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #   tools-rust   rust/tools/Taskfile.yml   Rust-Werkzeuge (k3c-kit, Asset-Logik, Workbench, Studio): build, test, lint, fmt
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Werkzeuge und Tests (lint, typecheck, test) · Bauen und Ausliefern
-# (build, buildall, pages) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:all).
+# (build, buildall, pages) · Prüfen (check, check:diff, check:dev, check:all).
 #
 # Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Workbench und Studio: Rust-Backend mit
 # `--headless`, die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
 version: '3'
 
-# Go-Build-Temp (go-build, Test-EXEs, t.TempDir) und Wails-Bindings-EXE liegen im Repo unter `.work/tmp` statt in %TEMP%
-# (Regel "Schreiben nur im Repo", Ralf 2026-11-18). Folge: `go test` hasht die wechselnden Temp-Ordner im Modul als Eingabe,
-# Tests mit t.TempDir laufen darum nie aus dem Testcache (B-619, bewusst in Kauf genommen). Norton-Ausnahme: `<Repo>\.work`.
+# Temporäre Dateien von cargo, bun und den Tests liegen im Repo unter `.work/tmp` statt in %TEMP%
+# (Regel "Schreiben nur im Repo", Ralf 2026-11-18). Norton-Ausnahme: `<Repo>\.work`.
 vars:
   K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
 
 env:
-  GOTMPDIR: '{{.K3C_TMP}}'
   TMP: '{{.K3C_TMP}}'
   TEMP: '{{.K3C_TMP}}'
 
 includes:
-  go: engine/Taskfile.yml
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
   k3c-studio: tools/k3c-studio/Taskfile.yml
-  workkit: tools/workkit/Taskfile.yml
-  balance: tools/k3c-studio/internal/balance/Taskfile.yml
+  balance: rust/crates/k3c-balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
   rust: rust/Taskfile.yml
   tools-rust: rust/tools/Taskfile.yml
 
 tasks:
-  # Legt das feste Temp-Verzeichnis an (GOTMPDIR muss existieren, auch in der CI und in frischen Klonen ohne `task install`).
+  # Legt das feste Temp-Verzeichnis für cargo, bun und Tests an (auch in der CI und in frischen Klonen ohne `task install`).
   # Die Taskfiles der Projekte rufen es als `:tmp` auf.
   tmp:
     internal: true
@@ -66,6 +61,12 @@ tasks:
       - bun install --frozen-lockfile
       - bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
       - bun install --frozen-lockfile --cwd tools/k3c-studio/frontend
+
+  # Die Golden unter testdata/ sind das Orakel und seit RU41 eingefroren (nur lesend).
+  golden-setup:
+    desc: "Einmal je Klon: git zeigt Diffs der gepackten Golden-Dateien (*.json.gz) als JSON-Text (GD1, B-624)"
+    cmds:
+      - git config diff.gzip.textconv "gzip -dc"
 
   # --- Werkzeuge und Tests der Wurzel (tests/, tools/paper; der Browser-Client ist entfernt, B-848) ------------------
 
@@ -118,29 +119,11 @@ tasks:
     desc: Lint, Typecheck, Tests der Wurzel (tests/, tools/paper) parallel (vor jedem Abschluss)
     deps: [lint, typecheck, test]
 
-  check:go:
-    desc: Go-Tests ohne Sim-, Balance- und Lasttest-Pakete (Sperre, CHECK_SIM=1 nimmt sie mit, B-832) und golangci-lint (nacheinander wegen Wanduhr-Tests, B-284; Race-Detector getrennt in check:race, B-518)
-    # Die Paketliste kommt aus tools/checkdiff › simDirs (eine Quelle, ohne grep und tr, die dem Runner der Workbench fehlen);
-    # scheitert sie, bricht check:go ab, statt auf ./... zurückzufallen.
-    vars:
-      CHECK_GO_PKGS:
-        sh: go run ./tools/checkdiff -gopkgs
-    cmds:
-      - task: go:test
-        vars:
-          GO_PKGS: '{{.CHECK_GO_PKGS | default "./paketliste-fehlt"}}'
-      - task: go:lint
-
-  check:race:
-    desc: Go-Race-Detector für engine/ (langsam; nur Abnahme-Ticket des Sprints, check:all und CI, B-518, B-742)
-    cmds:
-      - task: go:race
-
   # check:diff ist das Werkzeug tools/checkdiff (TypeScript unter bun, Auswahl als getestete Logik statt Shell, RU71).
   # Teilaufgaben: `check:diff:plan` zeigt nur, was laufen würde; `check:diff:js` und `check:diff:rust` wiederholen nach
   # einem roten Lauf nur die betroffene Bahn.
   check:diff:
-    desc: "Vor jedem Commit: nur was die geänderten Dateien dieses Commits brauchen (Basis HEAD; `CHECK_BASE=origin/main` für den ganzen Sprint). Stufe 1 Regel-Tests, Lint, Typecheck, cargo fmt und clippy; Stufe 2 nur nach grüner Stufe 1: Vitest --changed, Tests der geänderten Crates. Ohne Sim, Balance, Gen, Race (B-518, B-730, B-742)"
+    desc: "Vor jedem Commit: nur was die geänderten Dateien dieses Commits brauchen (Basis HEAD; `CHECK_BASE=origin/main` für den ganzen Sprint). Stufe 1 Regel-Tests, Lint, Typecheck, cargo fmt und clippy; Stufe 2 nur nach grüner Stufe 1: Vitest --changed, Tests der geänderten Crates. Ohne Sim, Balance, Gen (B-518, B-730, B-742)"
     deps: [tmp]
     cmds:
       - bun tools/checkdiff/main.ts {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}} {{.CLI_ARGS}}
@@ -162,21 +145,18 @@ tasks:
       - bun tools/checkdiff/main.ts -only rust {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:dev:
-    desc: k3c-workbench und k3c-studio prüfen (Frontends mit Typecheck und Vitest, go test, golangci-lint)
+    desc: k3c-workbench und k3c-studio prüfen (Frontends mit Typecheck und Vitest, Tests und Lint der Rust-Werkzeuge)
     cmds:
       - task: k3c-workbench:frontend
-      - task: k3c-workbench:test
-      - task: k3c-workbench:lint
-      - task: k3c-studio:test
-      - task: k3c-studio:lint
+      - task: k3c-workbench:vitest
+      - task: k3c-studio:typecheck
+      - task: k3c-studio:vitest
+      - task: tools-rust:test
+      - task: tools-rust:lint
 
   check:all:
-    desc: Alles prüfen (Wurzel, Go, k3c-workbench, k3c-studio, Build des Rust-Spiels, Tests und Lint der Rust-Werkzeuge; das Go-Spiel baut nicht mehr mit)
+    desc: Alles prüfen (Wurzel, Build des Rust-Spiels, k3c-workbench und k3c-studio samt Rust-Werkzeugen)
     cmds:
       - task: check
       - task: build
-      - task: check:go
-      - task: check:race
       - task: check:dev
-      - task: tools-rust:test
-      - task: tools-rust:lint

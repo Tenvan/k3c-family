@@ -3,7 +3,6 @@
 
 use std::ffi::OsString;
 use std::fs;
-use std::io::{BufRead, BufReader};
 use std::path::{Component, Path, PathBuf};
 
 /// Checkout, aus dem ein Aufruf kommt: die Repo-Wurzel, an der der Server läuft, oder einer ihrer Git-Worktrees.
@@ -203,31 +202,22 @@ pub(crate) fn is_worktree_of(dir: &Path, main: &Path) -> bool {
         .is_some_and(|first| !first.to_string_lossy().starts_with(".."))
 }
 
-/// Sucht ab `dir` aufwärts das `go.mod` des Spiels (`module k3c`): die Repo-Wurzel bzw. den Worktree.
-// Der Wechsel des Markers gehört zu RU71.
+/// Sucht ab `dir` aufwärts die Repo-Wurzel bzw. den Worktree: der Ordner mit der Datei `rust/Cargo.toml` und dem
+/// Ordner `data/`. Gleiche Regel wie `k3c_assetkit::find_root`.
 pub fn find_root(dir: impl AsRef<Path>) -> Result<PathBuf, String> {
     let mut dir = dir.as_ref();
     loop {
-        if is_game_module(&dir.join("go.mod")) {
+        if is_repo_root(dir) {
             return Ok(dir.to_path_buf());
         }
         dir = dir.parent().ok_or_else(|| {
-            "repo-wurzel nicht gefunden: kein go.mod mit \"module k3c\" über dem Arbeitsverzeichnis".to_owned()
+            "repo-wurzel nicht gefunden: kein Ordner mit rust/Cargo.toml und data/ über dem Arbeitsverzeichnis"
+                .to_owned()
         })?;
     }
 }
 
-fn is_game_module(path: &Path) -> bool {
-    let Ok(file) = fs::File::open(path) else {
-        return false;
-    };
-    for line in BufReader::new(file).lines() {
-        let Ok(line) = line else {
-            return false;
-        };
-        if let Some(module) = line.trim().strip_prefix("module ") {
-            return module.trim() == "k3c";
-        }
-    }
-    false
+/// Beides zusammen: das Spielpaket `dist/k3c-game` hat nur `data/`.
+fn is_repo_root(dir: &Path) -> bool {
+    dir.join("rust").join("Cargo.toml").is_file() && dir.join("data").is_dir()
 }

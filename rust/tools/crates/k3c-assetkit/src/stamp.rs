@@ -12,11 +12,12 @@ use sha2::{Digest, Sha256};
 use crate::error::{Error, Result};
 use crate::register::{self, Choice, REGISTER_PATH, Slot};
 
-/// Sucht ab `dir` aufwärts das Verzeichnis mit dem `go.mod` des Spiels (`module k3c`).
+/// Sucht ab `dir` aufwärts die Repo-Wurzel: der Ordner mit der Datei `rust/Cargo.toml` und dem Ordner `data/`. Gleiche
+/// Regel wie `k3c_kit::mcp::find_root` (eigene Kopie: `k3c-assetkit` hängt nicht an `k3c-kit`).
 pub fn find_root(dir: &Path) -> Result<PathBuf> {
     let mut dir = dir.to_path_buf();
     loop {
-        if is_game_module(&dir.join("go.mod")) {
+        if is_repo_root(&dir) {
             return Ok(dir);
         }
         let parent = match dir.parent() {
@@ -27,7 +28,7 @@ pub fn find_root(dir: &Path) -> Result<PathBuf> {
             Some(p) if p != dir => dir = p,
             _ => {
                 return Err(Error::Msg(format!(
-                    "repo-wurzel nicht gefunden: kein go.mod mit \"module k3c\" über {}",
+                    "repo-wurzel nicht gefunden: kein Ordner mit rust/Cargo.toml und data/ über {}",
                     dir.display()
                 )));
             }
@@ -35,12 +36,9 @@ pub fn find_root(dir: &Path) -> Result<PathBuf> {
     }
 }
 
-fn is_game_module(path: &Path) -> bool {
-    let Ok(bytes) = fs::read(path) else { return false };
-    String::from_utf8_lossy(&bytes)
-        .lines()
-        .find_map(|line| line.trim().strip_prefix("module "))
-        .is_some_and(|name| name.trim() == "k3c")
+/// Beides zusammen: das Spielpaket `dist/k3c-game` hat nur `data/`.
+fn is_repo_root(dir: &Path) -> bool {
+    dir.join("rust").join("Cargo.toml").is_file() && dir.join("data").is_dir()
 }
 
 /// Stand des Slot-Registers: SHA-256 des Datei-Inhalts (hex).

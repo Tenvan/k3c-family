@@ -6,7 +6,7 @@ CLI für das Aufräumen lokaler Branches und Worktrees (B-302, RP1.1) und alter 
 
 ## Design
 
-TypeScript unter bun, nur Node-APIs (RU71). Die Go-Dateien im Ordner sind nicht mehr angebunden und fallen in RU71.4.
+TypeScript unter bun, nur Node-APIs (RU71).
 
 - `main.ts` (Einstieg) und `app.ts`: Flags `-root`, `-dry` (`../checkdiff/flags.ts`); unbekannte Flags und lose Argumente brechen mit Exit 2 ab, bevor etwas geschieht.
 - `git.ts`: `gitWith` (git als Argumentliste ohne Shell, absoluter Pfad über `../checkdiff/exe.ts`), `ghMerged` (gemergter PR per `gh pr list`, Fehler bei fehlendem `gh` oder Netz).

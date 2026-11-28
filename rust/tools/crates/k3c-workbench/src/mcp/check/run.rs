@@ -49,13 +49,12 @@ impl RunResult {
     }
 }
 
-/// Temp des Kindprozesses im Checkout (CLAUDE.md › Schreiben nur im Repo), wie das `env` der Wurzel-Taskfile. Der
-/// Ordner muss existieren (`GOTMPDIR`).
+/// Temp des Kindprozesses im Checkout (CLAUDE.md › Schreiben nur im Repo), wie das `env` der Wurzel-Taskfile.
 fn temp_env(root: &Path) -> Result<Vec<(String, String)>, String> {
     let dir = root.join(".work").join("tmp");
     std::fs::create_dir_all(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
     let dir = dir.display().to_string();
-    Ok(["GOTMPDIR", "TMP", "TEMP"]
+    Ok(["TMP", "TEMP"]
         .into_iter()
         .map(|name| (name.to_owned(), dir.clone()))
         .collect())

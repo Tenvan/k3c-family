@@ -103,26 +103,3 @@ async fn tools_wie_go() {
     let wanted: BTreeSet<&str> = golden.keys().map(String::as_str).collect();
     assert_eq!(both, wanted);
 }
-
-/// Die `Name: "…"` der Tools in den Go-Quellen sind die Golden-Namen, solange es die Quellen gibt. Prompts
-/// (`"asset-" + …`) passen nicht auf das Muster.
-#[test]
-fn golden_wie_go_quellen() {
-    let dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../../tools/k3c-studio/internal/mcpsrv");
-    let Ok(entries) = std::fs::read_dir(&dir) else {
-        eprintln!("übersprungen: {} fehlt", dir.display());
-        return;
-    };
-    let pattern = regex::Regex::new(r#"(?m)^\s*Name:\s*"([a-z0-9_]+)""#).unwrap();
-    let mut names = BTreeSet::new();
-    for entry in entries {
-        let path = entry.unwrap().path();
-        let file = path.file_name().unwrap().to_string_lossy().into_owned();
-        if !file.ends_with(".go") || file.ends_with("_test.go") {
-            continue;
-        }
-        let source = std::fs::read_to_string(&path).unwrap();
-        names.extend(pattern.captures_iter(&source).map(|found| found[1].to_owned()));
-    }
-    assert_eq!(names, golden().into_keys().collect::<BTreeSet<_>>());
-}

@@ -1,6 +1,7 @@
 // Block „Hub-Stufe → Gebäude“ der Regeln (`docs/rules/materialien-gebaeude.md` § 3) aus `data/hub.json`. Reine
 // Funktionen ohne Dateizugriff. Die Zahl der Hub-Stufen kommt aus `levels`, es gibt keine feste Obergrenze.
-// Gleiche Regeln wie die Go-Fassung `table/` (Studio); fehlende Werte sind 0 bzw. leer, falsche Typen ein Fehler.
+// Gleiche Regeln wie `rust/tools/crates/k3c-studio/src/hubplan/table.rs`; fehlende Werte sind 0 bzw. leer, falsche
+// Typen ein Fehler.
 
 /** START und END markieren den erzeugten Block im Regeltext; je genau einmal. */
 export const START = '<!-- rules:hub-levels:start -->';

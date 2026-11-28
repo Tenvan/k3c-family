@@ -31,7 +31,6 @@ async fn teilaufgaben_von_check_diff() {
     for (target, cmd, exit) in [
         ("task:check:diff:plan", "task check:diff:plan", 0),
         ("task:check:diff:js", "task check:diff:js", 1),
-        ("task:check:diff:go", "task check:diff:go", 0),
     ] {
         let (fake, got) = recording(exit);
         let text = fake.run(target, "").await.unwrap();
@@ -44,36 +43,25 @@ async fn teilaufgaben_von_check_diff() {
         "zwei Stufen",
         "task:check:diff:plan",
         "task:check:diff:js",
-        "task:check:diff:go",
         "task:check:dev",
     ] {
         assert!(CHECK_RUN_DESCRIPTION.contains(part), "{part}");
     }
     assert!(!CHECK_RUN_DESCRIPTION.contains("origin/main"));
     let error = find_target("task:check:diff:rust").unwrap_err();
-    assert!(error.contains("task:check:diff:go"), "{error}");
+    assert!(error.contains("task:check:diff:js"), "{error}");
 }
 
 #[tokio::test(flavor = "multi_thread")]
 async fn workbench_ziele() {
-    for (target, pattern, cmd) in [
-        ("dev:test", "", "task k3c-workbench:gotest"),
-        (
-            "dev:test",
-            "TestX",
-            "task k3c-workbench:gotest GO_TEST_FLAGS=-run='TestX'",
-        ),
-        ("task:check:dev", "", "task check:dev"),
-    ] {
-        let (fake, got) = recording(0);
-        let error = fake.run(target, pattern).await.unwrap_err();
-        assert!(error.contains("task install"), "{target} ohne node_modules: {error}");
-        assert_eq!(fake.started(), 0);
-        fake.add_frontend_deps();
-        fake.run(target, pattern).await.unwrap();
-        assert_eq!(command(&got), cmd);
-        let spec = got.lock().unwrap().clone().unwrap();
-        assert!(spec.timeout >= Duration::from_secs(20 * 60), "{:?}", spec.timeout);
-        assert_eq!(spec.dir, fake.ws.root);
-    }
+    let (fake, got) = recording(0);
+    let error = fake.run("task:check:dev", "").await.unwrap_err();
+    assert!(error.contains("task install"), "ohne node_modules: {error}");
+    assert_eq!(fake.started(), 0);
+    fake.add_frontend_deps();
+    fake.run("task:check:dev", "").await.unwrap();
+    assert_eq!(command(&got), "task check:dev");
+    let spec = got.lock().unwrap().clone().unwrap();
+    assert!(spec.timeout >= Duration::from_secs(20 * 60), "{:?}", spec.timeout);
+    assert_eq!(spec.dir, fake.ws.root);
 }

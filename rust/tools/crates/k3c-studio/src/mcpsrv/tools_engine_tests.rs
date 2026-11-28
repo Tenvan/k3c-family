@@ -8,7 +8,7 @@ use super::super::kit::{Logger, Workspace};
 use super::super::{Config, Server};
 use super::{LevelIn, level_generate};
 use crate::gameexe::{BUILD_COMMAND, Event, Options};
-use crate::test_helpers::{mcp_client, tmp_dir};
+use crate::test_helpers::{mark_root, mcp_client, tmp_dir};
 
 /// RU34.2: `level_generate` rechnet mit der EXE des gewählten Checkouts, auch eines Worktrees, ohne Fenster.
 #[tokio::test]
@@ -49,7 +49,7 @@ async fn level_generate_nimmt_checkout_der_anfrage() {
 #[tokio::test(flavor = "multi_thread")]
 async fn level_generate_ohne_exe() {
     let root = tmp_dir();
-    std::fs::write(root.path().join("go.mod"), "module k3c\n").unwrap();
+    mark_root(root.path());
     let server = Server::new(Config {
         root: root.path().to_path_buf(),
         port: 0,

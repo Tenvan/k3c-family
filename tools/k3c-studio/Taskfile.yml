@@ -1,6 +1,6 @@
 # Namespace `k3c-studio`: Werkzeug für Game- und Level-Designer (WZ63): Welten, Assets, Hub (Tauri-Fenster, React-Oberfläche
 # in frontend/) und der MCP-Server k3c-studio (Vorgabe-Port 5181, K3C_STUDIO_PORT). Backend in Rust:
-# rust/tools/crates/k3c-studio (Entscheidung 014); `test`, `gotest` und `lint` prüfen bis RU71.4 noch die Go-Fassung.
+# rust/tools/crates/k3c-studio (Entscheidung 014).
 # `dev` ist der Client-Server-Betrieb wie in der Workbench: `k3c-studio --headless` (MCP-Server und Oberflächen-API ohne
 # Fenster) per `cargo run`, dazu Vite mit Hot Reload der Oberfläche im Browser (http://localhost:5193) und Proxy /api
 # (DEV_UI_API_PORT 8193). Rust-Änderungen brauchen einen Neustart. Der MCP-Port im dev ist DEV_MCP_PORT (5182), damit das
@@ -85,30 +85,24 @@ tasks:
       - bunx vitest run --config vitest.config.ts {{.VITEST_ARGS}}
 
   test:
-    desc: k3c-studio testen (Frontend mit Typecheck und Vitest, go test)
+    desc: k3c-studio testen (Frontend mit Typecheck und Vitest, cargo test -p k3c-studio)
+    deps: [':tmp', frontend]
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
     cmds:
       - task: vitest
-      - task: gotest
-
-  gotest:
-    desc: go test für tools/k3c-studio (ohne Sim-Pakete, CHECK_SIM=1 nimmt sie mit; GO_TEST_FLAGS=-short lässt lange Tests aus)
-    deps: [':tmp']
-    dir: '{{.STUDIO_DIR}}'
-    # Paketliste ohne Sim-Pakete (balance, simrun seit WZ63.5; Sperre, CHECK_SIM=1 nimmt sie mit, B-857) aus
-    # tools/checkdiff › simDirs wie bei check:go; STUDIO_PKGS (CI) hat Vorrang. Scheitert die Liste, bricht der Lauf ab,
-    # statt auf ./... zurückzufallen.
-    vars:
-      STUDIO_GO_PKGS:
-        sh: cd "{{.ROOT_DIR}}" && go run ./tools/checkdiff -studiopkgs
-    cmds:
-      - go test {{.GO_TEST_FLAGS}} {{.STUDIO_PKGS | default .STUDIO_GO_PKGS | default "./paketliste-fehlt"}}
+      - cd '{{.ROOT_DIR}}/rust/tools' && cargo test -p k3c-studio
 
   lint:
-    desc: golangci-lint für tools/k3c-studio (depguard sperrt Importe aus k3c-workbench)
-    deps: [':tmp']
-    dir: '{{.STUDIO_DIR}}'
+    desc: cargo clippy für k3c-studio mit -D warnings, alle Ziele
+    deps: [':tmp', frontend]
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
     cmds:
-      - golangci-lint run --allow-serial-runners
+      - cargo clippy -p k3c-studio --all-targets -- -D warnings
 
   build:
     desc: "EXE von k3c-studio bauen, feste EXE bin/k3c-studio (nur bei geänderten Quellen, `--force` erzwingt; laufendes Studio-Fenster vorher schließen, sonst scheitert die Kopie)"

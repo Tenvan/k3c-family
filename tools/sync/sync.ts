@@ -6,9 +6,9 @@
 import { lstatSync, mkdirSync, readdirSync, readFileSync, statSync, utimesSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
-// Node setzt Zeiten nur als Sekunden in double (rund 250 ns Auflösung heute), Go auf die Nanosekunde. Eine
-// Abweichung unter 1 µs gilt darum als gleich; echte Änderungen liegen weit darüber.
-const SLACK_NS = 1000n;
+// Node setzt Zeiten nur als Sekunden in double, Go auf die Nanosekunde. Gemessen unter Windows weicht die gesetzte
+// Zeit um bis zu 1 µs ab. Eine Abweichung unter 10 µs gilt darum als gleich; echte Änderungen liegen weit darüber.
+const SLACK_NS = 10_000n;
 
 export interface Streams {
   out: (text: string) => void;

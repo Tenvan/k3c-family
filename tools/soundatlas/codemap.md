@@ -20,4 +20,3 @@ TypeScript unter bun, nur Node-APIs (RU71); Aufruf `bun tools/soundatlas/main.ts
 - Taskfile-Task `gen:soundatlas` in `tools/Taskfile.yml` (braucht bun und ffmpeg; `sources` sind `tools/soundatlas/*.ts` ohne Tests und `data/sounds.json`).
 - Eingabe `data/sounds.json` und Sounddateien unter `public/`; Ausgabe `public/audio/atlas.{ogg,mp3,json}`.
 - Test: `atlas.test.ts` (Vitest der Wurzel).
-- Die Go-Dateien im Ordner nutzt niemand mehr; Löschung in RU71.4.

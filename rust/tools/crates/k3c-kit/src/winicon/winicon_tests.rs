@@ -3,10 +3,7 @@
 
 use super::{handle, set};
 
-const ICON: &str = concat!(
-    env!("CARGO_MANIFEST_DIR"),
-    "/../../../../tools/k3c-workbench/build/appicon.png"
-);
+const ICON: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/tests/data/appicon.png");
 
 /// Ein PNG wird zu einem gültigen Icon-Handle; ohne PNG gibt es keins.
 #[test]

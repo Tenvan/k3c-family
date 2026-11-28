@@ -21,4 +21,3 @@ TypeScript unter bun, nur Node-APIs (RU71); Aufruf `bun tools/rustpaket/main.ts 
 
 - Aufrufer: `rust/Taskfile.yml` (`game:dist`, `game:dist:check`); Eingabe `cargo metadata` im Ordner `rust/`.
 - Tests: `lizenzen.test.ts`, `pruefen.test.ts` mit `testdata/` (Vitest der Wurzel).
-- Die Go-Dateien im Ordner nutzt niemand mehr; Löschung in RU71.4.

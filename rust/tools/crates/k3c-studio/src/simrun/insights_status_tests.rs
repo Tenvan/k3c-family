@@ -11,8 +11,8 @@ use super::reports::{read_insights, read_result, write_html};
 use super::test_helpers::{repo_root, temp_root, write_report};
 
 fn fixture() -> String {
-    let path = repo_root().join("tools/k3c-studio/internal/balance/testdata/insights-run7.json");
-    fs::read_to_string(path).expect("Bericht des Go-Pakets")
+    let path = repo_root().join("rust/tools/crates/k3c-studio/tests/data/insights-run7.json");
+    fs::read_to_string(path).expect("Bericht-Fixture")
 }
 
 #[test]

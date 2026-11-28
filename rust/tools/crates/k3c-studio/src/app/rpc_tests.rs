@@ -11,9 +11,6 @@ use serde_json::{Value, json};
 use super::*;
 use crate::app::VERSION;
 
-/// Methoden von `GoApp`, die noch fehlen; seit RU70.20 keine (AC-03).
-const PENDING_METHODS: &[&str] = &[];
-
 fn app() -> Arc<App> {
     let app = App::new("unbenutzt".into(), 0, None);
     app.mark_ready();
@@ -72,17 +69,13 @@ fn command_und_ui_api_nutzen_eine_tabelle() {
     assert_eq!(served, table);
 }
 
-/// Aus `TestUIMethodsWieWailsTS`: Tabelle und `PENDING_METHODS` zusammen sind genau `GoApp`.
+/// Die Aufruf-Tabelle hat genau die Methoden der Liste `tests/data/ui-methoden.txt`.
 #[test]
-fn ui_methods_wie_wails_ts() {
-    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../../tools/k3c-studio/frontend/src/api/wails.ts");
-    let source = std::fs::read_to_string(path).unwrap().replace("\r\n", "\n");
+fn tabelle_wie_liste() {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/data/ui-methoden.txt");
+    let text = std::fs::read_to_string(path).unwrap();
+    let wanted: HashSet<String> = text.lines().map(str::to_owned).collect();
     let table: HashSet<String> = METHODS.iter().map(|(name, _)| (*name).to_owned()).collect();
     assert_eq!(table.len(), METHODS.len(), "Methode doppelt in der Tabelle");
-    let pending: HashSet<String> = PENDING_METHODS.iter().map(|name| (*name).to_owned()).collect();
-    assert_eq!(pending.len(), PENDING_METHODS.len(), "Name doppelt in PENDING_METHODS");
-    let both: Vec<&String> = table.intersection(&pending).collect();
-    assert!(both.is_empty(), "schon in der Tabelle: {both:?}");
-    let all: HashSet<String> = table.union(&pending).cloned().collect();
-    uikit::check_methods(&source, &all).unwrap();
+    assert_eq!(table, wanted);
 }

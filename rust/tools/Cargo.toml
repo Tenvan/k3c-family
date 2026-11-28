@@ -4,8 +4,6 @@
 [workspace]
 resolver = "3"
 members = ["crates/*"]
-# Der Spike RU65.1 hat einen eigenen Workspace und bleibt nur als Referenz (RU71 löscht ihn).
-exclude = ["spike"]
 
 [workspace.package]
 edition = "2024"

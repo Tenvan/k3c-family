@@ -280,7 +280,7 @@ pub(super) fn aktion(action: &str, id: &str) -> SimTestIn {
     }
 }
 
-/// Git-Repo (`module k3c`) unter `.work/` mit den Worktrees `wts`; `None` ohne git.
+/// Git-Repo des Spiels unter `.work/` mit den Worktrees `wts`; `None` ohne git.
 pub(super) fn git_repo(wts: &[&str]) -> Option<(Wurzel, Vec<PathBuf>)> {
     if std::process::Command::new("git").arg("--version").output().is_err() {
         eprintln!("übersprungen: git fehlt");
@@ -288,7 +288,7 @@ pub(super) fn git_repo(wts: &[&str]) -> Option<(Wurzel, Vec<PathBuf>)> {
     }
     let wurzel = leere_wurzel();
     let main = wurzel.pfad.clone();
-    std::fs::write(main.join("go.mod"), "module k3c\n").expect("go.mod");
+    crate::test_helpers::mark_root(&main);
     let git = |args: &[&str]| {
         let out = std::process::Command::new("git")
             .arg("-C")

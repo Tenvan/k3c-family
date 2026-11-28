@@ -4,8 +4,8 @@
 // Rust (Projekt RSU, RU1.2; Werkzeuge RU66.1): Es gibt zwei Cargo-Workspaces, das Spiel rust/ und die Werkzeuge
 // rust/tools/ (eigenes [workspace], Entscheidung 014). Geänderte Dateien unter <workspace>/crates/<name>/ wählen fmt,
 // clippy und Tests dieser Crate; Manifest, Lockfile oder clippy.toml direkt im Workspace-Ordner wählen den ganzen
-// Workspace. rust/rust-toolchain.toml und rust/rustfmt.toml erbt rust/tools/, sie wählen beide Workspaces ganz. Der
-// Spike rust/tools/spike/ gehört zu keinem Workspace. Ohne Rust-Datei läuft kein cargo.
+// Workspace. rust/rust-toolchain.toml und rust/rustfmt.toml erbt rust/tools/, sie wählen beide Workspaces ganz. Ohne
+// Rust-Datei läuft kein cargo.
 
 import path from 'node:path';
 
@@ -34,7 +34,8 @@ export interface Plan {
 }
 
 /** Ordner, deren Dateien Lint, Typecheck und Vitest der Wurzel brauchen (der Browser-Client src/ ist entfernt, B-848). */
-const CLIENT_ROOTS = ['tests/', 'public/', 'data/', 'tools/paper/', 'tools/checkdiff/', 'tools/cleanup/'];
+const CLIENT_ROOTS = ['tests/', 'public/', 'data/', 'tools/paper/', 'tools/checkdiff/', 'tools/cleanup/', 'tools/sync/', 'tools/rustpaket/',
+    'tools/ruletable/', 'tools/soundatlas/'];
 const CLIENT_EXTS = new Set(['.html', '.ts', '.js', '.mjs', '.json', '.lock', '.lockb']);
 const RUST_ROOT = 'rust/';
 /** Dateien direkt im Workspace-Ordner, die jede Crate dieses Workspace betreffen. */
