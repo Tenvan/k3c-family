@@ -1,5 +1,5 @@
-//! Port von `check_pattern_test.go` (B-866). Zwei Tests starten wie in Go wirklich `go test` bzw. `task`, nur in
-//! Wegwerf-Ordnern unter `.work/tmp`; fehlt das Werkzeug, überspringen sie.
+//! Testmuster (B-866). Ein Test startet wirklich `task`, nur in einem Wegwerf-Ordner unter `.work/tmp`; fehlt das
+//! Werkzeug, überspringt er.
 
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
@@ -12,17 +12,14 @@ const PATTERNS: [&str; 3] = ["TestA|TestB", "^TestA$", "x$(exit)y"];
 
 #[test]
 fn muster_mit_oder_und_ankern() {
-    let go = find_target("go:test").unwrap();
+    let test = find_target("task:test").unwrap();
     for bad in ["TestA;rm", "TestA&TestB", "TestA`x`", r"TestA\x"] {
-        let error = go.args(bad).unwrap_err();
+        let error = test.args(bad).unwrap_err();
         assert!(error.contains("| ^ $ ( )"), "{bad:?}: {error}");
     }
-    let dev = find_target("dev:test").unwrap();
     for pattern in PATTERNS {
-        // `go test` startet ohne Shell: das Muster bleibt roh. Die Task-Variable braucht die Anführungszeichen.
-        assert_eq!(go.args(pattern).unwrap(), ["go", "test", "./...", "-run", pattern]);
-        let last = dev.args(pattern).unwrap().pop().unwrap();
-        assert_eq!(last, format!("GO_TEST_FLAGS=-run='{pattern}'"));
+        // `CLI_ARGS` nach `--` quotet Task selbst: das Muster bleibt roh.
+        assert_eq!(test.args(pattern).unwrap(), ["task", "test", "--", pattern]);
     }
 }
 
@@ -55,62 +52,21 @@ fn installed(tool: &str) -> bool {
 }
 
 #[tokio::test(flavor = "multi_thread")]
-async fn go_nimmt_die_muster() {
-    if !installed("go") {
-        return;
-    }
-    let dir = tmp_dir();
-    // Go ignoriert ein `go.mod` im Temp-Ordner des Systems selbst, darum liegen Modul und Temp nebeneinander.
-    let (module, temp) = (dir.path().join("modul"), dir.path().join("tmp"));
-    std::fs::create_dir_all(&module).unwrap();
-    std::fs::create_dir_all(&temp).unwrap();
-    std::fs::write(module.join("go.mod"), "module muster\n\ngo 1.21\n").unwrap();
-    let tests = "package muster\n\nimport \"testing\"\n\nfunc TestA(*testing.T)  {}\nfunc TestAB(*testing.T) {}\n\
-                 func TestB(*testing.T)  {}\nfunc TestC(*testing.T)  {}\n";
-    std::fs::write(module.join("muster_test.go"), tests).unwrap();
-    let go = find_target("go:test").unwrap();
-    let temp = temp.display().to_string();
-    for (pattern, want) in [("TestA|TestB", "TestA,TestAB,TestB"), ("^TestA$", "TestA")] {
-        let mut args = go.args(pattern).unwrap();
-        args.extend(["-v".to_owned(), "-count=1".to_owned()]);
-        let env = [
-            ("GOWORK", "off"),
-            ("GOFLAGS", ""),
-            ("GOTMPDIR", temp.as_str()),
-            ("TMP", temp.as_str()),
-            ("TEMP", temp.as_str()),
-        ];
-        let (exit, out) = output(&module, args, &env).await;
-        assert_eq!(exit, 0, "{pattern}: {out}");
-        let ran: Vec<&str> = out
-            .lines()
-            .filter_map(|l| l.trim().strip_prefix("=== RUN   "))
-            .collect();
-        assert_eq!(ran.join(","), want, "{pattern}");
-    }
-}
-
-#[tokio::test(flavor = "multi_thread")]
-async fn task_variable_bleibt_woertlich() {
+async fn muster_nach_doppelstrich_bleibt_woertlich() {
     if !installed("task") {
         return;
     }
     let dir = tmp_dir();
     let taskfile = dir.path().join("Taskfile.yml");
-    let content = "version: '3'\ntasks:\n  zeig:\n    cmds:\n      - echo [{{.GO_TEST_FLAGS}}]\n";
+    let content = "version: '3'\ntasks:\n  zeig:\n    cmds:\n      - echo {{.CLI_ARGS}}\n";
     std::fs::write(&taskfile, content).unwrap();
-    let dev = find_target("dev:test").unwrap();
+    let test = find_target("task:test").unwrap();
     for pattern in PATTERNS {
-        let variable = dev.args(pattern).unwrap().pop().unwrap();
+        // Ab `--` wie in der echten Befehlszeile, davor der Probe-Task.
         let taskfile = taskfile.display().to_string();
-        let args = ["task", "-s", "-t", &taskfile, "zeig", &variable]
-            .map(str::to_owned)
-            .to_vec();
+        let mut args = ["task", "-s", "-t", &taskfile, "zeig"].map(str::to_owned).to_vec();
+        args.extend(test.args(pattern).unwrap().split_off(2));
         let (exit, out) = output(dir.path(), args, &[]).await;
-        assert_eq!(
-            (exit, out.trim()),
-            (0, format!("[-run={pattern}]").as_str()),
-            "{pattern}"
-        );
+        assert_eq!((exit, out.trim()), (0, pattern), "{pattern}");
     }
 }

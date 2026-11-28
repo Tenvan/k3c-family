@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "identifier": "de.tenvan.k3c.studio-rs",
   "build": {
-    "devUrl": "http://localhost:5294",
+    "devUrl": "http://localhost:5193",
     "frontendDist": "../../../../tools/k3c-studio/frontend/dist",
     "beforeDevCommand": {
-      "script": "bunx vite --port 5294 --strictPort",
+      "script": "bunx vite --port 5193 --strictPort",
       "cwd": "../../../../tools/k3c-studio/frontend",
       "wait": false
     },

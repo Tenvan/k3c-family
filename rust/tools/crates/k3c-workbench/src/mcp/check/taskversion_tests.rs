@@ -45,9 +45,8 @@ async fn mindestversion() {
         ("task:test", "planning", Ok("3.54.0"), Want::Runs),
         ("task:test", "planning", Ok("4.0"), Want::Runs),
         ("task:test", "planning", Err("nicht gefunden"), Want::Warns),
-        ("dev:test", "TestX", Ok("Task"), Want::Warns),
+        ("task:test", "TestX", Ok("Task"), Want::Warns),
         ("task:test", "", Ok("3.1.0"), Want::Unread),
-        ("go:test", "TestX", Ok("3.1.0"), Want::Unread),
     ];
     for (target, pattern, version, want) in cases {
         let (fake, reads) = with_version(version);

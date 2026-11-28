@@ -4,8 +4,13 @@
   "version": "0.1.0",
   "identifier": "k3c.workbench.rs",
   "build": {
-    "devUrl": "http://localhost:5291",
-    "frontendDist": "../../../../tools/k3c-workbench/frontend/dist"
+    "devUrl": "http://localhost:5191",
+    "frontendDist": "../../../../tools/k3c-workbench/frontend/dist",
+    "beforeDevCommand": {
+      "script": "bunx vite --port 5191 --strictPort",
+      "cwd": "../../../../tools/k3c-workbench/frontend",
+      "wait": false
+    }
   },
   "app": {
     "withGlobalTauri": true,

@@ -1,5 +1,7 @@
 # Leitfaden: Werkzeuge nach Rust (RU66 bis RU71)
 
+**Seit RU71 gelten die festen Ports, Go ist entfernt** (letzter Stand im Tag `go-werkzeuge-final`); was unten die Übergangszeit regelt, ist Historie.
+
 Verbindlich für alle Sessions der Sprints RU66, RU67, RU69, RU70 und RU71 (Entscheidung 014, angenommen 🧑 2026-11-26).
 Die Sessions laufen autonom auf dem Second Worker (`Lane: zweit`). **Es gibt keine Rückfragen:** Was hier nicht steht,
 entscheidet die Session nach dem nächstliegenden Punkt dieses Leitfadens und meldet es im Ergebnis unter

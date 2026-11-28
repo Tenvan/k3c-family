@@ -1,33 +1,9 @@
-//! Ohne Go-Gegenstück: die kopierten Vorlagen und der eigene PNG-Zuschnitt. Die Go-Tests zum HTML-Bericht stehen wie in
+//! Platzhalter der Vorlagen, eigenes Inflate und eigener PNG-Zuschnitt. Die Go-Tests zum HTML-Bericht stehen wie in
 //! Go bei den Richtwerten (`hints_tests.rs`).
-
-use std::fs;
 
 use super::super::report_inflate::{zlib, zlib_stored};
 use super::super::report_png::{Rgba, cropped_data_uri, decode, encode};
-use super::super::test_helpers::repo_root;
 use super::fill;
-
-/// Die eingebetteten Vorlagen sind Byte-Kopien der Go-Dateien, solange es sie gibt.
-#[test]
-fn vorlagen_wie_go() {
-    let go = repo_root().join("tools/k3c-studio/internal/balance/report");
-    if !go.exists() {
-        return;
-    }
-    let own = repo_root().join("rust/tools/crates/k3c-studio/src/balance/report");
-    let mut names = 0;
-    for entry in fs::read_dir(&go).expect("Go-Vorlagen") {
-        let name = entry.expect("Eintrag").file_name();
-        assert_eq!(
-            fs::read(own.join(&name)).expect("Kopie"),
-            fs::read(go.join(&name)).expect("Go"),
-            "{name:?}"
-        );
-        names += 1;
-    }
-    assert_eq!(names, 6);
-}
 
 #[test]
 fn platzhalter_nur_einmal_ersetzt() {

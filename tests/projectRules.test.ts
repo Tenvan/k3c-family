@@ -1,4 +1,5 @@
 // Prüft die Projektregeln aus CLAUDE.md, damit die CI Verstöße früh meldet.
+import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -47,18 +48,12 @@ describe('Browser-Client und Spielserver entfernt (B-848, B-887)', () => {
 });
 
 describe('Komplexität & Schichten', () => {
-  const HARD = 400; // Grenze aus docs/arbeitsweise.md › Komplexitäts-Budget; für TypeScript prüft sie Oxlint, für Go dieser Test
+  const HARD = 400; // Grenze aus docs/arbeitsweise.md › Komplexitäts-Budget; für TypeScript prüft sie Oxlint, für Rust dieser Test
   const posix = (path: string) => path.split(sep).join('/');
   const lines = (file: string) => (read(file).match(/\n/g) ?? []).length; // wie `wc -l`
-  const goDirs = ['data', 'engine', 'tools'];
-  const goFiles = goDirs.flatMap((d) => filesIn(d, (n) => n.endsWith('.go'))).map(posix);
-
-  it('keine Go-Datei über der harten Grenze, auch keine Test-Datei', () => {
-    expect(goFiles.filter((f) => lines(f) > HARD)).toEqual([]);
-  });
 
   // Rust-Workspaces (RSU, RU1.3; Werkzeuge RU66.1): nur rust/crates und rust/tools/crates; die Build-Ordner (rust/target,
-  // rust/tools/target) und der Spike rust/tools/spike zählen nicht. Die Funktionslänge prüft clippy.
+  // rust/tools/target) zählen nicht. Die Funktionslänge prüft clippy.
   it('keine Rust-Datei unter rust/crates und rust/tools/crates über der harten Grenze, auch keine Test-Datei', () => {
     const rustFiles = ['rust/crates', 'rust/tools/crates']
       .flatMap((d) => filesIn(d, (n) => n.endsWith('.rs')))
@@ -70,6 +65,27 @@ describe('Komplexität & Schichten', () => {
   it('Golden-Daten gesamt höchstens 16 MB (B-417, GD1)', () => {
     const bytes = filesIn('testdata/golden', () => true).reduce((sum, f) => sum + statSync(join(ROOT, f)).size, 0);
     expect(bytes).toBeLessThanOrEqual(16 * 1024 * 1024);
+  });
+});
+
+// Go ist entfernt (RU71, Entscheidung 014); der letzte Stand mit Go-Werkzeugen steht im Tag go-werkzeuge-final.
+describe('Go entfernt (RU71)', () => {
+  const tracked = (...patterns: string[]) =>
+    execFileSync('git', ['ls-files', '--', ...patterns], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter(Boolean);
+
+  it('keine Go-Datei, kein go.mod, keine .golangci.yml im Repo (RU71)', () => {
+    expect(tracked('*.go', 'go.mod', 'go.sum', '**/go.mod', '**/go.sum', '.golangci.yml', '**/.golangci.yml')).toEqual([]);
+  });
+
+  // Aufrufe, nicht Namen: `cargo test` und Kommentare über „Go“ zählen nicht.
+  const CALL = /\bgo (run|test|build|vet|list|install|mod|tool)\b|\btask go:|\(go[ :]|golangci|setup-go|\bwails\b/;
+
+  it('Taskfiles und Workflows rufen weder `go` noch `golangci-lint` noch `wails`', () => {
+    const files = [...tracked('Taskfile.yml', '**/Taskfile.yml', '.github/workflows/*.yml'), '.claude/settings.json'];
+    expect(files.length).toBeGreaterThan(8);
+    const hits = files.flatMap((file) =>
+      read(file).split(/\r?\n/).filter((line) => CALL.test(line)).map((line) => `${file}: ${line.trim()}`));
+    expect(hits).toEqual([]);
   });
 });
 
@@ -99,7 +115,10 @@ describe('Altes Asset-Studio entfernt (005/AC-10, WB1)', () => {
   });
 
   it('K3C_STUDIO_LAN kommt im Code nicht mehr vor', () => {
-    const code = ['engine', 'tools'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
+    const code = [
+      ...filesIn('tools', (n) => /\.(ts|tsx)$/.test(n)),
+      ...filesIn('rust/tools/crates', (n) => n.endsWith('.rs')),
+    ];
     expect(code.filter((f) => read(f).includes('K3C_STUDIO_LAN'))).toEqual([]);
   });
 });

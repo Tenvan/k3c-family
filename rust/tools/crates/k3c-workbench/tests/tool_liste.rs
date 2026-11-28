@@ -1,5 +1,6 @@
 //! Tool-Liste gegen den Schnappschuss der Go-Workbench (`tests/data/go-tools.json`): Rust bietet dieselben Tools,
-//! abweichen darf nur die Beschreibung der Tools aus [`ABWEICHUNG_BESCHREIBUNG`].
+//! abweichen darf nur die Beschreibung der Tools aus [`ABWEICHUNG_BESCHREIBUNG`]. `check_run` ist seit RU71.4 im
+//! Schnappschuss von Hand auf den Katalog ohne Go-Ziele gebracht.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 
 use std::collections::{BTreeMap, BTreeSet};

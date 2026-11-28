@@ -72,3 +72,10 @@ pub(super) fn write(path: &Path, text: &str) {
     std::fs::create_dir_all(path.parent().unwrap()).unwrap();
     std::fs::write(path, text).unwrap();
 }
+
+/// Macht `dir` zu einer Repo-Wurzel für `find_root`: Datei `rust/Cargo.toml` und Ordner `data/` mit einer Datei (Git
+/// hält keine leeren Ordner, sonst fehlte `data/` im Worktree).
+pub(super) fn mark_root(dir: &Path) {
+    write(&dir.join("rust").join("Cargo.toml"), "[workspace]\n");
+    write(&dir.join("data").join("economy.json"), "{}\n");
+}

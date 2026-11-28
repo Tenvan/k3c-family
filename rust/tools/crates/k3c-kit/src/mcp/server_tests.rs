@@ -53,8 +53,9 @@ impl App {
 
 /// Ordner, der für `find_root` wie ein Checkout aussieht.
 pub(super) fn checkout_dir(dir: &Path) {
-    std::fs::create_dir_all(dir).unwrap();
-    std::fs::write(dir.join("go.mod"), "module k3c\n").unwrap();
+    std::fs::create_dir_all(dir.join("rust")).unwrap();
+    std::fs::create_dir_all(dir.join("data")).unwrap();
+    std::fs::write(dir.join("rust").join("Cargo.toml"), "[workspace]\n").unwrap();
 }
 
 pub(super) fn options(root: &Path) -> Options {

@@ -223,9 +223,8 @@ async fn auswertung_und_html() {
         path.clone_into(&mut OPENED.lock().expect("geöffnet"));
         Ok(())
     };
-    let raw =
-        std::fs::read_to_string(repo_root().join("tools/k3c-studio/internal/balance/testdata/insights-run7.json"))
-            .expect("Fixture");
+    let raw = std::fs::read_to_string(repo_root().join("rust/tools/crates/k3c-studio/tests/data/insights-run7.json"))
+        .expect("Fixture");
     let rel = "reports/simtest-run-4/balance-20261025-062117.json";
     s.write(rel, &raw);
     // Richtwerte und Ziele liest Go aus den eingebetteten Daten, das Studio aus dem Checkout.

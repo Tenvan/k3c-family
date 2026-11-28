@@ -43,7 +43,7 @@ Assets werden **nur** über diese Tools geändert; die Oberfläche editiert nich
   `data/assets.json` ab MC1 eingefroren, Entfernung B-700). **Bleiben:** `assets_research`, `assets_hits`,
   `assets_hit_add`, `assets_hit_drop`, `assets_import`.
 - Die MCP-Tools rufen die Render-CLI (`paper-spec.md` › CLI-Vertrag) über eine gemeinsame Anbindung mit dem Review
-  (`internal/review` › `Aufruf`): Skript aus `K3C_PAPER_CLI`, sonst `tools/paper/bin/paper.ts`, sonst die Attrappe
+  (`rust/tools/crates/k3c-studio/src/review/aufruf.rs`): Skript aus `K3C_PAPER_CLI`, sonst `tools/paper/bin/paper.ts`, sonst die Attrappe
   `tools/paper/fixtures/cli-stub.ts`; Zeitlimit 2 min je Aufruf; fehlt `bun`, nennt der Fehler `requirements.md`.
   Tests in-process gegen die Attrappe (`run(args)`).
 - **Sammelaufruf (B-856):** `assets_set` (und `Schreibe`) startet bun **einmal**: `batch <schritte.json>` mit
@@ -97,9 +97,9 @@ Die MCP-Prompts `asset-<id>` kennen dieselben Platzhalter.
 
 ## 4. Oberfläche (RPC)
 
-Die Oberfläche der Workbench spricht **kein REST**: Wails-Bindings an `App` bzw. `POST /api/dev/rpc/{Method}` mit der
-Allowlist `uiMethods` (`tools/k3c-workbench/uiapi.go`), gleich gehalten mit `frontend/src/api/wails.ts`
-(`TestUIMethodsWieWailsTS`). Bilder als Data-URL (`data:image/png;base64,…`). Besitzer: RV1; Stubs mit den
+Die Oberfläche des Studios spricht **kein REST**: Tauri-Command `rpc` bzw. `POST /api/dev/rpc/{Method}`, beide über die
+Aufruf-Tabelle `METHODS` (`rust/tools/crates/k3c-studio/src/app/rpc.rs`, Liste `tests/data/ui-methoden.txt`); Adapter
+`tools/k3c-studio/frontend/src/api/tauri.ts` und `http.ts`. Bilder als Data-URL (`data:image/png;base64,…`). Besitzer: RV1; Stubs mit den
 Beispielantworten `tools/paper/fixtures/ui/<Methode>.json`: PV1.8.
 
 | Methode | Antwort |

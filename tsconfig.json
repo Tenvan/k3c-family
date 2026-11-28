@@ -1,6 +1,6 @@
 {
-  // Typecheck der Repo-Wurzel: tests/ (B-033) und tools/paper/ (Papierschnitt-Renderer unter bun, PV1.3). Der Browser-Client
-  // src/ ist entfernt (B-848).
+  // Typecheck der Repo-Wurzel: tests/ (B-033), tools/paper/ (Papierschnitt-Renderer unter bun, PV1.3) und die Werkzeuge
+  // tools/checkdiff, cleanup, sync, rustpaket, ruletable und soundatlas (RU71). Der Browser-Client src/ ist entfernt (B-848).
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
@@ -15,5 +15,5 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["tests", "tools/paper", "vitest.config.ts"]
+  "include": ["tests", "tools/paper", "tools/checkdiff", "tools/cleanup", "tools/sync", "tools/rustpaket", "tools/ruletable", "tools/soundatlas", "vitest.config.ts"]
 }

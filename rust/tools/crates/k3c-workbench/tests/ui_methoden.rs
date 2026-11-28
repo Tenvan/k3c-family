@@ -1,5 +1,4 @@
-//! Port von `TestUIMethodsWieWailsTS`: die Aufruf-Tabelle hat genau die Methoden von `interface GoApp`
-//! (`tests/data/ui-methoden.txt`).
+//! Die Aufruf-Tabelle hat genau die Methoden der Liste `tests/data/ui-methoden.txt`.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 
 use std::collections::BTreeSet;
@@ -21,17 +20,4 @@ fn tabelle_ist_go_app() {
     let table: BTreeSet<String> = METHODS.iter().map(|(name, _)| (*name).to_owned()).collect();
     assert_eq!(table.len(), METHODS.len(), "Name doppelt in METHODS");
     assert_eq!(table, wanted());
-}
-
-#[test]
-fn liste_wie_wails_ts() {
-    let path = file("../../../../tools/k3c-workbench/frontend/src/api/wails.ts");
-    let Ok(source) = std::fs::read_to_string(&path) else {
-        eprintln!("🚫 übersprungen: {} fehlt", path.display());
-        return;
-    };
-    let source = source.replace("\r\n", "\n");
-    // Eine Zeile von `GoApp` beginnt mit der Methode; `ts_methods` liest genau diese.
-    let names = k3c_kit::uikit::ts_methods(&source).unwrap();
-    assert_eq!(names.into_iter().collect::<BTreeSet<_>>(), wanted());
 }

@@ -139,27 +139,10 @@ impl Server {
 
 #[cfg(test)]
 mod tests {
-    use std::path::Path;
-
-    /// Die Kopie der Anleitung bleibt gleich der Go-Datei, solange es sie gibt.
-    #[test]
-    fn instructions_wie_go() {
-        let go =
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../../tools/k3c-studio/internal/mcpsrv/instructions.md");
-        if !go.exists() {
-            eprintln!("übersprungen: {} fehlt", go.display());
-            return;
-        }
-        assert!(
-            std::fs::read(go).unwrap() == super::INSTRUCTIONS.as_bytes(),
-            "instructions.md weicht ab"
-        );
-    }
-
     #[test]
     fn port_aus_der_umgebung() {
-        assert_eq!(super::resolve_port(""), Ok(5281));
-        assert_eq!(super::resolve_port("5291"), Ok(5291));
+        assert_eq!(super::resolve_port(""), Ok(crate::ports::MCP_PORT));
+        assert_eq!(super::resolve_port("6000"), Ok(6000));
         assert!(super::resolve_port("0").is_err());
     }
 }

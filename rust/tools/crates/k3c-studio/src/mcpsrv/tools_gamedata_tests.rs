@@ -4,12 +4,12 @@ use serde_json::json;
 
 use super::super::{Config, Server};
 use crate::mcpsrv::kit::Logger;
-use crate::test_helpers::{mcp_client, tmp_dir};
+use crate::test_helpers::{mark_root, mcp_client, tmp_dir};
 
 #[tokio::test(flavor = "multi_thread")]
 async fn spieldaten_tools() {
     let root = tmp_dir();
-    std::fs::write(root.path().join("go.mod"), "module k3c\n").unwrap();
+    mark_root(root.path());
     let server = Server::new(Config {
         root: root.path().to_path_buf(),
         port: 0,

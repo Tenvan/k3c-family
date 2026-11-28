@@ -36,10 +36,11 @@ impl Repo {
         let tmp = tmp_dir();
         let base = canon(tmp.path());
         let main = base.join("haupt");
-        std::fs::create_dir_all(&main).unwrap();
-        std::fs::write(main.join("go.mod"), "module k3c\n").unwrap();
+        mark_root(&main);
+        // Git hält keine leeren Ordner: ohne Datei fehlte data/ im Worktree.
+        std::fs::write(main.join("data").join("economy.json"), "{}\n").unwrap();
         git(&main, &["init", "-q"]);
-        git(&main, &["add", "go.mod"]);
+        git(&main, &["add", "."]);
         git(&main, &["commit", "-q", "-m", "start"]);
         Repo { _tmp: tmp, base, main }
     }
@@ -194,15 +195,51 @@ fn workspace_texte() {
     assert_eq!((root.short(), wt.short()), ("Repo-Wurzel", "wt"));
 }
 
+/// Macht `dir` zu einer Wurzel für `find_root`: Datei `rust/Cargo.toml` und Ordner `data/`.
+fn mark_root(dir: &Path) {
+    std::fs::create_dir_all(dir.join("rust")).unwrap();
+    std::fs::create_dir_all(dir.join("data")).unwrap();
+    std::fs::write(dir.join("rust").join("Cargo.toml"), "[workspace]\n").unwrap();
+}
+
 #[test]
-fn find_root_sucht_aufwaerts_das_modul_k3c() {
+fn find_root_sucht_aufwaerts_cargo_toml_und_data() {
     let tmp = tmp_dir();
     let base = canon(tmp.path());
-    let deep = base.join("x").join("y");
+    mark_root(&base);
+    let deep = base.join("rust").join("tools");
     std::fs::create_dir_all(&deep).unwrap();
-    std::fs::write(base.join("go.mod"), "// Kopf\nmodule k3c\n").unwrap();
-    std::fs::write(base.join("x").join("go.mod"), "module k3c/tools/workkit\n").unwrap();
+    assert_eq!(find_root(&base).unwrap(), base);
     assert_eq!(find_root(&deep).unwrap(), base);
-    assert!(crate::mcp::same_dir(&base, base.join("x").join("..")));
+    assert!(crate::mcp::same_dir(&base, base.join("rust").join("..")));
     assert!(!crate::mcp::same_dir(&base, &deep));
+}
+
+#[test]
+fn find_root_nimmt_den_naechsten_worktree() {
+    let tmp = tmp_dir();
+    let base = canon(tmp.path());
+    mark_root(&base);
+    let wt = base.join(".claude").join("worktrees").join("wt1");
+    mark_root(&wt);
+    let sub = wt.join("rust").join("tools");
+    std::fs::create_dir_all(&sub).unwrap();
+    assert_eq!(find_root(&sub).unwrap(), wt);
+}
+
+/// Der Temp-Ordner liegt im Repo, darum ist die Gegenprobe: gesucht wird weiter bis zur nächsten echten Wurzel.
+#[test]
+fn find_root_braucht_beides() {
+    let tmp = tmp_dir();
+    let base = canon(tmp.path());
+    mark_root(&base);
+    // Spielpaket: nur data/.
+    let package = base.join("dist").join("k3c-game");
+    std::fs::create_dir_all(package.join("data")).unwrap();
+    assert_eq!(find_root(&package).unwrap(), base);
+    // Nur rust/Cargo.toml, ohne data/.
+    let half = base.join("halb");
+    std::fs::create_dir_all(half.join("rust")).unwrap();
+    std::fs::write(half.join("rust").join("Cargo.toml"), "[workspace]\n").unwrap();
+    assert_eq!(find_root(&half).unwrap(), base);
 }

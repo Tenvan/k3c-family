@@ -20,10 +20,10 @@ Importrichtung: `bin` → `cli` → `render` ↔ `rig` → `schema`; `rig/regist
 
 ## Flow
 1. `task gen:paper` (`tools/Taskfile.yml`) → `bun tools/paper/bin/gen.ts` → `cli/work.ts` spiegelt Specs nach `.work/grafik/` → `cli/genParallel.ts` rendert je Gruppe (Cache, Worker-Pool) → geänderte Dateien nach `public/grafik/<gruppe>/`.
-2. MCP `assets_*` (Server `k3c-studio`) → `tools/k3c-studio/internal/paperassets/cli.go` → `bun tools/paper/bin/paper.ts <validate|render|frame|diff|pixeldiff|batch>` → ein JSON-Objekt auf stdout, Exit 0/1/2.
+2. MCP `assets_*` (Server `k3c-studio`) → `rust/tools/crates/k3c-studio/src/paperassets/cli.rs` → `bun tools/paper/bin/paper.ts <validate|render|frame|diff|pixeldiff|batch>` → ein JSON-Objekt auf stdout, Exit 0/1/2.
 
 ## Integration
 - Verträge: `docs/standards/paper-spec.md` (Spec, Stil, Hash, Golden, CLI) und `docs/standards/paper-mcp.md` (MCP, Attrappen, Review-Test-Repo).
-- Konsumenten: k3c-workbench (`internal/paperassets`, `internal/mcpsrv/tools_assets*.go`; Frontend-Mocks lesen `fixtures/ui/`), Taskfile `gen:paper` (auch von `task build`, `task test`, `native:game:build`), das native Spiel liest die erzeugten Dateien unter `public/grafik/`.
+- Konsumenten: k3c-studio (`paperassets`, MCP-Tools `assets_*` in `mcpsrv`; Frontend-Mocks lesen `fixtures/ui/`), Taskfile `gen:paper` (auch von `task build`, `task test`, `rust:game:build`), das native Spiel liest die erzeugten Dateien unter `public/grafik/`.
 - Abhängigkeiten: `@resvg/resvg-js`, `ajv` (Wurzel-`package.json`), Bun als Laufzeit.
 - Tests: `**/*.test.ts` im Vitest der Wurzel; `tools/checkdiff` zählt den Ordner zu den Client-Pfaden.

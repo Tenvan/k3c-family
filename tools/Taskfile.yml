@@ -1,4 +1,4 @@
-# Namespace `gen`: Generatoren, die Dateien im Repo erzeugen (deterministisch, feste EXEs in bin/).
+# Namespace `gen`: Generatoren, die Dateien im Repo erzeugen (deterministisch, TypeScript unter bun).
 version: '3'
 
 tasks:
@@ -48,30 +48,31 @@ tasks:
 
 
   rules:
-    desc: "Regeltabelle Hub-Stufe → Gebäude (docs/rules/materialien-gebaeude.md § 3) aus data/hub.json erzeugen (deterministisch; feste EXE bin/regeltabelle, WZ15.2, B-462)"
+    desc: "Regeltabelle Hub-Stufe → Gebäude (docs/rules/materialien-gebaeude.md § 3) aus data/hub.json erzeugen (deterministisch; bun tools/ruletable, WZ15.2, B-462)"
+    dir: '{{.ROOT_DIR}}'
     preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
+      - sh: command -v bun
+        msg: Bun fehlt (requirements.md)
     cmds:
-      - go build -o bin/regeltabelle{{exeExt}} ./tools/ruletable
-      - ./bin/regeltabelle{{exeExt}}
+      - bun tools/ruletable/main.ts
 
   soundatlas:
-    desc: Sound-Atlas public/audio/atlas.{ogg,mp3,json} aus den Effekt-Slots in data/sounds.json packen (erste Präferenz je Slot, ffmpeg; feste EXE bin/soundatlas, SO6.2, B-494)
+    desc: Sound-Atlas public/audio/atlas.{ogg,mp3,json} aus den Effekt-Slots in data/sounds.json packen (erste Präferenz je Slot, ffmpeg; bun tools/soundatlas, SO6.2, B-494)
+    dir: '{{.ROOT_DIR}}'
     deps: [':tmp']
     preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
+      - sh: command -v bun
+        msg: Bun fehlt (requirements.md)
       - sh: command -v ffmpeg
         msg: ffmpeg fehlt (requirements.md)
     sources:
-      - tools/soundatlas/*.go
+      - tools/soundatlas/*.ts
+      - exclude: tools/soundatlas/*.test.ts
       - data/sounds.json
     generates:
       - public/audio/atlas.json
     cmds:
-      - go build -o bin/soundatlas{{exeExt}} ./tools/soundatlas
-      - ./bin/soundatlas{{exeExt}}
+      - bun tools/soundatlas/main.ts
 
   # Rig-Teile der Figuren (aus native/k3c-rig/export hierher, RU37.1): Teil-PNGs, Rig-Dateien, Elemente und Sollwerte nach public/rig
   # (eingecheckt); das Rust-Spiel liest sie von dort. Liest Specs und Stil nur.
@@ -86,10 +87,3 @@ tasks:
     dir: '{{.ROOT_DIR}}'
     cmds:
       - bun tools/rigexport/export.ts --pruefen
-
-  # Test-Abgleich Go gegen Rust (RU60.1): liest den Tag go-referenz-final und den Arbeitsbaum, schreibt docs/messung/port-testabgleich.md
-  portcheck:
-    desc: "Go-Tests des Tags go-referenz-final gegen die Rust-Tests abgleichen, Bericht nach docs/messung/port-testabgleich.md (nur git, kein Go-Compiler für das Spiel)"
-    dir: '{{.ROOT_DIR}}'
-    cmds:
-      - go run ./tools/portcheck

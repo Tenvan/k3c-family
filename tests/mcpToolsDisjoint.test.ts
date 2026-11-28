@@ -5,8 +5,8 @@ import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const ROOT = resolve(__dirname, '..');
-const WORKBENCH = 'tools/k3c-workbench/internal/mcpsrv/instructions.md';
-const STUDIO = 'tools/k3c-studio/internal/mcpsrv/instructions.md';
+const WORKBENCH = 'rust/tools/crates/k3c-workbench/src/mcp/instructions.md';
+const STUDIO = 'rust/tools/crates/k3c-studio/src/mcpsrv/instructions.md';
 
 // Studio: Weltdesign (WZ63) und Balancing mit Spieldaten (WZ63.5).
 const BALANCE = ['sim_test', 'sim_run', 'replay_run', 'reports_list', 'report_read', 'saves_list'];

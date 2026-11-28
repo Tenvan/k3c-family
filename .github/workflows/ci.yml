@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Go: Tests, Lint, Cross-Build; Rust-Spiel: fmt, clippy, Tests und Paket dist/k3c-game (EXE ≤ 40 MB, data, Grafik) unter Windows; Rust-Werkzeuge rust/tools: fmt, clippy, Tests unter Windows (nur bei Änderungen dort oder an den Frontends); k3c-workbench und k3c-studio (samt tools/workkit): Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Rust-Spiel: fmt, clippy, Tests und Paket dist/k3c-game (EXE ≤ 40 MB, data, Grafik) unter Windows; Rust-Werkzeuge rust/tools samt Tauri-Apps: fmt, clippy, Tests unter Windows; k3c-workbench und k3c-studio: Frontend (Typecheck, Vitest) unter Windows. Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -13,12 +13,6 @@ concurrency:
 
 permissions:
   contents: read
-
-# Studio-Tests ohne Sim- und Balance-Pakete: Ihre Tests sind gesperrt (Beschluss Ralf 2026-11-11) und laufen nur im
-# Abnahme-Ticket; vet und Lint prüfen sie weiter. Gleiche Liste wie tools/checkdiff › simDirs (B-825);
-# tools/checkdiff/simlist_test.go prüft das (B-832). Das Wurzel-Modul hat seit RU41 keine Sim-Pakete mehr. Go-Tests mit -short.
-env:
-  STUDIO_SIM_PKGS: '/internal/(balance|simrun)$'
 
 jobs:
   # Pull Request: nur prüfen, ob der Branch sauber in die Zielbranch passt. Die übrigen Jobs laufen nur bei Push/Dispatch.
@@ -51,9 +45,6 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
       - uses: go-task/setup-task@v2
       # Wie lokal: Wurzel und Frontend von k3c-workbench, deren Komponententests (React, Radix) laufen in task test mit.
       - run: task install
@@ -63,34 +54,9 @@ jobs:
       # das Rust-Spiel baut der Job rust; die GitHub-Pages-Seite site/ baut nichts (B-507).
       - run: task test
 
-  go:
-    if: github.event_name != 'pull_request'
-    name: Go · Tests · Lint · Cross-Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
-      - uses: go-task/setup-task@v2
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.2
-      # Die Papierschnitt-Grafik ist nicht eingecheckt (B-737): Tests lesen sie aus public/grafik, hier rendern (B-756)
-      - run: bun install --frozen-lockfile
-      - run: task gen:paper
-      - name: Go-Tests (-short)
-        run: task go:test GO_TEST_FLAGS=-short
-      - uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.14
-      - run: GOOS=windows GOARCH=amd64 go build ./...
-      - run: GOOS=linux GOARCH=arm64 go build ./...
-
   # Rust-Workspace (Projekt RSU, RU1.3): nur Windows (MSVC), wie das Spiel. `rustup show` installiert die Toolchain aus
   # rust/rust-toolchain.toml; es laufen nur Tests ohne Fenster und GPU. Danach baut `task rust:game:build` das Paket
-  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; Go für tools/sync (Kopierwerkzeug) und tools/rustpaket.
+  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; tools/sync und tools/rustpaket laufen unter bun.
   rust:
     if: github.event_name != 'pull_request'
     name: Rust · fmt · clippy · Tests · Paket (Windows)
@@ -113,10 +79,6 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
-          cache-dependency-path: go.sum
       - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
         working-directory: .
@@ -141,29 +103,20 @@ jobs:
         working-directory: rust/tools
     steps:
       - uses: actions/checkout@v7
+      # Einige Tests rufen bun oder task auf oder brauchen die gerenderte Grafik; ohne sie bestehen sie, ohne zu prüfen.
+      - uses: actions/setup-node@v7
         with:
-          fetch-depth: 0
-      - name: Änderungen unter rust/tools und den Frontends
-        id: changes
-        shell: bash
+          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - uses: go-task/setup-task@v2
+      - run: bun install --frozen-lockfile
         working-directory: .
-        env:
-          EVENT: ${{ github.event_name }}
-          BEFORE: ${{ github.event.before }}
-          SHA: ${{ github.sha }}
-        run: |
-          run=false
-          # Ohne Vorgänger im Klon (erster Push, Force-Push) immer prüfen. rust-toolchain.toml, rustfmt.toml und .cargo/
-          # in rust/ erbt rust/tools/ (wie tools/checkdiff/rust.go).
-          if [ "$EVENT" = "workflow_dispatch" ] || [ -z "$BEFORE" ] || [ -z "${BEFORE//0/}" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
-            run=true
-          elif [ -n "$(git diff --name-only "$BEFORE" "$SHA" -- rust/tools rust/rust-toolchain.toml rust/rustfmt.toml rust/.cargo tools/k3c-workbench/frontend tools/k3c-studio/frontend tools/webkit)" ]; then
-            run=true
-          fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "Rust-Werkzeuge prüfen: $run"
+      - run: task gen:paper
+        working-directory: .
+      # Ohne Pfadfilter: Die Tests lesen auch data/, public/grafik, tools/paper, testdata/, docs/ und Crates aus rust/.
       - uses: actions/cache@v6
-        if: steps.changes.outputs.run == 'true'
         with:
           path: |
             ~/.cargo/registry/index
@@ -172,87 +125,41 @@ jobs:
             rust/tools/target
           key: tools-rust-${{ runner.os }}-${{ hashFiles('rust/rust-toolchain.toml', 'rust/tools/Cargo.lock') }}
           restore-keys: tools-rust-${{ runner.os }}-
-      - if: steps.changes.outputs.run == 'true'
-        run: rustup show
-      - if: steps.changes.outputs.run == 'true'
-        run: cargo fmt --all --check
-      - if: steps.changes.outputs.run == 'true'
-        run: cargo clippy --workspace --all-targets -- -D warnings
-      - if: steps.changes.outputs.run == 'true'
-        run: cargo test --workspace
+      - run: rustup show
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo test --workspace
 
+  # Die Apps selbst baut und prüft der Job tools-rust (Tauri, RU66.1); hier nur die Oberflächen.
   k3c-workbench:
     if: github.event_name != 'pull_request'
-    name: k3c-workbench · Frontend · Tests · Lint · Wails (Windows)
+    name: k3c-workbench · Frontend (Windows)
     runs-on: windows-latest
     timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: tools/k3c-workbench
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: tools/k3c-workbench/go.mod
-          cache-dependency-path: tools/k3c-workbench/go.sum
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
+      - uses: go-task/setup-task@v2
       # Der Typecheck des Frontends prüft auch die Tests; vitest kommt aus dem Hauptprojekt, die Konfiguration
       # (Alias @webkit) aus tools/k3c-workbench/frontend/vitest.config.ts.
-      - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
-        working-directory: .
-      # Go-Tests von assetsui und datadoc lesen die gerenderte Grafik (B-756)
-      - run: task gen:paper
-        working-directory: .
-      # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
       - run: bun install --frozen-lockfile
         working-directory: tools/k3c-workbench/frontend
       - run: task k3c-workbench:frontend
-        working-directory: .
-      # Vitest des Frontends und go test (-short) für k3c-workbench und tools/assetkit, ohne Sim/Balance-Pakete (B-825).
       - run: task k3c-workbench:vitest
-        working-directory: .
-      # Task aus der Wurzel (Namensraum), die Paketliste aus dem Modul tools/k3c-workbench.
-      - name: Go-Tests (-short, ohne Sim/Balance)
-        shell: bash
-        working-directory: .
-        run: task k3c-workbench:gotest GO_TEST_FLAGS=-short
-      - uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.14
-          working-directory: tools/k3c-workbench
-      # Gemeinsame Asset-Logik (eigenes Modul, bis WB1 im Job des Asset-Studios geprüft).
-      - uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.14
-          working-directory: tools/assetkit
-      # Gemeinsamer Code von Workbench und Studio (WZ63, eigenes Modul; go test läuft in k3c-workbench:gotest mit).
-      - uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.14
-          working-directory: tools/workkit
-      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
-      - run: wails build -s
 
   k3c-studio:
     if: github.event_name != 'pull_request'
-    name: k3c-studio · Frontend · Tests · Lint · Wails (Windows)
+    name: k3c-studio · Frontend (Windows)
     runs-on: windows-latest
     timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: tools/k3c-studio
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: tools/k3c-studio/go.mod
-          cache-dependency-path: tools/k3c-studio/go.sum
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -261,27 +168,7 @@ jobs:
           bun-version: 1.4.2
       - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
-        working-directory: .
-      # Go-Tests von assetsui lesen die gerenderte Grafik (B-756)
-      - run: task gen:paper
-        working-directory: .
-      # go:embed braucht frontend/dist, deshalb zuerst das Frontend (Typecheck und vite build).
       - run: bun install --frozen-lockfile
         working-directory: tools/k3c-studio/frontend
       - run: task k3c-studio:frontend
-        working-directory: .
       - run: task k3c-studio:vitest
-        working-directory: .
-      # Paketliste ohne Sim/Balance-Pakete (balance, simrun seit WZ63.5 im Studio, B-825).
-      - name: Go-Tests Studio (-short, ohne Sim/Balance)
-        shell: bash
-        working-directory: .
-        run: task k3c-studio:gotest GO_TEST_FLAGS=-short STUDIO_PKGS="$(cd tools/k3c-studio && go list ./... | grep -Ev "$STUDIO_SIM_PKGS" | tr '\n' ' ')"
-      - run: task workkit:gotest GO_TEST_FLAGS=-short
-        working-directory: .
-      - uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.14
-          working-directory: tools/k3c-studio
-      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
-      - run: wails build -s

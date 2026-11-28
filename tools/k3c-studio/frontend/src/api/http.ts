@@ -6,7 +6,7 @@ import type { HubBackend } from './typesHub';
 import type { BalanceBackend } from './typesBalance';
 
 // Methodenzuordnung für alle Transporte mit Aufruf-Tabelle: Client-Server-Betrieb (k3c-studio -headless/-dev über
-// tools/webkit/lib/devRpc.ts) und das Tauri-Fenster der Rust-Fassung (tauri.ts). Namen wie die Wails-Bindings (wails.ts).
+// tools/webkit/lib/devRpc.ts) und das Tauri-Fenster der Rust-Fassung (tauri.ts).
 export type Rpc = <T>(method: string, ...args: unknown[]) => Promise<T>;
 
 function rpcAssets(rpc: Rpc): AssetsBackend {

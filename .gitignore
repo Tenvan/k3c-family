@@ -59,9 +59,6 @@ docs/backlog/.ticket.lock
 /public/grafik/truppen/*/
 graphify-out/
 
-# generierte Windows-Ressourcen (go-winres)
-*.syso
-
 rust/target/
 rust/tools/target/
 

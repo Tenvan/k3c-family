@@ -1,7 +1,7 @@
 # K3C – Family Three Crowns
 
 Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns. **Natives Spiel in Rust** (`rust/crates/k3c-game`, Port aus Go, Projekt RSU)
-am PC, Simulation, Level und Balancing ebenfalls in Rust (Entscheidung 011). Workbench und Studio bleiben Go und starten für Läufe die EXE `k3c-game sim …`; die Go-Engine ist seit RU41 entfernt, von `engine/` bleiben nur `conlog`, `devrun` und `internal/rules`. Browser-Client, Spielserver und Online-Spiel sind entfernt (B-850, WR1). Die Kommunikation mit dem Nutzer ist deutsch.
+am PC, Simulation, Level und Balancing ebenfalls in Rust (Entscheidung 011). Workbench und Studio sind Rust mit Tauri 2 (`rust/tools/`, Entscheidung 014); das Studio startet für Läufe die EXE `k3c-game sim …`. Go ist seit RU71 restlos entfernt (letzter Stand im Tag `go-werkzeuge-final`). Browser-Client, Spielserver und Online-Spiel sind entfernt (B-850, WR1). Die Kommunikation mit dem Nutzer ist deutsch.
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
@@ -22,7 +22,7 @@ am PC, Simulation, Level und Balancing ebenfalls in Rust (Entscheidung 011). Wor
   `plan_sections` (mehrere Abschnitte in einem Aufruf), `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`,
   `plan_next`) von k3c-workbench; von Hand nur, wenn k3c-workbench nicht läuft. Läuft sie, lehnt der Hook
   `tools/hooks/planGuard.ts` Edit, Write und schreibende Shell-Befehle auf `docs/backlog`, `docs/sprints`, `docs/projekte` ab.
-  Überblick und Zählung über `plan_list` (offen = Status offen, eingeplant = Status eingeplant, ungeplant = ohne Sprint). **Fehlt dem MCP eine Funktion (🧑 2026-11-25):** Direkter Zugriff auf Ticket-, Sprint-, Session- oder Projektdateien ist untersagt, auch nicht „nur dieses eine Mal“ (Shell, Skript, Edit); stattdessen schlägt Claude eine sinnvolle Erweiterung der Tools zur zeitnahen Umsetzung vor (Ticket oder direkt als Änderung an `tools/k3c-workbench`).
+  Überblick und Zählung über `plan_list` (offen = Status offen, eingeplant = Status eingeplant, ungeplant = ohne Sprint). **Fehlt dem MCP eine Funktion (🧑 2026-11-25):** Direkter Zugriff auf Ticket-, Sprint-, Session- oder Projektdateien ist untersagt, auch nicht „nur dieses eine Mal“ (Shell, Skript, Edit); stattdessen schlägt Claude eine sinnvolle Erweiterung der Tools zur zeitnahen Umsetzung vor (Ticket oder direkt als Änderung an `rust/tools/crates/k3c-workbench`).
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer; Ausnahme: Sagt der Nutzer ausdrücklich „autonom abarbeiten“, darf Claude Specs freigeben (Feld `Freigabe`: „autonom, Claude“), offene Fragen mit Default entscheiden und im Nachgang melden; manuelle Abnahmen bleiben beim Nutzer. **Klasse A** (Typ Problem oder Schuld, Domäne DEV, INF oder PAP, ohne Spielregeln, Protokoll, Spielstand-Format, neue Abhängigkeit) gibt Claude dauerhaft selbst frei („Klasse A, Claude“) und meldet gesammelt. Details: `docs/arbeitsweise.md` › SDD.
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Die Simulation rechnet eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`rust/crates/k3c-sim/src/island`, SP12–SP14); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
@@ -33,45 +33,41 @@ am PC, Simulation, Level und Balancing ebenfalls in Rust (Entscheidung 011). Wor
   Studios; das Asset-Studio kehrt seit WZ63 als eigenständiges Studio zurück (Nachtrag in 005), die Workbench hat keine Assets mehr.
   **008: Natives Spiel in Go + Ebitengine** (Projekt NAT, B-775), überholt durch 011. **011: Spiel und Simulation in Rust, Go nur für die Werkzeuge** (angenommen 🧑 2026-11-25, RU41.2). Das Go-Spiel `native/` ist seit RU37 entfernt; der letzte Stand steht im Tag `go-referenz-final`, Bau und Messung beschreibt `docs/standards/go-referenz.md`.
   **012: Port-Orakel ist das Verhalten, nicht Bit-Gleichheit.** **013: Neue Mechaniken nur in Rust** (Entwurf, B-1143; die Go-Engine ist seit RU41 entfernt, Annahme durch Ralf offen).
+  **014: Werkzeuge in Rust mit Tauri 2** (angenommen 🧑 2026-11-26, umgesetzt; Go ist damit auch für die Werkzeuge entfallen).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
 
-Voraussetzungen (Node, Go, golangci-lint mit Versionen): `requirements.md`.
+Voraussetzungen (Node, Bun, Rust, Go Task mit Versionen): `requirements.md`.
 
 ```bash
 task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Einstieg für Befehle)
 task install       # Abhängigkeiten holen
 task test          # Vitest (Regeln, Planung, Papierschnitt); Filter: task test -- planning
-task check:diff    # nur was die geänderten Dateien dieses Commits brauchen (einmal vor jedem Commit; Basis HEAD, Tests nur der geänderten Pakete; Teilaufgaben check:diff:plan, :js, :go)
+task check:diff    # nur was die geänderten Dateien dieses Commits brauchen (einmal vor jedem Commit; Basis HEAD, Tests nur der geänderten Crates; Teilaufgaben check:diff:plan, :js, :rust)
 task check         # Lint + Typecheck + Tests der Wurzel (tests/, tools/paper), parallel
-task check:go      # go test + golangci-lint (Rechner mit Go)
-task check:race    # Go-Race-Detector (langsam; Abnahme-Ticket, check:all, CI)
-task check:dev     # k3c-workbench und k3c-studio (samt tools/workkit): Frontend, go test, golangci-lint
+task check:dev     # k3c-workbench und k3c-studio: Frontends, tools-rust:test und :lint
 task check:all     # alles inklusive Build
 task build         # Rust-Spiel bauen (wie rust:game:build, Paket nach dist/k3c-game/; Einzelschritte rust:game:exe, :run, :dev)
 task buildall      # alle EXE bauen: Workbench und Studio nach bin/, Rust-Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/; laufende EXE vorher schließen; weitergebbar erst mit LIZENZEN.txt im Rust-Paket (Ticket in RU35)
 task rust:devwin:exe  # Cheat-Fenster k3c-devwin.exe bauen (F4 im Rust-Spiel, `--devwin`, `K3C_DEVWIN=1`; `task build` legt sie neben k3c-game.exe ins Paket, höchstens 5 MB)
 task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build und test rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
-task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
-task k3c-studio          # Studio (Welten, Assets, Hub) als Client/Server-Dev (Backend -dev MCP 5182, UI-API 8193, Vite 5193); Fenster: k3c-studio:window, EXE: k3c-studio:build
+task k3c-workbench       # Workbench als Client/Server-Dev (Backend --headless MCP 5190, UI-API 8191, Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
+task k3c-studio          # Studio (Welten, Assets, Hub) als Client/Server-Dev (Backend --headless MCP 5182, UI-API 8193, Vite 5193); Fenster: k3c-studio:window, EXE: k3c-studio:build
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
-Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/: conlog, devrun, Regel-Tests),
-`k3c-workbench` und `k3c-studio` (tools/), `workkit` (tools/workkit, gemeinsamer Go-Code), `rust` (rust/), `balance`, `gen` (Generatoren:
-`gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
-in die Wurzel.
+Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `k3c-workbench` und
+`k3c-studio` (tools/), `rust` (rust/), `tools-rust` (rust/tools/, Rust-Werkzeuge), `balance` (rust/crates/k3c-balance), `gen`
+(Generatoren: `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts,
+nicht in die Wurzel.
 
-**Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
-Der Projektname allein (`task k3c-workbench`) startet `dev`. `dev` ist Client/Server: Das Backend läuft mit `-dev` als kleiner Supervisor
-(`engine/devrun`), baut sich als Kind (`-headless`, ohne Fenster) und startet es bei jeder Go-Änderung neu; bei Build-Fehler läuft
-die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberfläche der Wails-App (`k3c-workbench` 5191, `k3c-studio` 5193)
-läuft dabei unter Vite mit Hot Reload im Browser und leitet `/api` an das Kind weiter. `<app>:window` startet
-das echte Fenster mit `wails dev`. Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
-`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`) und das
-Frontend laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
+**Dev der Tauri-Apps:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
+Der Projektname allein (`task k3c-workbench`) startet `dev`: Backend ohne Fenster (`cargo run … -- --headless`) und die
+Oberfläche unter Vite mit Hot Reload im Browser, `/api` geht an das Backend; Rust-Änderungen brauchen einen Neustart.
+`<app>:window` startet das echte Fenster mit `bunx tauri dev` (Neubau bei Rust-Änderung; laufende Instanz vorher schließen).
+Builds (`k3c-workbench:build`) und das Frontend laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
 
 Spielserver, Lasttest, TUI und Windows-Starter sind entfernt (B-887, Entscheidung B-850): kein Online-Spiel, das Spiel ist nativ.
 Berichte unter `reports/` liest `reports_list`/`report_read`.
@@ -79,7 +75,7 @@ Berichte unter `reports/` liest `reports_list`/`report_read`.
 **Zwei MCP-Server:** `k3c-workbench` (5180) für Entwicklung, Planung, Prüfläufe, Dienste und Logs; `k3c-studio` (5181) für Welten, Inseln, Chunks, Hub, Assets, `level_generate` und seit WZ63.5 Balancing/Sim mit Berichten und Spielständen (`mcp__k3c-studio__world_*|hub_*|assets_*|sim_*|replay_run|reports_list|report_read|saves_list`, EXE `bin/k3c-studio.exe`); kein Tool steht in beiden.
 
 **k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
-`task test`, `go test` …), Dienste über `svc_start`/`svc_stop`, Logs über
+`task test`, `cargo test` …), Dienste über `svc_start`/`svc_stop`, Logs über
 `logs_errors`/`logs_query`; Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
 `sim_run` und Level über `level_generate` gehen an das Studio (`mcp__k3c-studio__*`). **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest; **Ausnahme: Second Worker, 🧑 2026-11-18**). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Stabilität;
 offline) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
@@ -89,29 +85,27 @@ nie über `task balance` oder Binaries in der Shell (B-348). Die Shell-Befehle u
 Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; es prüft nur die geänderten Dateien dieses Commits, minutenlange Läufe gehören nicht dazu; währenddessen nur gezielte Tests
 (`docs/arbeitsweise.md` › Tempo im Lauf).
 Die CI (`.github/workflows/ci.yml`) baut und testet zusätzlich das Rust-Spiel unter Windows. `tests/projectRules.test.ts`
-prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Client und kein Spielserver mehr).
+prüft Repo-Regeln automatisch (Rust-Dateigröße, Golden-Größe, kein Browser-Client, kein Spielserver und kein Go mehr).
 
 ## Struktur
 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Rust-Spiel,
-  Simulation und Studio (Go: `data/embed.go`, von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
-- `engine/` – Go-Rest seit RU41 (Belegtabelle: `docs/arbeitsweise.md` › Go-Engine-Bestand): `conlog` (Konsolen-Logger der
-  Werkzeuge), `devrun` (Supervisor der `<app>:dev`-Tasks), `internal/rules` (Repo-Regel-Tests). `engine/` importiert nichts
-  aus `tools/` (depguard `engine-ohne-tools`, `engine/internal/rules/imports_test.go`). Der letzte Stand der Go-Engine liegt im Tag `go-referenz-final`.
-- `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Seiten Dienste, Tasks, Planung,
-  Git, MCP, Monitoring und Balancing.
-  `tools/k3c-studio` – Studio für Game- und Level-Designer (WZ63): eigene Wails-App mit Welten-Editor, Gebäude-Planer und Assets
+  Simulation und Studio (Laden `rust/crates/k3c-data`: aus `K3C_DATA_DIR`, sonst `data/` neben der EXE, sonst eingebettet). Werte gehören hierher, nicht in den Code.
+- `rust/tools/` – eigener Cargo-Workspace der Werkzeuge (Entscheidung 014): `k3c-kit` (gemeinsamer Code: `mcp`, `applog`,
+  `console`, `proc`, `usage`, `uikit`, `claude`, `winicon`, `conlog`), `k3c-assetkit` (Asset-Logik), `k3c-workbench` und
+  `k3c-studio` (Tauri-Backends). `k3c-kit` hängt von keiner App ab, die Apps nicht voneinander.
+- `tools/k3c-workbench` – Entwickler-Werkzeug (Tauri-Fenster + MCP-Server `k3c-workbench`) mit den Seiten Dienste, Tasks, Planung,
+  Git, MCP, Monitoring und Spieltest; hier Frontend und Taskfile.
+  `tools/k3c-studio` – Studio für Game- und Level-Designer (WZ63): eigene Tauri-App mit Balancing, Welten-Editor, Gebäude-Planer und Assets
   (Review, Katalog, Styleguide, Sound, Quellen; „Im Spiel ansehen“) und eigenem MCP-Server `k3c-studio`; Assets ändern nur die
   MCP-Tools `assets_*`. Das Asset-Studio aus Entscheidung 005 kehrt damit als Studio zurück, die Workbench hat keine Assets mehr.
-  `tools/workkit` – gemeinsamer Go-Code beider Apps (eigenes Go-Modul: `mcpkit`, `applog`, `console`, `proc`, `usage`, `uikit`,
-  `claude`, `winicon`); importiert weder Workbench noch Studio (depguard), die Apps importieren einander nie.
   `tools/paper/` – Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts`.
-  `tools/assetkit` – Asset-Logik (eigenes Go-Modul, per `replace` eingebunden; geprüft mit `k3c-workbench:gotest`/`lint`).
-  `tools/webkit` – gemeinsame Oberflächen-Bausteine der Wails-Frontends (k3c-workbench) als **Atomic Design** auf
+  `tools/webkit` – gemeinsame Oberflächen-Bausteine der Tauri-Frontends als **Atomic Design** auf
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
-  Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
-  (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
-  CLIs: `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`), `tools/checkdiff` (`task check:diff`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
+  Verbindlich für jedes Tauri-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
+  (`docs/arbeitsweise.md` › Oberflächen der Tauri-Programme, geprüft von `tests/atomicDesign.test.ts`).
+  CLIs in TypeScript unter bun: `tools/ruletable` (`task gen:rules`), `tools/soundatlas` (`task gen:soundatlas`), `tools/cleanup`
+  (`task ops:aufraeumen`), `tools/checkdiff` (`task check:diff`), `tools/sync` und `tools/rustpaket` (Paketbau).
 - `rust/` – Cargo-Workspace: Spiel `rust/crates/k3c-game` (Leitfaden `docs/standards/rust-port.md`), Rig `k3c-rig`, Simulation `k3c-sim` (deterministisch), Level-Generator `k3c-level`, Raum mit Stufen und Spielstand `k3c-room`, Balancing `k3c-balance`, Zufall `k3c-rng`, dazu `k3c-data`, `k3c-platform`; Läufe für Workbench und Studio über `k3c-game sim <run|level|balance|world|hub|save>` (`rust/crates/k3c-game/src/runs`). Golden unter `testdata/golden/` und `testdata/rust/` sind das Orakel und seit RU41 eingefroren (kein Schreibweg; Änderung braucht vorher ein Ticket). Paket `task build` nach `dist/k3c-game/`. Rig-Teile liegen in `public/rig/`, der Export in `tools/rigexport/` (`task gen:rig`), das Kopierwerkzeug in `tools/sync/`, das Messskript in `tools/measure/`.
 - Papierschnitt-Grafik (Entscheidung 005): Das Spiel lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
   Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
@@ -126,12 +120,12 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
 - Level-Generierung und Simulation sind deterministisch und laufen in Rust: Zufall nur über `k3c-rng` (Seed), keine anderen Zufallsquellen, keine Iteration über `HashMap` ohne feste Reihenfolge.
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
 - Controller-Taste **B** geht in jedem Menü **zurück** (wie Esc); im laufenden Spiel bleibt sie unbelegt.
-- **Logging mit Emojis:** Jede Log-Meldung (Go `slog`) beginnt mit einem Emoji zur Aktion:
+- **Logging mit Emojis:** Jede Log-Meldung (Rust: Spiel und Werkzeuge) beginnt mit einem Emoji zur Aktion:
   🚀 Start · 🛑 Stopp · 🔁 Neustart · ✅ geschafft · ❌ fehlgeschlagen · 💥 Fehler/Absturz · 🚫 abgelehnt · ⏳ Warten/Frist ·
   🐢 zu langsam · 🔌 verbunden · 👑 Spieler kommt · 👋 geht/getrennt · 💾 gespeichert · 📂 geladen · 🩹 wiederhergestellt ·
   🧹 aufgeräumt · 📨 Nachricht · 📄 Datei/Log · 🔒 Sicherheit · 🚦 Zustandswechsel · 🤒 ungesund · 💓 Takt · 🏰 Raum ·
   🪜 Stufenwechsel · ⏩ Zeitraffer · 🌙 Nacht/Welle · 🏹 Kampf · 🪙 Münzen · 🔨 Bau · 🐛 Dev. Nur Emojis aus einem
-  Codepunkt (kein U+FE0F). Das Thema setzt die Konsole selbst aus `ns` (`engine/conlog` › `Topics`); ein neuer `ns` bekommt dort sein Emoji.
+  Codepunkt (kein U+FE0F). Das Thema setzt die Konsole selbst aus `ns` (`rust/tools/crates/k3c-kit/src/conlog.rs` › `TOPICS`); ein neuer `ns` bekommt dort sein Emoji.
 - Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/arbeitsweise.md`, keine weiteren Prozess-Dokumente.
   Ein Sprint bleibt in seiner Domäne; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Lieber spielbarer Code.
 - **Code-Review vor dem Commit nur bei Risiko:** Ein Reviewer-Agent (getrennt vom Schreiben, Sonnet) läuft vor dem Commit
@@ -141,13 +135,13 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   ohne zweites Review. Die Sprint-Review-Session bleibt Pflicht (`docs/arbeitsweise.md` › Tempo im Lauf).
 - **Sim und Balancing gesperrt (Beschluss 🧑 2026-11-11, bis auf Widerruf):** keine Simulationen, kein Balancing, kein
   Lasttest, auch nicht am Feature oder im Abnahme-Ticket. **Gen nur am Feature (B-742):** Sessions, Sprints und Projekte
-  schließen ohne Gen-Läufe ab (`gen:paper` samt Grafik-Golden, `check:race`); zum Abschluss eines Sprints oder Projekts gibt
+  schließen ohne Gen-Läufe ab (`gen:paper` samt Grafik-Golden); zum Abschluss eines Sprints oder Projekts gibt
   es dafür **genau ein Abnahme-Ticket** (`docs/arbeitsweise.md` › Sim, Balance und Gen).
   **Balancing schreibt nur Welten-Dateien (🧑 2026-11-22):** Das Balancing des Studios ändert Quelldateien nur unter
   `data/worlds/` (Ausgaben unter `reports/`, technisch erzwungen, WZ63.7); braucht es Änderungen an Code oder anderen
-  Daten (`data/*.json`, `engine/`, `rust/`, `tools/`), zeigt Claude zuerst den **Plan im Chat** und wartet auf Ralfs
+  Daten (`data/*.json`, `rust/`, `tools/`), zeigt Claude zuerst den **Plan im Chat** und wartet auf Ralfs
   Freigabe, auch bei automatischem Balancing.
-- **Schreiben nur im Repo (🧑 2026-11-18):** Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht. Worktrees legt Claude selbst an (in dem von Claude vorgesehenen Ordner), dafür gibt es keine Regel. **Technisch erzwungen:** `task` und `check_run` setzen `GOTMPDIR`/`TMP`/`TEMP`; der Hook `tools/hooks/tempGuard.ts` lehnt direkte `go run|test|build|vet` in Bash und PowerShell ab, die diese Variablen nicht selbst setzen (sonst landet `checkdiff.exe` in `%TEMP%\go-build…`).
+- **Schreiben nur im Repo (🧑 2026-11-18):** Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht. Worktrees legt Claude selbst an (in dem von Claude vorgesehenen Ordner), dafür gibt es keine Regel. **Stand der Technik:** `check_run` setzt `TMP`/`TEMP` seiner Läufe auf `.work/tmp`; das `env` der Wurzel-`Taskfile.yml` überschreibt vorhandene Variablen vermutlich nicht, bei Läufen in der Shell setzt sie darum der Aufrufer selbst. Der Hook `tools/hooks/tempGuard.ts` prüft nur noch Go-Befehle, die es nicht mehr gibt (Entfernen liegt bei Ralf).
 - **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.
   In einem Checkout, in dem eine andere Session arbeitet: kein Branchwechsel, kein Stash, kein Reset. Sonst im aktuellen Checkout bleiben;

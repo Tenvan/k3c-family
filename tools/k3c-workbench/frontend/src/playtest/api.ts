@@ -1,12 +1,11 @@
 import { devRpc } from '@webkit/lib/devRpc';
 import { backend } from '../api';
 import { hasTauri, tauriRpc } from '../api/tauri';
-import { hasWails } from '../api/wails';
 import { mockPlaytest } from './mock';
 import type { PlaytestApi } from './types';
 
-// Zugang der Seite Spieltest zu den Methoden PlaytestList, PlaytestPlan und PlaytestDelete (app_playtest.go):
-// Tauri-Command bzw. Wails-Bindings im Fenster, Mock mit `?mock=1` und in Tests, sonst HTTP wie das übrige Backend.
+// Zugang der Seite Spieltest zu den Methoden PlaytestList, PlaytestPlan und PlaytestDelete (und den übrigen
+// Playtest-Methoden): Tauri-Command im Fenster, Mock mit `?mock=1` und in Tests, sonst HTTP wie das übrige Backend.
 
 /** Das Tauri-Fenster liefert Player- und Marker-Dateien über das eigene Protokoll `k3c`, sonst bleibt die Adresse relativ. */
 const fileOrigin = (): string => (hasTauri() ? 'http://k3c.localhost' : '');
@@ -39,43 +38,18 @@ function remote(rpc: <T>(method: string, ...args: unknown[]) => Promise<T>): Pla
 
 function pick(): PlaytestApi {
   if (hasTauri()) return remote(tauriRpc);
-  if (hasWails()) {
-    const app = window.go!.main!.App!;
-    return {
-      list: () => app.PlaytestList(),
-      plan: (action, id) => app.PlaytestPlan(action, id),
-      remove: (action, id, confirm) => app.PlaytestDelete(action, id, confirm),
-      devices: () => app.PlaytestDevices(),
-      start: (o) => app.PlaytestStart(o),
-      stop: () => app.PlaytestStop(),
-      status: () => app.PlaytestStatus(),
-      check: () => app.PlaytestCheck(),
-      transcribe: (id, o) => app.PlaytestTranscribe(id, o),
-      models: () => app.PlaytestModels(),
-      transcribeStatus: () => app.PlaytestTranscribeStatus(),
-      transcribeCancel: () => app.PlaytestTranscribeCancel(),
-      timeline: (id) => app.PlaytestTimeline(id),
-      findings: (id) => app.PlaytestFindings(id),
-      updateFinding: (id, fid, patch) => app.PlaytestFindingUpdate(id, fid, patch),
-      skipFrame: (id, nr, skip) => app.PlaytestFrameSkip(id, nr, skip),
-      visionInfo: () => app.PlaytestVisionInfo(),
-      describe: (id, model, nrs) => app.PlaytestDescribe(id, model, nrs),
-      describeStatus: () => app.PlaytestDescribeStatus(),
-      describeCancel: () => app.PlaytestDescribeCancel(),
-    };
-  }
   if (backend.mock) return mockPlaytest();
   return remote(devRpc('k3c-workbench'));
 }
 
 export const playtestApi: PlaytestApi = pick();
 
-/** Adresse einer Datei für die Player; im Wails-Fenster gibt es keinen HTTP-Weg (nur Client-Server-Betrieb). */
+/** Adresse einer Datei für die Player. */
 export function mediaUrl(id: string, file: 'voice.wav' | 'video.mkv'): string {
-  return `${fileOrigin()}/api/dev/playtest/media/${encodeURIComponent(id)}/${file}`; // im Wails-Fenster liefert sie windowMediaHandler (app_playtest.go)
+  return `${fileOrigin()}/api/dev/playtest/media/${encodeURIComponent(id)}/${file}`;
 }
 
-/** Adresse eines Marker-Bilds (frames/marker-<nr>.jpg); im Wails-Fenster ohne HTTP-Weg. */
+/** Adresse eines Marker-Bilds (frames/marker-<nr>.jpg). */
 export function frameUrl(id: string, nr: number): string {
   return `${fileOrigin()}/api/dev/playtest/frame/${encodeURIComponent(id)}/${nr}`;
 }

@@ -3,14 +3,10 @@ version: '3'
 
 tasks:
   aufraeumen:
-    desc: "Lokale Branches und Worktrees aufräumen (B-302) und alte EXE entfernter Programme in bin/ (B-1007: k3c-server, k3c-load, k3c-tui, k3c-starter, k3c-workbench-web): löscht nur sichere Fälle, listet den Rest mit Grund; task ops:aufraeumen -- --dry zeigt nur an; auf origin löscht nur 🧑"
+    desc: "Lokale Branches und Worktrees aufräumen (B-302) und alte EXE entfernter Programme in bin/ (B-1007: k3c-server, k3c-load, k3c-tui, k3c-starter, k3c-workbench-web, k3c-sim; seit RU71 aufraeumen, regeltabelle, soundatlas): löscht nur sichere Fälle, listet den Rest mit Grund; task ops:aufraeumen -- --dry zeigt nur an; auf origin löscht nur 🧑"
     deps: [':tmp']
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
     cmds:
-      - go build -o bin/aufraeumen{{exeExt}} ./tools/cleanup
-      - ./bin/aufraeumen{{exeExt}} {{.CLI_ARGS}}
+      - bun tools/cleanup/main.ts {{.CLI_ARGS}}
 
   backup:
     desc: "Spielstände des nativen Spiels sichern (B-142, B-898): task ops:backup -- <ziel>; Quelle K3C_SAVES_DIR (nur für das Skript), sonst dist/k3c-game/saves"

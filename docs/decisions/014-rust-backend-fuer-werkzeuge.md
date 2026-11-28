@@ -1,6 +1,6 @@
 # 014 · Rust-Backend für Workbench und Studio: Tauri 2 statt Wails
 
-- **Status:** angenommen (🧑, 2026-11-26, Option A; Entwurf Claude, RU65.2)
+- **Status:** umgesetzt (RU66–RU71, 2026-11-28); PC-Abnahme in B-1295. Angenommen 🧑, 2026-11-26, Option A (Entwurf Claude, RU65.2)
 - **Datum:** 2026-11-25
 - **Projekt:** RSU · Sprints: RU65 (Spike und Vorlage), Folge-Sprints RU66, RU67, RU69, RU70, RU71; Orakel RU68 (erledigt)
 - **Vorgänger:** 004 (Studio getrennt, Schnittstelle Dateien), 008 (natives Spiel in Go, überholt), 012 (Port-Orakel), 013 (neue Mechaniken nur in Rust, Entwurf)

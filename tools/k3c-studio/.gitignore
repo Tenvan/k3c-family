@@ -1,9 +1,9 @@
-# Wails: EXE, Standard-Icon und Manifest (erzeugt wails build neu) und generierte Bindings
+# Lokale Reste alter Wails-Bauten (nichts erzeugt sie mehr); die Zeilen bleiben, solange sie auf Rechnern liegen.
 build/
 frontend/wailsjs/
 frontend/package.json.md5
-# Gebaute Oberfläche (WZ63.3) bleibt ungetrackt; nur der Platzhalter .gitkeep ist eingecheckt, damit go:embed
-# (main.go) und damit go build/go test ohne Frontend laufen.
+# Gebaute Oberfläche (WZ63.3) bleibt ungetrackt; nur der Platzhalter .gitkeep ist eingecheckt, damit der Ordner
+# `frontendDist` aus tauri.conf.json auch ohne gebautes Frontend da ist.
 !frontend/dist/
 frontend/dist/*
 !frontend/dist/.gitkeep

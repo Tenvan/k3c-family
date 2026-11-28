@@ -69,7 +69,7 @@ U+2029 als `<`, `>`, `&`, ` `, ` `, Zahlen in Texten über `k3c_det::golden:
 
 `--stop-stdin` startet einen Thread, der stdin bis zum Ende liest; das Ende (die Workbench schließt die Pipe) setzt ein
 Zeichen. `run` prüft es vor jedem Takt, `balance` zwischen zwei Läufen; dann folgen die Zeile `aborted` und Exit 130.
-Der Aufrufer muss stdin als offene Pipe halten (Windows: nicht `NUL`, in Go `StdinPipe()`), sonst endet jeder Lauf sofort mit Exit 130. Strg+C und CTRL_BREAK beenden die EXE ohne Zeile `aborted` (std kennt keinen Signal-Handler, `unsafe` ist verboten); die
+Der Aufrufer muss stdin als offene Pipe halten (Windows: nicht `NUL`, in Rust `Stdio::piped()`), sonst endet jeder Lauf sofort mit Exit 130. Strg+C und CTRL_BREAK beenden die EXE ohne Zeile `aborted` (std kennt keinen Signal-Handler, `unsafe` ist verboten); die
 Workbench wertet ein Ende nach eigenem Stop als Abbruch. Eine Zeile bei Strg+C bräuchte die Abhängigkeit `ctrlc` (Freigabe 🧑).
 
 ## Mit Fenster

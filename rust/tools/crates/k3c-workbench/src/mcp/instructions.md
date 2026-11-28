@@ -136,19 +136,16 @@ Auswertung eines Spieltests (B-1224): Die Workbench ruft keine KI; Claude liest,
 
 ### Prüfen
 
-- `check_run` statt `task check`, `task test`, `task typecheck`, `task lint`, `task build`, `task check:go`, `go test`
-  oder `golangci-lint` in der Shell. Ziele: `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`,
-  `task:check:go`, `task:check:diff`, `task:check:diff:plan`, `task:check:diff:js`, `task:check:diff:go`,
-  `task:check:race`, `go:test`, `go:lint`, `dev:test`, `task:check:dev`. Ein Testmuster (`pattern`) geht bei
-  `task:test`, `go:test` und `dev:test`.
-- Workbench (B-831): `dev:test` baut das Frontend bei Bedarf und fährt `go test` der Workbench ohne Sim-Pakete;
-  `task:check:dev` ist die volle Prüfung der Review (Frontend, Vitest, `go test`, Lint). Beide brauchen `task install`
-  im Checkout und brechen ohne Frontend-Abhängigkeiten mit diesem Hinweis ab. `console_tail check:<ziel>` liefert nur
-  Läufe des eigenen Checkouts (im Worktree `checkout` setzen, B-855).
+- `check_run` statt `task check`, `task test`, `task typecheck`, `task lint` oder `task build` in der Shell. Ziele:
+  `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`, `task:check:diff`, `task:check:diff:plan`,
+  `task:check:diff:js`, `task:check:dev`. Ein Testmuster (`pattern`) geht nur bei `task:test`.
+- Werkzeuge (B-831): `task:check:dev` ist die volle Prüfung der Review (Frontends mit Vitest, Tests und Lint der
+  Rust-Werkzeuge). Sie braucht `task install` im Checkout und bricht ohne Frontend-Abhängigkeiten mit diesem Hinweis ab.
+  `console_tail check:<ziel>` liefert nur Läufe des eigenen Checkouts (im Worktree `checkout` setzen, B-855).
 - `task:check:diff` prüft nur, was die geänderten Dateien gegenüber der Basis `HEAD` brauchen (vor jedem Commit), in zwei
-  Stufen: Stufe 1 Regel-Tests, Lint, Typecheck, `go vet`; Stufe 2 nur nach grüner Stufe 1 die Tests der geänderten Pakete.
-  Nach einem roten Lauf wiederholt `task:check:diff:js` bzw. `task:check:diff:go` nur diese Bahn; `task:check:diff:plan`
-  zeigt nur Basis und Schritte. `task:check:race` ist der langsame Race-Detector für `engine/` (Review-Session, CI).
+  Stufen: Stufe 1 Regel-Tests, Lint, Typecheck, `cargo fmt` und `clippy`; Stufe 2 nur nach grüner Stufe 1 die Tests der
+  geänderten Pakete. Nach einem roten Lauf wiederholt `task:check:diff:js` nur die Bahn JS; `task:check:diff:plan`
+  zeigt nur Basis und Schritte.
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
 - `check_run` wartet bis zum Ende des Laufs und sendet alle 20 s Fortschritt (B-520); ein Aufruf liefert das Ergebnis.
   Nie in Schleifen nachfragen. Nur ohne progressToken antwortet es nach 4 min mit „läuft noch“ und einer Lauf-ID;
