@@ -158,8 +158,8 @@ mod tests {
 
     #[test]
     fn port_aus_der_umgebung() {
-        assert_eq!(super::resolve_port(""), Ok(5281));
-        assert_eq!(super::resolve_port("5291"), Ok(5291));
+        assert_eq!(super::resolve_port(""), Ok(crate::ports::MCP_PORT));
+        assert_eq!(super::resolve_port("6000"), Ok(6000));
         assert!(super::resolve_port("0").is_err());
     }
 }

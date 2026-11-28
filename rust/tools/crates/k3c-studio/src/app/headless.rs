@@ -1,5 +1,5 @@
 //! Betrieb ohne Fenster (Port von `headless.go` ohne `-dev`): MCP-Server und Oberflächen-API auf
-//! `127.0.0.1:<K3C_STUDIO_RS_UI_API_PORT>`, die Oberfläche läuft im Browser unter Vite.
+//! `127.0.0.1:<K3C_STUDIO_UI_API_PORT>`, die Oberfläche läuft im Browser unter Vite.
 
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -82,9 +82,9 @@ mod tests {
 
     #[test]
     fn ui_port_folgt_dem_mcp_port() {
-        assert_eq!(ui_default(5281), 8293);
-        assert_eq!(ui_default(5291), 8303);
-        assert_eq!(ui_default(0), 8293);
-        assert_eq!(ui_default(65535), 8293);
+        assert_eq!(ui_default(5181), 8193);
+        assert_eq!(ui_default(5191), 8203);
+        assert_eq!(ui_default(0), 8193);
+        assert_eq!(ui_default(65535), 8193);
     }
 }

@@ -1,11 +1,11 @@
-# Namespace `k3c-studio`: Werkzeug für Game- und Level-Designer (WZ63): Welten, Assets, Hub (Wails-Fenster, React-Oberfläche
-# in frontend/) und der MCP-Server k3c-studio (Vorgabe-Port 5181, K3C_STUDIO_PORT). Eigenes Modul k3c/tools/k3c-studio,
-# per replace auf k3c, assetkit und workkit.
-# `dev` ist der Client-Server-Betrieb wie in der Workbench: `k3c-studio -dev` baut `-headless` als Kind (MCP-Server und
-# Oberflächen-API ohne Fenster) und startet es bei jeder Go-Änderung neu (engine/devrun); Vite zeigt die Oberfläche mit
-# Hot Reload im Browser (http://localhost:5193) und leitet /api an das Kind weiter (DEV_UI_API_PORT 8193). Der MCP-Port im
-# dev ist DEV_MCP_PORT (5182), damit das laufende Studio (5181) unberührt bleibt. Ports 5192, 8091 und 8182 gehörten dem
-# alten Asset-Studio und bleiben frei. `window` ist der Weg im Fenster (`wails dev`).
+# Namespace `k3c-studio`: Werkzeug für Game- und Level-Designer (WZ63): Welten, Assets, Hub (Tauri-Fenster, React-Oberfläche
+# in frontend/) und der MCP-Server k3c-studio (Vorgabe-Port 5181, K3C_STUDIO_PORT). Backend in Rust:
+# rust/tools/crates/k3c-studio (Entscheidung 014); `test`, `gotest` und `lint` prüfen bis RU71.4 noch die Go-Fassung.
+# `dev` ist der Client-Server-Betrieb wie in der Workbench: `k3c-studio --headless` (MCP-Server und Oberflächen-API ohne
+# Fenster) per `cargo run`, dazu Vite mit Hot Reload der Oberfläche im Browser (http://localhost:5193) und Proxy /api
+# (DEV_UI_API_PORT 8193). Rust-Änderungen brauchen einen Neustart. Der MCP-Port im dev ist DEV_MCP_PORT (5182), damit das
+# laufende Studio (5181) unberührt bleibt. Ports 5192, 8091 und 8182 gehörten dem alten Asset-Studio und bleiben frei.
+# `window` ist der Weg im Fenster (`tauri dev`).
 version: '3'
 
 vars:
@@ -21,21 +21,19 @@ tasks:
       - task: dev
 
   dev:
-    desc: "Studio im Client-Server-Betrieb: Backend neu bei Go-Änderungen, Oberfläche mit Hot Reload unter http://localhost:5193"
+    desc: "Studio im Client-Server-Betrieb: Rust-Backend ohne Fenster, Oberfläche mit Hot Reload unter http://localhost:5193"
     deps: [dev:server, dev:ui]
 
   dev:server:
-    desc: "Backend ohne Fenster (k3c-studio -dev): MCP auf DEV_MCP_PORT (5182), Oberflächen-API auf DEV_UI_API_PORT (8193), Neustart bei Go-Änderungen"
+    desc: "Backend ohne Fenster (cargo run, --headless): MCP auf DEV_MCP_PORT (5182), Oberflächen-API auf DEV_UI_API_PORT (8193); Rust-Änderungen brauchen einen Neustart"
     deps: [':tmp']
-    dir: '{{.STUDIO_DIR}}'
+    dir: '{{.ROOT_DIR}}/rust/tools'
     env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
       K3C_STUDIO_PORT: '{{.DEV_MCP_PORT}}'
       K3C_STUDIO_UI_API_PORT: '{{.DEV_UI_API_PORT}}'
-    # Bewusst `go build` (Konsolen-Subsystem), nie `wails build`: devrun beendet das Kind per CTRL_BREAK über die Konsole.
-    # frontend/dist enthält mindestens den eingecheckten Platzhalter .gitkeep (go:embed); im dev liefert Vite die Oberfläche.
     cmds:
-      - go build -o build/bin/k3c-studio-dev{{exeExt}} .
-      - build/bin/k3c-studio-dev{{exeExt}} -dev
+      - cargo run -p k3c-studio -- --headless
 
   dev:ui:
     desc: Oberfläche mit Vite gegen das Backend von dev:server (Proxy /api); öffnet sie im Standard-Browser
@@ -48,16 +46,14 @@ tasks:
       - bunx vite --open
 
   window:
-    desc: "Studio als Fenster im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen in tools/k3c-studio"
+    desc: "Studio als Fenster im Entwicklungsmodus (tauri dev): Vite 5193 mit Hot Reload, Neubau bei Rust-Änderungen; MCP 5181, laufendes Studio vorher schließen"
     deps: [':tmp']
-    dir: '{{.STUDIO_DIR}}'
-    preconditions:
-      - sh: command -v wails
-        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    dir: '{{.ROOT_DIR}}/rust/tools/crates/k3c-studio'
     env:
-      K3C_STUDIO_UI_PORT: '{{.DEV_UI_PORT}}'
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
     cmds:
-      - wails dev
+      - task: ':tools-rust:cli'
+      - bunx tauri dev
 
   frontend:
     desc: Frontend von k3c-studio bauen (Typecheck und vite build nach frontend/dist; nur bei geänderten Quellen)
@@ -115,42 +111,60 @@ tasks:
       - golangci-lint run --allow-serial-runners
 
   build:
-    desc: "EXE von k3c-studio bauen, feste EXE bin/k3c-studio (wails build; nur bei geänderten Quellen, `--force` erzwingt; laufendes Studio vorher schließen, sonst scheitert die Kopie)"
-    deps: [':tmp']
-    dir: '{{.STUDIO_DIR}}'
-    preconditions:
-      - sh: command -v wails
-        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    desc: "EXE von k3c-studio bauen, feste EXE bin/k3c-studio (nur bei geänderten Quellen, `--force` erzwingt; laufendes Studio-Fenster vorher schließen, sonst scheitert die Kopie)"
+    deps: [compile]
+    dir: '{{.ROOT_DIR}}'
     sources:
-      - '*.go'
-      - go.mod
-      - go.sum
-      - wails.json
-      - internal/**/*
-      - icon/*
-      - frontend/src/**/*
-      - frontend/index.html
-      - frontend/package.json
-      - frontend/vite.config.ts
-      - frontend/paths.ts
-      - ../webkit/**/*
-      - ../assetkit/**/*.go
-      - ../workkit/**/*.go
-      - ../../engine/**/*.go
-      - ../../data/**/*
-      - ../../go.mod
-      - ../../go.sum
-      - exclude: '**/*_test.go'
+      - rust/tools/target/release/k3c-studio{{exeExt}}
     generates:
-      - build/bin/k3c-studio{{exeExt}}
-      - ../../bin/k3c-studio{{exeExt}}
+      - bin/k3c-studio{{exeExt}}
     cmds:
-      - mkdir -p build/windows
-      - cp icon/appicon.png build/appicon.png
-      - cp icon/icon.ico build/windows/icon.ico
-      - wails build
-      - mkdir -p ../../bin
-      - cp build/bin/k3c-studio{{exeExt}} ../../bin/k3c-studio{{exeExt}}
+      - mkdir -p bin
+      - cp rust/tools/target/release/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
+
+  build:headless:
+    desc: "Eigene EXE für den Dienst ohne Fenster, bin/k3c-studio-headless (gleicher Bau wie build; so sperrt der laufende Dienst weder build noch buildall)"
+    deps: [compile]
+    dir: '{{.ROOT_DIR}}'
+    sources:
+      - rust/tools/target/release/k3c-studio{{exeExt}}
+    generates:
+      - bin/k3c-studio-headless{{exeExt}}
+    cmds:
+      - mkdir -p bin
+      - cp rust/tools/target/release/k3c-studio{{exeExt}} bin/k3c-studio-headless{{exeExt}}
+
+  compile:
+    internal: true
+    deps: [':tmp']
+    dir: '{{.ROOT_DIR}}'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+    sources:
+      - rust/rust-toolchain.toml
+      - rust/tools/Cargo.toml
+      - rust/tools/Cargo.lock
+      - rust/tools/package.json
+      - rust/tools/bun.lock
+      - rust/tools/crates/k3c-studio/**/*
+      - rust/tools/crates/k3c-kit/**/*
+      - rust/tools/crates/k3c-assetkit/**/*
+      - tools/k3c-studio/frontend/src/**/*
+      - tools/k3c-studio/frontend/index.html
+      - tools/k3c-studio/frontend/package.json
+      - tools/k3c-studio/frontend/vite.config.ts
+      - tools/k3c-studio/frontend/paths.ts
+      - tools/webkit/**/*
+      # von tauri-build erzeugt bzw. nur Tests
+      - exclude: 'rust/tools/crates/*/gen/**/*'
+      - exclude: 'rust/tools/crates/*/tests/**/*'
+      - exclude: 'rust/tools/crates/**/*_tests.rs'
+    generates:
+      - rust/tools/target/release/k3c-studio{{exeExt}}
+    cmds:
+      - task: ':tools-rust:cli'
+      # Das Frontend baut tauri selbst (beforeBuildCommand: task k3c-studio:frontend).
+      - cd rust/tools/crates/k3c-studio && bunx tauri build --no-bundle
 
   run:
     desc: EXE von k3c-studio bauen (nur bei geänderten Quellen) und starten
@@ -159,28 +173,9 @@ tasks:
     cmds:
       - bin/k3c-studio{{exeExt}}
 
-  headless:build:
-    desc: "Studio-Backend ohne Fenster bauen, feste EXE build/bin/k3c-studio-headless (go build, Konsolen-Subsystem)"
-    deps: [':tmp']
-    dir: '{{.STUDIO_DIR}}'
-    sources:
-      - '*.go'
-      - go.mod
-      - go.sum
-      - internal/**/*
-      - ../assetkit/**/*.go
-      - ../workkit/**/*.go
-      - ../../engine/**/*.go
-      - ../../data/**/*
-      - exclude: '**/*_test.go'
-    generates:
-      - build/bin/k3c-studio-headless{{exeExt}}
-    cmds:
-      - go build -o build/bin/k3c-studio-headless{{exeExt}} .
-
   headless:
-    desc: "Studio-Backend ohne Fenster starten: MCP-Server k3c-studio auf K3C_STUDIO_PORT (Vorgabe 5181), Oberflächen-API auf K3C_STUDIO_UI_API_PORT (Vorgabe 8193)"
-    deps: [headless:build]
-    dir: '{{.STUDIO_DIR}}'
+    desc: "Studio-Backend ohne Fenster starten (bin/k3c-studio-headless --headless): MCP-Server k3c-studio auf K3C_STUDIO_PORT (Vorgabe 5181), Oberflächen-API auf K3C_STUDIO_UI_API_PORT (Vorgabe 8193). Nach geänderten Quellen erst task k3c-studio:build, sonst baut der Start und reißt die 60-s-Frist des Dienstes"
+    deps: [build:headless]
+    dir: '{{.ROOT_DIR}}'
     cmds:
-      - build/bin/k3c-studio-headless{{exeExt}} -headless
+      - bin/k3c-studio-headless{{exeExt}} --headless

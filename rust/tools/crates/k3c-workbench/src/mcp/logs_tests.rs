@@ -82,15 +82,14 @@ async fn services_und_unbekannte_quelle() {
     let mut f = Fixture::new().await;
     let text = f.ok("logs_services", json!({})).await;
     let want = format!(
-        "Log k3c-workbench · {} · zuletzt {} WARN\nLog k3c-workbench-rs · noch keine Einträge\n\
-         Konsole check:task:test · 1 Zeilen",
+        "Log k3c-workbench · {} · zuletzt {} WARN\nKonsole check:task:test · 1 Zeilen",
         size(),
         local(6, "%d.%m. %H:%M:%S")
     );
     assert_eq!(text, want);
     for bad in ["../k3c-workbench", "gibtsnicht", ""] {
         let (text, is_error) = f.call("logs_query", json!({"service": bad})).await;
-        let want = format!("unbekannte Log-Quelle {bad:?}; gültig: k3c-workbench, k3c-workbench-rs");
+        let want = format!("unbekannte Log-Quelle {bad:?}; gültig: k3c-workbench");
         assert!(is_error && text == want, "{bad}: {text}");
     }
     f.end().await;

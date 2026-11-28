@@ -15,7 +15,7 @@ use crate::app::VERSION;
 const PENDING_METHODS: &[&str] = &[];
 
 fn app() -> Arc<App> {
-    let app = App::new("unbenutzt".into(), 5281, None);
+    let app = App::new("unbenutzt".into(), 0, None);
     app.mark_ready();
     Arc::new(app)
 }

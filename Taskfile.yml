@@ -6,18 +6,18 @@
 # (die Workbench gruppiert nach dem Namensraum vor dem Doppelpunkt):
 #
 #   go           engine/Taskfile.yml            go test, Lint, Race, Abdeckung, Golden-Dateien
-#   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
-#   k3c-studio   tools/k3c-studio/Taskfile.yml  Studio (Welten, Assets, Hub): dev (Client/Server), window, build, run, frontend, test, lint (WZ63)
+#   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench (Tauri): dev (Client/Server), window (tauri dev), build, run, frontend, test, lint
+#   k3c-studio   tools/k3c-studio/Taskfile.yml  Studio (Welten, Assets, Hub; Tauri): dev (Client/Server), window, build, run, headless, frontend, test, lint
 #   balance      tools/k3c-studio/internal/balance/Taskfile.yml  Balancing-Tester (seit WZ63.5 im Studio)
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
-#   tools-rust   rust/tools/Taskfile.yml   Rust-Werkzeuge (k3c-kit, später Workbench und Studio): build, test, lint, fmt
+#   tools-rust   rust/tools/Taskfile.yml   Rust-Werkzeuge (k3c-kit, Asset-Logik, Workbench, Studio): build, test, lint, fmt
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Werkzeuge und Tests (lint, typecheck, test) · Bauen und Ausliefern
 # (build, buildall, pages) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:all).
 #
-# Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Backend mit `-dev` baut und startet sich
-# bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
+# Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Workbench und Studio: Rust-Backend mit
+# `--headless`, die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
 version: '3'
 
 # Go-Build-Temp (go-build, Test-EXEs, t.TempDir) und Wails-Bindings-EXE liegen im Repo unter `.work/tmp` statt in %TEMP%

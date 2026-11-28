@@ -1,5 +1,5 @@
 //! Betrieb ohne Fenster (Port von `runHeadless` aus `headless.go`): MCP-Server und Oberflächen-API auf
-//! `127.0.0.1:<K3C_RS_DEV_UI_API_PORT>`, die Oberfläche läuft im Browser unter Vite.
+//! `127.0.0.1:<K3C_DEV_UI_API_PORT>`, die Oberfläche läuft im Browser unter Vite.
 
 use std::path::PathBuf;
 use std::sync::Arc;

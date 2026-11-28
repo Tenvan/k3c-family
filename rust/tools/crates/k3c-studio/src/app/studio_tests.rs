@@ -23,7 +23,7 @@ fn studio_root() -> tempfile::TempDir {
 }
 
 fn app(root: &tempfile::TempDir) -> App {
-    let app = App::new(root.path().to_path_buf(), 5281, None);
+    let app = App::new(root.path().to_path_buf(), 0, None);
     app.mark_ready();
     app
 }
