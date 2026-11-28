@@ -72,7 +72,7 @@ Keine (🧑 2026-11-26: direkt löschen).
 | RU71.3 | `RU71.3-paket-generatoren-typescript.md` | Umsetzung | autonom | fertig |
 | RU71.4 | `RU71.4-go-loeschen.md` | Umsetzung | autonom | fertig |
 | RU71.5 | `RU71.5-doku-rust-ts-stand.md` | Umsetzung | autonom | fertig |
-| RU71.6 | `RU71.6-review-abnahme-merge.md` | Review | autonom | offen |
+| RU71.6 | `RU71.6-review-abnahme-merge.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
