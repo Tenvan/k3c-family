@@ -136,35 +136,30 @@ tasks:
     cmds:
       - task: go:race
 
-  # check:diff ist das Werkzeug tools/checkdiff (Auswahl als getestete Go-Logik statt Shell). Teilaufgaben: `check:diff:plan` zeigt nur,
-  # was laufen würde; `check:diff:js` und `check:diff:go` wiederholen nach einem roten Lauf nur die betroffene Bahn.
+  # check:diff ist das Werkzeug tools/checkdiff (TypeScript unter bun, Auswahl als getestete Logik statt Shell, RU71).
+  # Teilaufgaben: `check:diff:plan` zeigt nur, was laufen würde; `check:diff:js` und `check:diff:rust` wiederholen nach
+  # einem roten Lauf nur die betroffene Bahn.
   check:diff:
-    desc: "Vor jedem Commit: nur was die geänderten Dateien dieses Commits brauchen (Basis HEAD; `CHECK_BASE=origin/main` für den ganzen Sprint). Stufe 1 Regel-Tests, Lint, Typecheck, go vet; Stufe 2 nur nach grüner Stufe 1: Tests der geänderten Pakete (-short), Vitest --changed. Ohne Abnehmer-Tests, Sim, Balance, Gen, Race (B-518, B-730, B-742)"
+    desc: "Vor jedem Commit: nur was die geänderten Dateien dieses Commits brauchen (Basis HEAD; `CHECK_BASE=origin/main` für den ganzen Sprint). Stufe 1 Regel-Tests, Lint, Typecheck, cargo fmt und clippy; Stufe 2 nur nach grüner Stufe 1: Vitest --changed, Tests der geänderten Crates. Ohne Sim, Balance, Gen, Race (B-518, B-730, B-742)"
     deps: [tmp]
     cmds:
-      - go run ./tools/checkdiff {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}} {{.CLI_ARGS}}
+      - bun tools/checkdiff/main.ts {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}} {{.CLI_ARGS}}
 
   check:diff:plan:
     desc: "check:diff trocken: zeigt Basis und Schritte, führt nichts aus"
     cmds:
-      - go run ./tools/checkdiff -plan {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
+      - bun tools/checkdiff/main.ts -plan {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:diff:js:
     desc: "check:diff, nur die Bahn JS (Regel-Tests, Oxlint, tsc, Vitest --changed)"
     deps: [tmp]
     cmds:
-      - go run ./tools/checkdiff -only js {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
-
-  check:diff:go:
-    desc: "check:diff, nur die Bahn Go (go vet, golangci-lint, go test -short der geänderten Pakete)"
-    deps: [tmp]
-    cmds:
-      - go run ./tools/checkdiff -only go {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
+      - bun tools/checkdiff/main.ts -only js {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:diff:rust:
     desc: "check:diff, nur die Bahn Rust (cargo fmt, clippy und Tests der geänderten Crates in rust/ und rust/tools/)"
     cmds:
-      - go run ./tools/checkdiff -only rust {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
+      - bun tools/checkdiff/main.ts -only rust {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:dev:
     desc: k3c-workbench und k3c-studio prüfen (Frontends mit Typecheck und Vitest, go test, golangci-lint)
