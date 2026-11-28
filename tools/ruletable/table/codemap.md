@@ -14,5 +14,5 @@ Paket `table`: erzeugt aus `data/hub.json` den Block „Hub-Stufe → Gebäude�
 `Block(hub.json)` → `Ersetzen(doc, block)` → neuer Dokumenttext; `Gegenprobe` erzeugt den Block und vergleicht ohne zu schreiben.
 
 ## Integration
-- Aufrufer: `tools/ruletable/main.go` (Task `gen:rules`); das frühere Asset-Studio als zweiter Aufrufer ist entfallen.
+- Aufrufer: `tools/k3c-studio/internal/hubplan` (Go-Studio). Der Task `gen:rules` läuft seit RU71 über die TypeScript-Fassung `../table.ts`; `rust/tools/crates/k3c-studio/src/hubplan/table.rs` ist der Rust-Port für das Rust-Studio. Wer die Regeln ändert, ändert alle Fassungen.
 - Test: `table_test.go`.

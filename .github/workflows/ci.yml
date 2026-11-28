@@ -90,7 +90,7 @@ jobs:
 
   # Rust-Workspace (Projekt RSU, RU1.3): nur Windows (MSVC), wie das Spiel. `rustup show` installiert die Toolchain aus
   # rust/rust-toolchain.toml; es laufen nur Tests ohne Fenster und GPU. Danach baut `task rust:game:build` das Paket
-  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; Go für tools/sync (Kopierwerkzeug) und tools/rustpaket.
+  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; tools/sync und tools/rustpaket laufen unter bun.
   rust:
     if: github.event_name != 'pull_request'
     name: Rust · fmt · clippy · Tests · Paket (Windows)
@@ -113,10 +113,6 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
-          cache-dependency-path: go.sum
       - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
         working-directory: .

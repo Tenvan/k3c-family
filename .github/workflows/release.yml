@@ -30,13 +30,8 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
-      # Go: tools/sync (Kopierwerkzeug) und tools/rustpaket (LIZENZEN.txt, Paketprüfung)
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
-          cache-dependency-path: go.sum
       - uses: go-task/setup-task@v2
-      # Papierschnitt-Renderer (gen:paper) braucht die Werkzeuge der Wurzel.
+      # Papierschnitt-Renderer (gen:paper), tools/sync und tools/rustpaket brauchen bun und die Werkzeuge der Wurzel.
       - run: bun install --frozen-lockfile
       # Vor dem Paket: Tests ohne Fenster und GPU (wie CI-Job rust).
       - run: cargo test --workspace

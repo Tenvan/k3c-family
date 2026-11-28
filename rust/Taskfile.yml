@@ -80,8 +80,6 @@ tasks:
   game:dist:
     internal: true
     dir: '{{.ROOT_DIR}}'
-    env:
-      CGO_ENABLED: '0'
     cmds:
       - mkdir -p "{{.PAKET}}"
       - |
@@ -90,26 +88,24 @@ tasks:
         if [ ! -d public/grafik ]; then echo "❌ public/grafik fehlt: erst task gen:paper"; exit 1; fi
         args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/public/rig=$p/public/rig {{.ROOT_DIR}}/public/audio=$p/public/audio {{.ROOT_DIR}}/LICENSE=$p/LICENSE {{.ROOT_DIR}}/LICENSE-ASSETS=$p/LICENSE-ASSETS {{.ROOT_DIR}}/rust/paket/README.txt=$p/README.txt"
         if [ -d public/schrift ]; then args="$args {{.ROOT_DIR}}/public/schrift=$p/public/schrift"; fi
-        go run ./tools/sync $args
+        bun tools/sync/main.ts $args
         # Spieldaten ohne Go-Quellen und Doku, wie im Go-Paket
         rm -f "$p"/data/*.go "$p"/data/*.md "$p"/data/*/*.md
       # Cheat-Fenster neben die Spiel-EXE (RU56, B-1135)
       - cp "{{.ROOT_DIR}}/rust/target/release/k3c-devwin.exe" "{{.PAKET}}/k3c-devwin.exe"
       # Lizenzdatei (B-1121): Liste der Lizenz-Seite (`k3c-game licenses`) plus Lizenztexte aller gelinkten Rust-Crates
       # (tools/rustpaket, `cargo metadata`); erst in eine .tmp-Datei, damit ein Abbruch keine halbe Datei hinterlässt
-      - 'go run ./tools/rustpaket lizenzen -exe "{{.PAKET}}/k3c-game.exe" -rust rust > "{{.PAKET}}/LIZENZEN.txt.tmp" && mv "{{.PAKET}}/LIZENZEN.txt.tmp" "{{.PAKET}}/LIZENZEN.txt"'
+      - 'bun tools/rustpaket/main.ts lizenzen -exe "{{.PAKET}}/k3c-game.exe" -rust rust > "{{.PAKET}}/LIZENZEN.txt.tmp" && mv "{{.PAKET}}/LIZENZEN.txt.tmp" "{{.PAKET}}/LIZENZEN.txt"'
       # Paketliste prüfen (B-1137): Pflichtdateien, keine Go- oder Entwickler-Reste, EXE-Größe; -lokal duldet saves/, reports/
       # und trace/, die beim Spielen aus dem Paketordner entstehen (der strenge Lauf `game:dist:check` und die CI melden sie)
-      - go run ./tools/rustpaket pruefen -lokal "{{.PAKET}}"
+      - bun tools/rustpaket/main.ts pruefen -lokal "{{.PAKET}}"
       - 'echo "✅ Rust-Spiel in {{.PAKET}} (Start: k3c-game.exe)"'
 
   game:dist:check:
     desc: "Rust-Paket prüfen (ohne Neubau): Pflicht- und verbotene Dateien, EXE höchstens 40 MiB, Lizenzdatei mit Crate-Abschnitten (tools/rustpaket pruefen)"
     dir: '{{.ROOT_DIR}}'
-    env:
-      CGO_ENABLED: '0'
     cmds:
-      - go run ./tools/rustpaket pruefen "{{.PAKET}}"
+      - bun tools/rustpaket/main.ts pruefen "{{.PAKET}}"
 
   game:run:
     desc: "Rust-Spiel bauen (game:build) und aus dem Paket-Ordner starten; Schalter: task rust:game:run -- --players 1"
