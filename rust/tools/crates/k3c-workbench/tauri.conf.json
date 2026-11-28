@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "k3c-workbench",
+  "version": "0.1.0",
+  "identifier": "k3c.workbench.rs",
+  "build": {
+    "devUrl": "http://localhost:5291",
+    "frontendDist": "../../../../tools/k3c-workbench/frontend/dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": { "csp": null }
+  },
+  "bundle": {
+    "active": false,
+    "icon": ["icons/icon.ico"]
+  }
+}

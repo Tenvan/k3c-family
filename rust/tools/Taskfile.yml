@@ -1,7 +1,8 @@
 # Namespace `tools-rust`: Cargo-Workspace rust/tools/ der Rust-Werkzeuge (Entscheidung 014, RU66 bis RU71): gemeinsamer
 # Code `k3c-kit`, später Asset-Logik, Studio und Workbench. Leitfaden: docs/standards/rust-werkzeuge.md. Build-Ordner
 # rust/tools/target, Temp der Tests unter .work/tmp (K3C_TMP). `studio:*` ist die Studio-App (RU70, Ports siehe
-# crates/k3c-studio/src/ports.rs; die Go-Fassung bleibt unter `k3c-studio:*`); `run`, `dev` und `workbench:*` folgen mit RU69.
+# crates/k3c-studio/src/ports.rs; die Go-Fassung bleibt unter `k3c-studio:*`), `workbench:*` die Workbench (RU69, Ports
+# siehe crates/k3c-workbench/src/ports.rs; die Go-Fassung bleibt unter `k3c-workbench:*`).
 version: '3'
 
 tasks:
@@ -42,6 +43,46 @@ tasks:
       K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
     cmds:
       - cargo fmt --all
+
+  workbench:build:
+    desc: "Workbench in Rust bauen (cargo build --release, Frontend eingebettet; EXE rust/tools/target/release/k3c-workbench.exe, nicht nach bin/)"
+    deps: [':tmp', ':k3c-workbench:frontend']
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+    cmds:
+      - cargo build --release -p k3c-workbench --features custom-protocol
+
+  workbench:run:
+    desc: "Workbench in Rust bauen und als Fenster starten (MCP 5280)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - task: workbench:build
+      - rust/tools/target/release/k3c-workbench{{exeExt}}
+
+  workbench:dev:
+    desc: "Browser-Dev der Rust-Workbench: Backend ohne Fenster (MCP 5280, API 8290) und Vite unter http://localhost:5291; Rust-Änderungen brauchen einen Neustart"
+    deps: [workbench:dev:server, workbench:dev:ui]
+
+  workbench:dev:server:
+    desc: "Workbench ohne Fenster (cargo run -p k3c-workbench -- --headless)"
+    deps: [':tmp']
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_RS_DEV_PORT: '5280'
+      K3C_RS_DEV_UI_API_PORT: '8290'
+    cmds:
+      - cargo run -p k3c-workbench -- --headless
+
+  workbench:dev:ui:
+    desc: "Oberfläche der Workbench mit Vite (5291) gegen das Rust-Backend (Proxy /api auf 8290)"
+    dir: '{{.ROOT_DIR}}/tools/k3c-workbench/frontend'
+    env:
+      K3C_DEV_API: 'http://127.0.0.1:8290'
+      K3C_DEV_UI_PORT: '5291'
+    cmds:
+      - bunx vite
 
   studio:build:
     desc: "Studio-App in Rust bauen (tauri build ohne Installer; EXE rust/tools/target/release/k3c-studio.exe, nicht nach bin/)"

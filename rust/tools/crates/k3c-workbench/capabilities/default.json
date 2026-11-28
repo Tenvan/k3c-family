@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Fenster main: Kern, Ereignisse und gemerkte Fenstergröße. Die Commands der App (rpc, open_url) sind ohne eigenes Manifest erlaubt.",
+  "windows": ["main"],
+  "permissions": ["core:default", "core:event:default", "window-state:default"]
+}

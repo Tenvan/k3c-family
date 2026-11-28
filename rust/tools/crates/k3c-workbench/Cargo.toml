@@ -1,0 +1,68 @@
+[package]
+name = "k3c-workbench"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+description = "Entwickler-Werkzeug von K3C: Tauri-Fenster, UI-API und MCP-Server (Port von tools/k3c-workbench, RU69)"
+default-run = "k3c-workbench"
+
+[lints]
+workspace = true
+
+[lib]
+name = "k3c_workbench"
+
+[[bin]]
+name = "k3c-workbench"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build.workspace = true
+
+[dependencies]
+k3c-kit = { path = "../k3c-kit" }
+# Planung: Ticket-Kern (Go `assetkit/ticket`), hier das Umbenennen mit Wiederholung.
+k3c-assetkit = { path = "../k3c-assetkit" }
+tauri.workspace = true
+tauri-plugin-window-state.workspace = true
+tauri-plugin-single-instance.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+schemars.workspace = true
+rmcp.workspace = true
+axum.workspace = true
+# Player-Dateien stückweise ausliefern (schon von k3c-kit genutzt).
+tokio-stream.workspace = true
+# Uhr der Nutzungsstatistik (`k3c_kit::usage` verlangt `DateTime<Local>`).
+chrono.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread", "signal", "time", "macros", "sync", "io-util"] }
+# Dienste: ANSI-Sequenzen aus der Ausgabe entfernen.
+regex.workspace = true
+# Git: Fingerabdruck über die losen Refs (keine Sicherheit; Go nimmt SHA-1).
+sha2.workspace = true
+walkdir.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows = { workspace = true, features = [
+    "Win32_Foundation",
+    "Win32_System_Console",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+    # Dienste: wer am Port lauscht, CPU/Speicher, Elternprozess (Go: gopsutil).
+    # Spieltest: aktueller PATH aus der Registry (ffmpeg-Suche).
+    "Win32_System_Registry",
+    "Win32_NetworkManagement_IpHelper",
+    "Win32_Networking_WinSock",
+    "Win32_System_Diagnostics_ToolHelp",
+    "Win32_System_ProcessStatus",
+    "Win32_System_Threading",
+] }
+
+[dev-dependencies]
+tauri = { workspace = true, features = ["test"] }
+reqwest.workspace = true
+tempfile.workspace = true
+
+[features]
+# Release ohne Tauri-CLI: Frontend aus dist/ eingebettet statt devUrl.
+custom-protocol = ["tauri/custom-protocol"]
