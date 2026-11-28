@@ -31,7 +31,7 @@ Erst das Thema bestimmen, dann gezielt dort suchen. Vollständig: `docs/agenten-
 | Grafik | `tools/paper/`, `rust/crates/k3c-rig/`, `rust/crates/k3c-game/src/art/`, `rust/crates/k3c-game/src/actors/`, gezeichnete HUD-Grafik `rust/crates/k3c-game/src/hud/` | `public/grafik/<gruppe>/`, `data/paper.json`, `docs/standards/paper-spec.md` |
 | Sound | `rust/crates/k3c-game/src/audio/` (gespielt wird der erste `wahl`-Eintrag ohne `sprite`, `register.rs`), `tools/soundatlas/` | `data/sounds.json`, `public/audio/atlas.json` |
 | HUD, Eingabe | `rust/crates/k3c-game/src/hud/`, `rust/crates/k3c-game/src/menu/`, `rust/crates/k3c-game/src/input/`, `rust/crates/k3c-game/src/game/` | `docs/rules/bedienung.md` |
-| Workbench | `tools/k3c-workbench/` (MCP `internal/mcpsrv/`), `tools/webkit/` | `docs/standards/workbench-seiten.md` |
+| Workbench | `tools/k3c-workbench/` (Frontend), `rust/tools/crates/k3c-workbench/` (MCP `src/mcp/`), `tools/webkit/` | `docs/standards/workbench-seiten.md` |
 | Planung | nur lesen: `docs/backlog/`, `docs/sprints/`, `docs/projekte/` | `docs/arbeitsweise.md` |
 
 ## Vorgehen

@@ -4,7 +4,7 @@
 **Tickets** ([`backlog/`](backlog/)) gehören zu einem Projekt und werden in Sprints eingeplant. **Ein PR je Sprint.**
 Ein Code-Sprint ist erst fertig, wenn seine **Review-Session** ihn abgenommen hat (leicht, siehe unten).
 Übersicht der Projekte: [`projekte/README.md`](projekte/README.md), aller Sprints: [`sprints/README.md`](sprints/README.md).
-Zielbild: [`decisions/001-server-engine-go.md`](decisions/001-server-engine-go.md).
+Zielbild: [`decisions/011-spiel-und-sim-in-rust.md`](decisions/011-spiel-und-sim-in-rust.md) und [`decisions/014-rust-backend-fuer-werkzeuge.md`](decisions/014-rust-backend-fuer-werkzeuge.md).
 **Parallel statt seriell:** Gearbeitet wird in **Arbeitswellen**: Sessions, die sich weder über Abhängigkeit noch **Bereich** noch **Sperre** berühren, laufen gleichzeitig.
 Was 🧑 braucht, steht in der **Ralf-Queue** und hält nur auf, was wirklich davon abhängt (Abschnitt „Parallelität und Wellen“).
 
@@ -63,7 +63,7 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
   Einschätzung und bisherigem Vorgehen. Offene Fragen entscheidet Claude mit einem begründeten Default und meldet sie im
   Nachgang; 🧑 ändert, was ihm nicht gefällt. Manuelle Abnahmen (siehe unten) bleiben bei 🧑.
   **Klasse A (Beschluss 🧑 2026-11-11):** Specs vom Typ `Problem` oder `Schuld` in den Domänen DEV, INF oder PAP, die weder Spielregeln noch Protokoll,
-  Spielstand-Format oder Abhängigkeiten (`go.mod`, `package.json`) ändern, gibt Claude dauerhaft selbst frei (Feld `Freigabe`: „Klasse A, Claude, <Datum>“)
+  Spielstand-Format oder Abhängigkeiten (`Cargo.toml`, `package.json`) ändern, gibt Claude dauerhaft selbst frei (Feld `Freigabe`: „Klasse A, Claude, <Datum>“)
   und meldet sie gesammelt im Nachgang. Alles andere (Klasse B) gibt nur 🧑 frei.
 - **Änderung:** Passt eine Anforderung während der Umsetzung nicht, erst die Spec ändern (`Revision` + 1, zurück auf
   `Entwurf`, neue Freigabe), dann den Code. Nie ein Kriterium umschreiben, damit es zum Code passt.
@@ -137,25 +137,24 @@ Eine Mensch-Session ist nie Abhängigkeit einer Agenten-Session, außer ihr Erge
 
 Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und Freigaben. Deshalb:
 
-- **Prüfstufen:** Während der Arbeit nur gezielte Tests (`task rust:test`, `check_run rust:test` oder
-  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff` (B-730, Werkzeug `tools/checkdiff`): Es prüft
+- **Prüfstufen:** Während der Arbeit nur gezielte Tests (`task rust:test`, `task tools-rust:test` oder
+  `check_run task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff` (B-730, Werkzeug `tools/checkdiff`): Es prüft
   **nur, was die geänderten Dateien dieses Commits brauchen** (Beschluss 🧑 2026-11-11). Basis ist `HEAD` (geänderte und neue
   Dateien; bei sauberem Checkout der letzte Commit), nicht mehr der ganze Sprint; `CHECK_BASE=origin/main` nimmt bewusst mehr.
-  **Stufe 1 (Sekunden):** Planungs-Tests nur bei Doku, Regel-Test, Oxlint, tsc, `go vet` der geänderten Pakete **und ihrer
-  Abnehmer** (übersetzt sie samt Tests, führt nichts aus), golangci-lint der geänderten Pakete. **Stufe 2, nur nach grüner
-  Stufe 1:** `go test -short` **nur der geänderten Pakete** und Vitest `--changed`. Tests der Abnehmer, volle Module, Sim,
-  Balance, Gen und Race laufen hier nie; `go.mod` übersetzt nur das Modul, `Taskfile.yml` und `.github/` lösen keine Tests aus,
-  `testdata/` an der Wurzel nur die Pakete, die es lesen. JS und Go laufen nebeneinander.
+  **Stufe 1 (Sekunden):** Planungs-Tests nur bei Doku, Regel-Test, Oxlint, tsc, `cargo fmt --check` und `clippy` der
+  geänderten Crates (`rust/` und `rust/tools/`). **Stufe 2, nur nach grüner Stufe 1:** Vitest `--changed` und `cargo test`
+  **nur der geänderten Crates**. Tests der Abnehmer, Sim, Balance und Gen laufen hier nie; Manifest, Lockfile oder
+  `clippy.toml` eines Workspace wählen ihn ganz, `Taskfile.yml` und `.github/` lösen keine Tests aus, `testdata/` an der
+  Wurzel löst weder Vitest noch cargo aus. JS und Rust laufen nebeneinander.
   **Teilaufgaben:** `task check:diff:plan` zeigt nur, was laufen würde; nach einem roten Lauf wiederholt `task check:diff:js`
-  bzw. `task check:diff:go` nur die betroffene Bahn. Ein Lauf über mehr als etwa eine Minute ist ein Befund (Ticket), kein Normalfall.
+  bzw. `task check:diff:rust` nur die betroffene Bahn. Ein Lauf über mehr als etwa eine Minute ist ein Befund (Ticket), kein Normalfall.
   **Takt:** einmal je Session-Commit. Nach einem Merge der Basis in den Sprint-Branch kein neuer Lauf, wenn der eigene
-  Diff unverändert ist (die Basis ist schon geprüft). Den vollen Satz (`task check`, `task check:go`) fährt nur
-  die Review-Session, `task check:race` nur das Abnahme-Ticket, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
+  Diff unverändert ist (die Basis ist schon geprüft). Den vollen Satz (`task check`, `task check:dev`) fährt nur
+  die Review-Session, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
   mehrfach „zur Sicherheit“.
-- **Lange Tests (B-619):** Ein Go-Test, der über etwa 3 s braucht (echte Git-Repos, `go build`, lange Lauf-Simulationen,
-  Repo-Scans), beginnt mit `if testing.Short() { t.Skip(…) }`. `check:diff` lässt ihn aus, `check:go`, die
-  Review-Session und die CI fahren ihn. Unveränderte Pakete liefert der Go-Testcache; er greift nur, weil das Go-Temp
-  außerhalb des Repos liegt (`%USERPROFILE%\.k3c\tmp`, `requirements.md`). Für diesen Ordner braucht der Virenscanner (Norton) einmal eine Ausnahme, sonst prüft er jede Test-EXE (Einrichtung: `requirements.md`).
+- **Lange Tests (B-619):** Eine Kurz-Stufe wie früher bei den Go-Tests gibt es nicht: `check:diff` fährt alle Tests der
+  geänderten Crates außer `#[ignore]`. Für `<Repo>\.work` braucht der Virenscanner (Norton) einmal eine Ausnahme, sonst
+  prüft er jede Test-EXE (Einrichtung: `requirements.md`).
 - **Review in der Umsetzung:** nur bei Domäne SIM oder SRV, bei Protokoll- oder Spielstand-Änderungen, bei Code mit
   Shell-Aufrufen, Pfaden oder Eingaben von außen oder ab etwa 150 geänderten Code-Zeilen. Ein Reviewer (Sonnet; Opus nur bei Protokoll, Spielstand oder Nebenläufigkeit), Maßstab wie in
   der Review-Session (nur schwere Befunde). Er startet im Hintergrund **parallel** zu `task check:diff`. Ein Fix unter
@@ -163,7 +162,7 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 - **Parallel statt nacheinander:** Unabhängige Teile einer Session laufen als parallele Agenten in getrennten Dateien
   (z. B. Kontext erheben ∥ Tests schreiben ∥ Umsetzung). Sessions verschiedener Sprints ohne gegenseitige Abhängigkeit, ohne gemeinsame Dateien
   und ohne gemeinsame Sperre laufen parallel, jede im eigenen Worktree (Abschnitt „Parallelität und Wellen“). Schwere Prüfläufe (Grafik-Golden,
-  `check:go`, `check:race`, `buildall`) laufen höchstens zwei gleichzeitig; mehr bringt lastabhängige Tests zum Scheitern (B-704).
+  `check:dev`, `buildall`) laufen höchstens zwei gleichzeitig; mehr bringt lastabhängige Tests zum Scheitern (B-704).
 - **Kein Polling:** `check_run` wartet selbst bis zum Ende des Laufs (B-520); Shell-Läufe im Hintergrund mit
   Benachrichtigung (`run_in_background`); `sim_test status` nur einmal nach der erwarteten Dauer abfragen. Keine `sleep`-Schleifen; Messreihen höchstens drei Läufe;
   `sim_test` immer mit Dauer und Abbruchkriterium.
@@ -176,20 +175,20 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 
 **Sperre (Beschluss 🧑 2026-11-11, bis auf Widerruf):** Simulationen und Balancing laufen **gar nicht**: kein `sim_test`,
 kein `sim_run`, kein `task balance`, kein Lasttest (`k3c-load` ist entfallen, B-850), weder bei der Feature-Arbeit noch im Abnahme-Ticket. Die
-Kriterien AC-01 Sim und AC-02 Balance eines Abnahme-Tickets heißen so lange `verschoben (Sperre 2026-11-11)`. `check:diff`
-lässt die Tests der Sim- und Balance-Pakete des Studios aus (`tools/checkdiff/steps.go` › `simDirs` enthält seit RU41.1 nur noch Studio-Pakete; `go vet` und Lint bleiben).
-Gen und Race bleiben wie unten beschrieben.
+Kriterien AC-01 Sim und AC-02 Balance eines Abnahme-Tickets heißen so lange `verschoben (Sperre 2026-11-11)`. Eine
+eigene Ausnahme für Sim-Pakete hat `check:diff` nicht mehr (die ausgelassenen Go-Pakete sind entfernt).
+Gen bleibt wie unten beschrieben.
 
 **Schreibschutz des Balancings (Beschluss 🧑 2026-11-22, WZ63.7):** Die Balancing-Tools liegen im MCP-Server
 `k3c-studio` (`mcp__k3c-studio__sim_test` usw., seit WZ63.5). Sie ändern Quelldateien nur unter `data/worlds/` und
-schreiben Laufausgaben nur unter `reports/`; der Wächter im Studio (`balance.Guard`, `mcpkit.WriteGuard`) lehnt jeden
+schreiben Laufausgaben nur unter `reports/`; der Wächter im Studio (`balance/writeguard.rs`, `k3c_kit::mcp::writeguard`) lehnt jeden
 anderen Pfad ab. Braucht das Balancing Änderungen an Code oder anderen Daten (`data/*.json` außer Welten,
 `rust/`, `tools/`), zeigt Claude zuerst den **Plan im Chat** und wartet auf die Freigabe von 🧑; nie selbst ändern, auch
 nicht bei automatischem Balancing.
 
 Lange Läufe gehören nicht in den Abschluss. **Sessions, Sprints und Projekte schließen ohne** Sim-, Balance- und
 Gen-Läufe ab; auch `task check:diff` fährt sie nicht (kein `gen:paper`, kein Grafik-Golden, kein `sim_test`, kein
-Balancing, kein `check:race`; Vitest lässt dort die Tests aus, die gerenderte Papierschnitt-PNGs brauchen).
+Balancing; Vitest lässt dort die Tests aus, die gerenderte Papierschnitt-PNGs brauchen).
 
 - **Bei der Feature-Arbeit:** Nur die Session, die ein betroffenes Feature entwickelt, fährt die passenden Läufe gezielt
   (z. B. `sim_test` nach einer Balancing-Änderung, `task gen:paper` und Golden nach einer Spec- oder Renderer-Änderung).
@@ -206,7 +205,6 @@ Balancing, kein `check:race`; Vitest lässt dort die Tests aus, die gerenderte P
   - **AC-02 Balance:** Balancing-Tests über `sim_test` bzw. `sim_run` (vorläufig mit Cheats, B-698), grün.
   - **AC-03 Gen:** `check_run task:test` (ruft `gen:paper` auf, fährt Grafik-Golden `tests/paperAssets.test.ts`,
     `tools/paper/golden` und die Sprite-Tests), grün; eine gewollte Golden-Änderung nach „Golden“.
-  - **AC-04 Race:** `check_run task:check:race`, grün (ohne C-Compiler übersprungen, im Ergebnis so nennen).
 - **Ergebnis:** Rot heißt neues Ticket (Typ `Problem`) im Projekt, nicht Nachbessern im Abnahme-Ticket; danach
   `Status: erledigt` mit den Messwerten in den Notizen.
 
@@ -241,9 +239,9 @@ Arbeit ist. Parallelität entsteht zwischen Sprints. Siehe Autonomer Ablauf, Sch
 | **SRV** | Räume und Spielstände (Rust) | `rust/crates/k3c-room/`, `rust/crates/k3c-data/` (Spielserver, `engine/net/`, `cmd/k3c-server/` und Docker sind entfallen, B-850; Go-Engine seit RU41.1 entfernt) |
 | **CLI** | Natives Spiel (Rust): Darstellung, HUD, Menü, Grafik, Audio, Läufe (`k3c-game sim`) | `rust/crates/k3c-game/` (samt `src/runs/`), `rust/crates/k3c-rig/` (Go-Spiel seit RU37 entfernt, Browser-Client entfallen, B-848) |
 | **PLAT** | Plattform: Eingabe, Fenster, Pages-Präsentation | `rust/crates/k3c-game/src/input/`, Pages-Präsentation `site/` |
-| **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vitest.config.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
+| **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `Cargo.toml`, `vitest.config.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
 | **PAP** | Papierschnitt-Grafik (Entscheidung 005) | `tools/paper/`, `public/grafik/stil.paper.json`, `public/grafik/**/*.paper.json` samt den daneben gerenderten Ausgaben (PNG, `manifest.json`, Gruppen-Index), `data/asset-prompts.json`, `docs/standards/paper-*.md` |
-| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche und MCP-Server), `tools/k3c-studio/` (Studio für Welten, Hub und Assets, eigene EXE und MCP-Server, WZ63, Entscheidung 005 › 5), `tools/workkit/` (gemeinsamer Go-Code beider Apps, eigenes Modul), `tools/assetkit/` (Asset-Logik, eigenes Modul), `engine/conlog/`, `engine/devrun/`, `engine/internal/rules/` (Konsolen-Logger, Dev-Supervisor, Repo-Regel-Tests) |
+| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (Oberfläche der Workbench), `tools/k3c-studio/` (Studio für Welten, Hub und Assets, eigene EXE und MCP-Server, WZ63, Entscheidung 005 › 5), `rust/tools/` (eigener Cargo-Workspace: Backends beider Apps samt MCP-Server, `k3c-kit`, `k3c-assetkit`; Entscheidung 014) |
 
 **Modell-Wahl** (Feld `Modell` der Session, Empfehlung für den ausführenden Agenten): `haiku` für reine Nachschlage-
 und Doku-Sessions, `sonnet` Standard für Umsetzung und Migration, `opus` für Verträge, Rig-Mathematik, Bild-Diff und
@@ -285,7 +283,7 @@ Jedes Ticket und jede Sprint-README trägt im Abschnitt „Regeln und Einschrän
 | `golden` | `testdata/golden/`, Grafik-Golden unter `tools/paper/golden/` (Abschnitt „Golden“) |
 | `protokoll` | `docs/protocol.md` (Historie seit B-850) |
 | `spielstand` | Spielstand-Format, `ISLAND_SAVE_VERSION`, Fixtures |
-| `deps` | `go.mod`, `package.json`, Lockfiles, jede neue Abhängigkeit |
+| `deps` | `Cargo.toml`, `package.json`, Lockfiles, jede neue Abhängigkeit |
 | `taskfile` | dieselbe Taskfile- oder Workflow-Datei (`Taskfile.yml`, `.github/workflows/*.yml`) |
 | `exe` | `task buildall`, Neubau oder Neustart der Workbench (laufende EXE, Port 5180) |
 
@@ -345,7 +343,7 @@ steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt
 ### Temporäre Dateien
 
 Regel (🧑 2026-11-18): Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht. Worktrees legt Claude selbst an, dafür gibt es keine Regel.
-Gilt für Agenten, Skills und Werkzeuge; der Code der Produkte (z. B. `t.TempDir()` in Tests) bleibt davon unberührt.
+Gilt für Agenten, Skills und Werkzeuge; der Code der Produkte (z. B. Temp-Ordner in Tests) bleibt davon unberührt.
 
 ### Second Worker (zweiter Rechner, Lane `zweit`)
 
@@ -374,9 +372,9 @@ mit `main` und räumt auf. Abstimmung nur über `origin` (🧑 2026-11-18, Regel
   mit `Lane: zweit` und erledigten Abhängigkeiten (`plan_list {projekt: "RSU", status: "aktiv"}`). Ein Commit je Session, Push nach jeder Session.
 - **Abschluss:** Review-Session des Sprints öffnet den PR gegen `main` und mergt ihn nach grüner Prüfung (`gh pr merge --squash --auto`).
 - **Sim, Balancing und Messläufe (🧑 2026-11-18):** Die Sperre gilt nur für den Hauptrechner. Der Second Worker hat die bessere Hardware
-  (Grafikkarte, CPU, Speicher) und darf `sim_test`, `sim_run`, Balancing, `gen:paper` und `check:race` in Sessions mit `Lane: zweit` fahren; die
+  (Grafikkarte, CPU, Speicher) und darf `sim_test`, `sim_run`, Balancing und `gen:paper` in Sessions mit `Lane: zweit` fahren; die
   langen Läufe gehören dorthin: Der Hauptrechner ist Ralfs Arbeitsplatz, Sim- und Messläufe stören dort; der Second Worker ist sonst idle
-  (🧑 2026-11-18). Rechenlastige Sessions (Sim, Balancing, Messung, `check:race`) bekommen deshalb `Lane: zweit`. Läufe nur über `sim_test`, blockierend gewartet.
+  (🧑 2026-11-18). Rechenlastige Sessions (Sim, Balancing, Messung) bekommen deshalb `Lane: zweit`. Läufe nur über `sim_test`, blockierend gewartet.
 - **Keine Tickets und Sprints anlegen:** Befunde schreibt der Second Worker ins Ergebnis seiner Session (Abschnitt „Für den
   Hauptrechner“); der Hauptrechner legt daraus Tickets an. So kollidieren keine Nummern.
 - **Gemeinsame Dateien** (`Cargo.lock`, `lib.rs`-Modulzeilen, Indizes): vor dem Push `git merge origin/main`; Index-Konflikte über `plan_index` lösen.
@@ -451,8 +449,9 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
 Leicht und billig: Die Automatik prüft die Komplexität, das Review sucht nur **schwere Fehler**. Ein günstiges
 Modell (z. B. Sonnet) reicht.
 
-1. `task check` und `task check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
-   Sim, Balance, Gen und `check:race` laufen nicht hier, sondern im Abnahme-Ticket (Schritt 4, B-742).
+1. `task check` und `task check:dev` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget für TypeScript und die
+   Rust-Werkzeuge als geprüft (Spiel-Workspace `rust/`: clippy in `check:diff` und CI).
+   Sim, Balance und Gen laufen nicht hier, sondern im Abnahme-Ticket (Schritt 4, B-742).
 2. `git fetch && git diff origin/main...origin/sprint/<präfix>` lesen (alles, was der Sprint ändert, in **allen**
    Domänen seiner Sessions), **nur den Diff**, nicht jede Datei vollständig.
 3. Nur diese Befunde zählen:
@@ -490,24 +489,24 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 - Nur diese Grenzen gelten, geprüft von der Automatik. Kürzer ist besser, aber kein Befund.
 - **Ausnahmen für Bestandscode** stehen mit ihrem Wert in `.oxlintrc.json`; der Wert darf nicht steigen.
 - Keine neue Abhängigkeit ohne Ticket und Zustimmung von 🧑 (mit der Spec-Freigabe). Keine Abstraktion für nur einen Fall.
-- Schichtgrenzen: `engine/` importiert nichts aus `tools/` (`engine/internal/rules/imports_test.go`). Das Rust-Spiel zeichnet nur und ruft die Simulation in `rust/crates/k3c-sim`/`k3c-room`; neue Mechaniken entstehen nur dort (Entscheidung 013, Entwurf), von der Go-Engine bleiben nur `conlog`, `devrun` und `internal/rules`.
-- Werkzeuge: Oxlint (TypeScript), `golangci-lint` mit `funlen`, `gocyclo`, `depguard` (Go);
-  Go-Verschachtelung: `engine/internal/rules/nesting_test.go`; Dateilänge beider Sprachen: `tests/projectRules.test.ts`.
+- Schichtgrenzen: Das Rust-Spiel zeichnet nur und ruft die Simulation in `rust/crates/k3c-sim`/`k3c-room`; neue Mechaniken entstehen nur dort (Entscheidung 013, Entwurf).
+- Werkzeuge: Oxlint (TypeScript, alle vier Grenzen), clippy `too_many_lines` mit Schwelle 60 (Rust, `clippy.toml`);
+  Dateilänge in Rust: `tests/projectRules.test.ts`. Verschachtelung und zyklomatische Komplexität prüft in Rust keine Automatik.
 
 ### Namen und Ablage im Code
 
-- **Datei- und Ordnernamen im Code sind englisch** (`engine/`, `rust/`, `tools/`), camelCase in TypeScript,
-  snake_case in Go, React-Komponenten wie ihre Komponente. Deutsch bleiben Doku, Spieltexte, Task-Namen, Seiten
+- **Datei- und Ordnernamen im Code sind englisch** (`rust/`, `tools/`), camelCase in TypeScript,
+  snake_case in Rust, React-Komponenten wie ihre Komponente. Deutsch bleiben Doku, Spieltexte, Task-Namen, Seiten
   (`*.html`) und Begriffe aus dem Glossar in Kommentaren und Texten. Bestand wird angepasst, wenn eine Session die Datei
   ohnehin ändert.
 - **Gruppen statt flacher Ordner:** In `rust/crates/k3c-sim` liegen die Module nach Gruppe in Unterordnern (`building/`, `cargo/` …,
   Übersicht `rust/crates/codemap.md`); Kern-Dateien haben keine Gruppe. Ab etwa 30 Dateien bekommt ein Ordner Gruppen.
-- Tests liegen neben dem Code; `tests/` nur für Regeln über das ganze Repo (TypeScript), Go-Regeln in
-  `engine/internal/rules`. Gemeinsame Oberflächen-Bausteine der Wails-Programme liegen in `tools/webkit` (nächster Abschnitt).
+- Tests liegen neben dem Code; `tests/` nur für Regeln über das ganze Repo (TypeScript).
+  Gemeinsame Oberflächen-Bausteine der Tauri-Programme liegen in `tools/webkit` (nächster Abschnitt).
 
-### Oberflächen der Wails-Programme (Atomic Design)
+### Oberflächen der Tauri-Programme (Atomic Design)
 
-Gilt verbindlich für jedes Wails-Programm mit Oberfläche (`tools/*/frontend`: k3c-workbench, Starter) und jedes neue.
+Gilt verbindlich für jedes Tauri-Programm mit Oberfläche (`tools/*/frontend`: k3c-workbench, k3c-studio) und jedes neue.
 Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; die gemeinsamen Ebenen liegen in `tools/webkit`:
 
 | Ebene | Ort | Inhalt |
@@ -527,13 +526,7 @@ Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; di
 
 ## Go-Engine-Bestand
 
-Von der Go-Engine bleiben seit RU41.1 nur drei Pakete; der Rest (Simulation, Level, Raum, Store, Balancing, Rng, `simcli`, `enginetools`, `cmd/k3c-sim`) ist entfernt, der letzte Stand steht im Tag `go-referenz-final` (Bau und Messung: `docs/standards/go-referenz.md`). Spiel und Simulation sind Rust (Entscheidung 011).
-
-| Paket | Grund | Ende |
-|---|---|---|
-| `engine/conlog` | Konsolenlog (Topics, Emojis) von Workbench und Studio | bleibt mit den Wails-Apps |
-| `engine/devrun` | Dev-Supervisor der Tasks `<app>:dev` | bleibt mit den Wails-Apps |
-| `engine/internal/rules` | Repo-Regel-Tests (Importe, Verschachtelungstiefe) | bleibt |
+Go ist seit RU71 restlos entfernt; der letzte Stand mit den Go-Werkzeugen steht im Tag `go-werkzeuge-final`, die Go-Engine samt Go-Spiel im Tag `go-referenz-final` (Bau und Messung: `docs/standards/go-referenz.md`). Spiel, Simulation und Werkzeuge sind Rust (Entscheidungen 011, 014).
 
 Zuordnung: `sim` → `rust/crates/k3c-sim`, `level` → `k3c-level`, `room` → `k3c-room`, `rng` → `k3c-rng`, `balance` → `k3c-balance`, Daten laden → `k3c-data`; Spielstände und Berichte schreibt das Studio über die EXE (`k3c-game sim save`), Läufe sind `k3c-game sim <run|level|balance|world|hub|save>`.
 
@@ -565,10 +558,10 @@ Eine Session baut keine Migration, kein neues Fixture und keinen Ladetest nur f�
 |---|---|---|
 | Rust-Tests | CI-Job `rust` (`task rust:test`) auf dem Stand, der getaggt wird | grün |
 | Golden arm64 | entfällt (Job `go-arm64` seit RU37.2 entfernt, Golden seit RU41.1 eingefroren) | – |
-| Alles grün | `task check:all` | Exit 0 (Client, Build, Go, k3c-workbench) |
+| Alles grün | `task check:all` | Exit 0 (Wurzel, Spiel-Build, Workbench und Studio) |
 | Spielstand-Migration (Beschluss 2026-10-05, B-288: bis auf Widerruf keine Rücksicht auf alte Stände) | Spielstand-Tests in `rust/crates/k3c-sim` | vorhandene Tests grün; neue Version ohne Migration zulässig (Abschnitt „Spielstand-Format ändern“) |
 | Dev-Reste aus (B-098, B-107, B-080) | Release-Build des Rust-Spiels ohne Dev-Modus (`rust/crates/k3c-room/src/room/actions.rs` lehnt Dev-Aktionen ab, vermutet); Prüfweg im nativen Spiel noch offen (Spielserver und Browser-Client entfallen, B-850) | Dev-Aktion wird abgelehnt |
-| Version stimmt (B-141) | `VERSION` im `Taskfile.yml` (`git describe`) und die Version im Menü › Lizenzen des Rust-Spiels (B-808) | beide nennen den Tag |
+| Version stimmt (B-141) | `VERSION` in `rust/Taskfile.yml` (`git describe`) und die Version im Menü › Lizenzen des Rust-Spiels (B-808) | beide nennen den Tag |
 | Credits vollständig (B-165) | Menü › Lizenzen des Rust-Spiels (`rust/crates/k3c-game/src/menu/licenses.rs`; der Browser-Test `src/tools/credits.test.ts` ist entfallen, B-850) | jede Grafik- und Audio-Quelle hat einen Eintrag |
 | Aufgeräumt (B-302) | `task ops:aufraeumen -- --dry` | keine Reste, sonst Hinweis (blockiert den Tag nicht) |
 | Tag-Schema | „Entscheidungen und Versionen“ | Minor bei Wirkung, Patch bei Doku oder Korrektur |

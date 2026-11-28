@@ -20,7 +20,7 @@ und CSS-Präfixe. Gleich sind Begriffe, Aufteilung, Ebenen, Bedienung und gemerk
 | Gemerkter Zustand | `localStorage` über einen Helfer, der Lese-/Schreibfehler schluckt und veraltete Werte verwirft (ErpApi: `lib/persist.ts`). Schlüssel `<präfix>.<seite>.<was>`. Freitext-Filter werden **nicht** gemerkt, Chips/Toggles schon. |
 | Status-Marken | Rund mit Farbpunkt (Pill): grün fertig, blau in Arbeit, amber Freigabe/Warnung, rot Fehler/geändert, violett Worktree, grau offen. |
 | Prompt-Knopf | Überall, wo Arbeit für einen Agenten entsteht: ⧉ kopiert den Prompt, der Claude-Funke öffnet ihn als neue Code-Session (Deep Link, schickt nicht ab). |
-| Keine Intervalle | Nachgeladen wird über Ereignisse der Go-Seite und einen „Aktualisieren“-/„Neu laden“-Knopf. Ausnahmen: Tailing einer Logdatei und der Planungsstand (Takt 2 s; der nächste Abruf startet erst nach der Antwort, eigene Änderungen laden sofort neu; teure Abfragen wie Git je Worktree werden bis zur nächsten Änderung zwischengespeichert). |
+| Keine Intervalle | Nachgeladen wird über Ereignisse des Backends und einen „Aktualisieren“-/„Neu laden“-Knopf. Ausnahmen: Tailing einer Logdatei und der Planungsstand (Takt 2 s; der nächste Abruf startet erst nach der Antwort, eigene Änderungen laden sofort neu; teure Abfragen wie Git je Worktree werden bis zur nächsten Änderung zwischengespeichert). |
 
 ## MCP-Tools (Regeln für alle Seiten)
 
@@ -270,7 +270,7 @@ Servers liefert auch `workbench_status`.
 - **Splitter** zwischen Baum und Ausgabe, Anteil gemerkt, Doppelklick setzt zurück; unter 1100 px
   untereinander, der Anteil gilt dann nicht.
 - **Ausgabe**: dieselbe Konsolen-Komponente wie unter Dienste & Logs (Ringpuffer `task:<name>`).
-  Zusatzargumente werden als `task <name> -- …` angehängt; Shell-Metazeichen lehnt die Go-Seite ab.
+  Zusatzargumente werden als `task <name> -- …` angehängt; Shell-Metazeichen lehnt das Backend ab.
 - **Fußzeile**: Zähler, laufende Tasks, Zustand des Katalogs; ein gescheiterter Reload steht
   hier, nicht über dem Baum.
 

@@ -22,7 +22,7 @@ will, legt ein Ticket an.
 11. `rng *rng.Rng` wird `rng: Rng` in `World`. Jeder Würfel-Aufruf bleibt an seiner Stelle der Reihenfolge.
 12. `Events` wird wie in Go je Schritt geleert.
 
-Dazu gilt: kein `HashMap` (`BTreeMap`; `engine/internal/rules/map_range_test.go` verbietet Durchläufe über Maps auch im Go-Altstand),
+Dazu gilt: kein `HashMap` (`BTreeMap`; im Go-Altstand verbot `engine/internal/rules/map_range_test.go` Durchläufe über Maps),
 kein `unsafe`, `Rc`, `RefCell`, `Cell`, `Mutex`.
 
 ## Beispiele je Fall

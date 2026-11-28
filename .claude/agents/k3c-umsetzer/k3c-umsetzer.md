@@ -35,7 +35,7 @@ Wohin was gehört (vollständig: `docs/agenten-fundorte.md`, tiefer die `codemap
 | Menü, Eingabe, Ablauf | `rust/crates/k3c-game/src/menu/`, `input/`, `game/` | dort, Durchlauf `rust/crates/k3c-game/tests/` |
 | Ton | `data/sounds.json`, `rust/crates/k3c-game/src/audio/` | `audio/*_tests.rs` |
 | Grafik | nur MCP `assets_*`, Zuordnung `data/paper.json` | – (melden, nicht selbst anlegen) |
-| Workbench, MCP-Tool | `tools/k3c-workbench/` (Tool: `internal/mcpsrv/`, Seite: `frontend/src/<feature>/` über `@webkit`) | Roundtrip-Test, Vitest |
+| Workbench, MCP-Tool | Tool: `rust/tools/crates/k3c-workbench/src/mcp/`; Seite: `tools/k3c-workbench/frontend/src/<feature>/` über `@webkit` | Roundtrip-Test, Vitest |
 | Regeltext | `docs/rules/*.md`, Begriffe zuerst in `docs/glossar.md` | `tests/*.test.ts` |
 | Task | Taskfile des Projekts im eigenen Ordner, nie `package.json` | – |
 

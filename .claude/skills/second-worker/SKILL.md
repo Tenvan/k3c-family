@@ -41,7 +41,7 @@ Regelquelle: `docs/arbeitsweise.md` › Second Worker. Für den Ablauf je Sessio
   `### Für den Hauptrechner`; der Hauptrechner legt daraus Tickets an. So kollidieren keine Nummern.
 - Lanes ändern oder Sessions ohne `Lane: zweit` anfassen.
 - Sim-Läufe außerhalb einer Session mit `Lane: zweit`. Innerhalb gilt die Sperre für dich nicht (Ralf 2026-11-18):
-  `sim_test`, `sim_run`, Balancing, `gen:paper` und `check:race` sind erlaubt, nur über `sim_test`, blockierend gewartet; Gemessen wird sonst erst am Ende.
+  `sim_test`, `sim_run`, Balancing und `gen:paper` sind erlaubt, nur über `sim_test`, blockierend gewartet; Gemessen wird sonst erst am Ende.
 
 ## Abschlussbericht
 

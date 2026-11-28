@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-Gemeinsame Oberflächen-Bausteine der Wails-Frontends (k3c-workbench) als Atomic Design auf Radix Themes (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme). Reiner Quellordner ohne eigenes Paket und ohne eigene Abhängigkeiten; direkt im Ordner liegt nur `theme.css`.
+Gemeinsame Oberflächen-Bausteine der Tauri-Frontends (k3c-workbench, k3c-studio) als Atomic Design auf Radix Themes (`docs/arbeitsweise.md` › Oberflächen der Tauri-Programme). Reiner Quellordner ohne eigenes Paket und ohne eigene Abhängigkeiten; direkt im Ordner liegt nur `theme.css`.
 
 ## Design
 

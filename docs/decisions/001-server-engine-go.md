@@ -2,6 +2,8 @@
 
 Stand: 2026-09-30 · Status: **beschlossen** · Backlog: B-001, B-002, B-003, B-005, B-036
 
+**Nachtrag:** überholt durch [011](011-spiel-und-sim-in-rust.md) und [014](014-rust-backend-fuer-werkzeuge.md); Go ist mit RU71 entfernt.
+
 ## Kontext
 
 - Kern des Spiels ist Couch- **und** Online-Koop gemischt, auch mit mehr als zwei Spielern

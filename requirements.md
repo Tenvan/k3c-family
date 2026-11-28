@@ -1,23 +1,20 @@
 # Voraussetzungen
 
 Was auf einem Entwickler-Rechner installiert sein muss. Alles Weitere (TypeScript, Vitest, Oxlint)
-holt `bun install --frozen-lockfile` aus `bun.lock`. Versionen gelten, solange diese Datei, `.nvmrc`, `go.mod` und
-`.github/workflows/ci.yml` übereinstimmen; wer eine davon ändert, passt die anderen mit an.
+holt `bun install --frozen-lockfile` aus `bun.lock`. Versionen gelten, solange diese Datei, `.nvmrc`,
+`rust/rust-toolchain.toml` und `.github/workflows/ci.yml` übereinstimmen; wer eine davon ändert, passt die anderen mit an.
 
 | Werkzeug | Version | Wofür | Quelle der Version | Prüfen |
 |---|---|---|---|---|
 | Git | aktuell | Repo, Branches | – | `git --version` |
 | Node.js | 22 (neuere laufen lokal meist auch) | Laufzeit der Werkzeuge (`bunx` startet Vitest, tsc darüber) | `.nvmrc` | `node --version` |
 | Bun | 1.4.2 | Pakete installieren (`bun install`), Werkzeuge starten (`bunx`) | `.github/workflows/ci.yml` | `bun --version` |
-| Rust | laut `rust/rust-toolchain.toml` (MSVC, Windows) | Rust-Spiel: `cargo`, `task build`, `task rust:game:run` | `rust/rust-toolchain.toml` | `rustc --version` |
-| Go | 1.27 | Engine, Workbench, Werkzeuge, `data/embed.go`, `task check:go` | `go.mod` | `go version` |
-| golangci-lint | 2.14 | Go-Lint mit Komplexitäts-Budget | `.github/workflows/ci.yml` | `golangci-lint --version` |
-| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-workbench` bauen (`task k3c-workbench`, `task k3c-workbench:build`) | `tools/k3c-workbench/go.mod` | `wails version` |
-| WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` | – | `wails doctor` |
-| Go Task | ab 3.54.0 (geprüft von `check_run`: Testmuster an Task-Ziele brauchen das Quoten von `CLI_ARGS` und `GO_TEST_FLAGS`, B-868; Zahl in `tools/k3c-workbench/internal/mcpsrv/check_taskversion.go`) | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
-| ffmpeg (nur Spieltest) | 8 oder neuer mit Filter `whisper` (gyan.dev „full build“, geprüft mit 9.0.2) | Spieltest-Aufnahme und Auswertung (Transkript, Bilder je Marker) auf der Seite Spieltest | – | `ffmpeg -version`, `ffmpeg -filters` (Zeile `whisper`) |
+| Rust | laut `rust/rust-toolchain.toml` (MSVC, Windows) | Rust-Spiel (`task build`, `task rust:game:run`) und Werkzeuge `rust/tools/` (`task check:dev`, `task buildall`) | `rust/rust-toolchain.toml` | `rustc --version` |
+| Tauri-CLI | 2.12.6 | Fenster von Workbench und Studio (`:window`, Bau des Studios) über `bunx tauri`; die Tasks holen sie selbst mit `bun install` in `rust/tools` | `rust/tools/package.json` | `bunx tauri --version` (in `rust/tools`) |
+| WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` und `k3c-studio` | – | – |
+| Go Task | ab 3.54.0 (geprüft von `check_run`: Testmuster an Task-Ziele brauchen das Quoten von `CLI_ARGS`, B-868; Zahl in `rust/tools/crates/k3c-workbench/src/mcp/check/taskversion.rs`) | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
+| ffmpeg (Spieltest, `gen:soundatlas`) | 8 oder neuer mit Filter `whisper` (gyan.dev „full build“, geprüft mit 9.0.2) | Spieltest-Aufnahme und Auswertung (Transkript, Bilder je Marker) auf der Seite Spieltest, Sound-Atlas | – | `ffmpeg -version`, `ffmpeg -filters` (Zeile `whisper`) |
 | Whisper-Modell (nur Spieltest) | `ggml-large-v3-turbo-german-q5_0.bin` (574041195 Byte, SHA-256 `15e92e3db0993c52fffa781513eec9253475331c1be808f8fb409285c9d9d030`, nicht eingecheckt) | Transkript (Sprache de); Ablage `models/` (ignoriert), sonst erste Datei `models/whisper/*.bin`, vorrangig der Pfad in `K3C_WHISPER_MODEL`; Quelle `https://huggingface.co/MolyProduction/whisper-large-v3-turbo-german-ggml-q5_0` (Hand-Download, die Workbench lädt nichts selbst) | – | Datei vorhanden (die Seite Spieltest meldet fehlendes Modell), Hash mit `certutil -hashfile <Datei> SHA256` |
-| C-Compiler (optional) | `gcc` oder `clang` | Race-Detector `go test -race` in `task go:race`; ohne Compiler nur ein Hinweis, die CI prüft es (B-077) | – | `gcc --version` |
 
 Zum Testen am Gerät, keine Installation im Repo: ein Windows-PC mit Controllern für das Rust-Spiel (`task rust:game:run`).
 
@@ -30,25 +27,23 @@ PowerShell öffnen, alles über `winget` (in Windows 11 enthalten). Nach der Ins
 winget install --id Git.Git -e
 winget install --id OpenJS.NodeJS.22 -e
 winget install --id Oven-sh.Bun -e
-winget install --id GoLang.Go -e
-winget install --id GolangCI.golangci-lint -e
 winget install --id Task.Task -e --source winget
-go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
-# danach den Ordner go/bin im Benutzerprofil in den PATH aufnehmen (dort liegt wails.exe)
 ```
+
+Rust über rustup ([rustup.rs](https://rustup.rs/)) samt den MSVC-Build-Tools; die Version zieht `rustup` aus
+`rust/rust-toolchain.toml`.
 
 Prüfen (Ausgabe muss zur Tabelle oben passen):
 
 ```powershell
-git --version; node --version; bun --version; go version; golangci-lint --version
+git --version; node --version; bun --version; rustc --version; task --version
 ```
 
 Hinweise:
 
-- `winget` nimmt die jeweils neueste Version. Bei `Go` und `golangci-lint` muss sie ≥ der Tabelle sein
-  (Go 1.27, golangci-lint 2.14); eine feste Version erzwingt `--version 2.14.0`.
+- `winget` nimmt die jeweils neueste Version; sie muss ≥ der Tabelle sein.
 - Ohne `winget`: Installer von den Download-Links unten, Standardoptionen, „Add to PATH“ aktiv lassen.
-- Ohne Go läuft nur `task check` (Regeln, Planung, Papierschnitt); das Spiel und `task check:go` brauchen Go.
+- Ohne Rust läuft `task check` (Regeln, Planung, Papierschnitt); das Spiel und `task check:dev` brauchen Rust.
 - Skripte blockiert von der Execution Policy? Git Bash oder `cmd` nutzen; das ändert keine Systemeinstellung.
   Nur wenn das nicht reicht: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (dauerhaft, gilt für alle Skripte des Benutzerkontos, ohne Adminrechte).
 
@@ -57,15 +52,16 @@ Hinweise:
 ```bash
 bun install --frozen-lockfile
 bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
+bun install --frozen-lockfile --cwd tools/k3c-studio/frontend
 ```
 
-Die zweite Zeile nur für `tools/k3c-workbench` (Frontend der Oberfläche, `task check:dev`); `task install` macht beide.
+Die zweite und dritte Zeile für die Frontends von Workbench und Studio (`task check:dev`); `task install` macht alle drei.
+Einmal je Klon: `task golden-setup`.
 
-Go-Temp (`go-build`, Test-EXEs, `t.TempDir`): Jeder `task`-Aufruf setzt `GOTMPDIR`, `TMP` und `TEMP` auf
-`%USERPROFILE%\.k3c\tmp` (ohne `USERPROFILE`, etwa in der CI: `.work/tmp`; nicht unter AppData, dorthin leitet die Claude-App als MSIX-Paket Schreibzugriffe um). Für diesen Ordner einmal eine Ausnahme im
-Virenscanner (Norton) anlegen, sonst prüft er jede Test-EXE. Er liegt bewusst außerhalb des Repos: Im Repo hasht `go test`
-die wechselnden Temp-Ordner mit, und der Testcache greift nie (B-619). Eine laufende Workbench übernimmt den Ort erst nach
-einem Neustart.
+Temp im Repo: `check_run` setzt `TMP` und `TEMP` seiner Läufe auf `.work/tmp`, die Rust-Tests legen ihre Ordner unter
+`K3C_TMP` bzw. `.work/tmp` an. Das `env` der Wurzel-`Taskfile.yml` setzt dieselben Variablen, überschreibt vorhandene
+Windows-Variablen aber vermutlich nicht; bei Läufen in der Shell setzt sie darum der Aufrufer selbst. Für `<Repo>\.work`
+einmal eine Ausnahme im Virenscanner (Norton) anlegen, sonst prüft er jede Test-EXE.
 
 ## Alles prüfen
 
@@ -74,8 +70,12 @@ task check
 ```
 
 ```bash
-task check:go
+task check:dev
 ```
 
-Downloads: [nodejs.org](https://nodejs.org/), [go.dev/dl](https://go.dev/dl/),
-[golangci-lint](https://golangci-lint.run/docs/welcome/install/).
+```bash
+task rust:test
+```
+
+Downloads: [nodejs.org](https://nodejs.org/), [bun.sh](https://bun.sh/), [rustup.rs](https://rustup.rs/),
+[taskfile.dev](https://taskfile.dev/installation/).

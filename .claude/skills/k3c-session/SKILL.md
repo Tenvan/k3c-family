@@ -36,7 +36,7 @@ Sprint-Branch auschecken (fehlt er: von `origin/develop`), `plan_set {Status: in
   `testing-red` für Tests ∥ `executor` für Code in anderen Dateien. Zwei Schreiber nie in derselben Datei.
 - Modell: `sonnet` als Standard, `opus` nur für Protokoll, Spielstand, Nebenläufigkeit oder Architektur.
 - Nur die **Erlaubten Dateien**; neue Ideen als Ticket (`plan_create` + `plan_sections`), nicht nebenbei.
-- Während der Arbeit nur gezielte Tests: `check_run go:test` bzw. `task:test` mit `pattern`, `go test ./pkg -run X`.
+- Während der Arbeit nur gezielte Tests: `task rust:test` bzw. `task tools-rust:test`, `check_run task:test` mit `pattern`, `cargo test -p <crate> <name>`.
 
 ## 4. Prüfen und Review (einmal, parallel)
 
@@ -57,11 +57,11 @@ dann `plan_set {Status: fertig}`. Ein Commit mit Session im Titel (`feat(sim): �
 
 ## Review-Session
 
-Nur auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung: `task check`, `task check:go`
-**nacheinander** (Go-Wanduhr-Tests flackern unter Last, B-284), währenddessen den Diff `origin/develop...origin/sprint/<präfix>` lesen; Abnahme in höchstens
+Nur auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung: `task check`, `task check:dev`
+**nacheinander** (Wanduhr-Tests flackern unter Last, B-284), währenddessen den Diff `origin/develop...origin/sprint/<präfix>` lesen; Abnahme in höchstens
 fünf Zeilen, PR mit Auto-Merge (`docs/arbeitsweise.md` › Review-Session).
-Keine Sim-, Balance- oder Gen-Läufe und kein `check:race`: Die Review-Session legt dafür **genau ein Abnahme-Ticket**
-an (`plan_create`, Kriterien Sim, Balance, Gen samt Golden, Race; Projektabschluss: eins für das Projekt), das Claude
+Keine Sim-, Balance- oder Gen-Läufe: Die Review-Session legt dafür **genau ein Abnahme-Ticket**
+an (`plan_create`, Kriterien Sim, Balance, Gen samt Golden; Projektabschluss: eins für das Projekt), das Claude
 autonom nachts abarbeitet (`docs/arbeitsweise.md` › Sim, Balance und Gen, B-742).
 
 ## Feste Regeln
@@ -69,8 +69,7 @@ autonom nachts abarbeitet (`docs/arbeitsweise.md` › Sim, Balance und Gen, B-74
 - Eine Session pro Lauf; **Nicht-Ziele** der Session einhalten.
 - Testläufe (Balancing, Performance, Stabilität) nur über `sim_test`, nie in der Shell, und nur, wenn die Session das
   betroffene Feature entwickelt; sonst im Abnahme-Ticket. Gleiches gilt für `gen:paper` samt Golden (B-742).
-- **Abnahme-Ticket abarbeiten** („Abnahme-Läufe …“): Kriterien der Reihe nach über `sim_test`, `check_run task:test`,
-  `check_run task:check:race`; rot → neues Ticket, Messwerte in die Notizen, `plan_set {Status: erledigt}`.
+- **Abnahme-Ticket abarbeiten** („Abnahme-Läufe …“): Kriterien der Reihe nach über `sim_test`, `check_run task:test`; rot → neues Ticket, Messwerte in die Notizen, `plan_set {Status: erledigt}`.
 - **Wenn etwas nicht passt** (Schritt unklar, Befehl scheitert unerklärlich, Datei nicht erlaubt, Kriterium widerspricht
   Code oder Regel): `Status: blockiert`, Grund im Ergebnis, Ticket vom Typ `Frage`, Stand pushen, Entwurfs-PR des
   Sprints (falls keiner offen), **aufhören**.

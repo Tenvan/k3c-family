@@ -9,6 +9,8 @@ Hinweis: Der Tag ist erst gesetzt, wenn `git ls-remote --tags origin go-referenz
 
 Nach RU37 fehlt `native/` im Arbeitsbaum. Das Go-Spiel gibt es dann nur in einem Worktree des Tags, immer unter `.work/`.
 
+Seit RU71 steht Go nicht mehr in `requirements.md`; der Bau geht nur aus dem Tag und braucht eine eigene Go-Installation.
+
 ## Bau (nachgewiesen am 2026-11-19 aus `dbb87c33`)
 
 ```bash
