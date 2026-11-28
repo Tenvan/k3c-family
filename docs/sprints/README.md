@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| RU71 | DEV, INF | RSU | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | – | `aktiv/RU71-go-restlos-entfernen/` |
 | WK2 | SIM, CLI | NAC | Spielwünsche aus dem Spieltest: Bürger und Handwerker | – | `aktiv/WK2-zweit-spielwuensche-handwerker/` |
 
 ## Offen am Gerät
@@ -497,3 +496,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU67 | assetkit nach Rust: Asset-Logik des Studios | `erledigt/RU67-assetkit-nach-rust/` |
 | RU70 | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | `erledigt/RU70-studio-backend-rust/` |
 | RU69 | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | `erledigt/RU69-workbench-backend-rust/` |
+| RU71 | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | `erledigt/RU71-go-restlos-entfernen/` |

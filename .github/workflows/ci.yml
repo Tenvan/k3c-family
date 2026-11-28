@@ -103,6 +103,18 @@ jobs:
         working-directory: rust/tools
     steps:
       - uses: actions/checkout@v7
+      # Einige Tests rufen bun oder task auf oder brauchen die gerenderte Grafik; ohne sie bestehen sie, ohne zu prüfen.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - uses: go-task/setup-task@v2
+      - run: bun install --frozen-lockfile
+        working-directory: .
+      - run: task gen:paper
+        working-directory: .
       # Ohne Pfadfilter: Die Tests lesen auch data/, public/grafik, tools/paper, testdata/, docs/ und Crates aus rust/.
       - uses: actions/cache@v6
         with:

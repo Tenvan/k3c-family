@@ -101,7 +101,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU67 | assetkit nach Rust: Asset-Logik des Studios | erledigt |
 | RU70 | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | erledigt |
 | RU69 | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | erledigt |
-| RU71 | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | aktiv |
+| RU71 | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | erledigt |
 
 ## Nicht-Ziele
 

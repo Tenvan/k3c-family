@@ -1,6 +1,6 @@
 # RU71 · DEV, INF · Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** DEV, INF
 - **Reife:** bereit
@@ -72,10 +72,9 @@ Keine (🧑 2026-11-26: direkt löschen).
 | RU71.3 | `RU71.3-paket-generatoren-typescript.md` | Umsetzung | autonom | fertig |
 | RU71.4 | `RU71.4-go-loeschen.md` | Umsetzung | autonom | fertig |
 | RU71.5 | `RU71.5-doku-rust-ts-stand.md` | Umsetzung | autonom | fertig |
-| RU71.6 | `RU71.6-review-abnahme-merge.md` | Review | autonom | in Arbeit |
+| RU71.6 | `RU71.6-review-abnahme-merge.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-28, Claude (Second Worker). AC-01: check:all grün, keine Go-Datei (RU71.4); tempGuard-Hook entfernt Ralf selbst. AC-02: Doku und Glossar (RU71.5, RU71.6); eine Zeile in 014 blieb. AC-03: TS-CLIs samt Orakel (RU71.2, RU71.3). AC-04: Tauri-Apps auf festen Ports, MCP-Stichprobe grün (RU71.1).
+Behoben aus Review: CI-Job tools-rust mit bun, task und gen:paper. Keine neuen Tickets (Befunde bei den Sessions). PC-Abnahme: B-1295, Ralf, danach.
